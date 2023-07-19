@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Respositories\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

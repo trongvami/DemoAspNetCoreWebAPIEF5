@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyFirstWebAPI.Context;
+using MyFirstWebAPI.Respositories;
+using MyFirstWebAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,11 @@ namespace MyFirstWebAPI
             services.AddDbContext<MyDbContext>(option=> {
                 option.UseSqlServer(Configuration.GetConnectionString("strConnect"));
             });
+            services.AddControllers();
+
+            //services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepositoryInMemory>();
+
             var secretkey = Configuration["AppSettings:SecretKey"];
             var secretKeyBytes = Encoding.UTF8.GetBytes(secretkey);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
@@ -49,7 +56,7 @@ namespace MyFirstWebAPI
                     ClockSkew = TimeSpan.Zero
                 };
             });
-            services.AddControllers();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFirstWebAPI", Version = "v1" });
@@ -67,7 +74,6 @@ namespace MyFirstWebAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
