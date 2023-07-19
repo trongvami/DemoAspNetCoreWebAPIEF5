@@ -1,0 +1,10 @@
+Fluent API
+entity.ToTable("Product") : Table name
+entity.HasKey(e=>e.MaHH) : Primary key
+entity.HasIndex(p=>p.TenLoai) : index
+.IsUnique(true); : establish Unique
+entity.HasOne(e=>e.Category) : chi ra entity ben mot
+.WithMany(lo=>lo.Products) : chi ra Coolection phia mot
+.hasForeignKey(e=>MaLoai) : khoa ngoai
+.OnDelete(DeleteBehavior.SetNull) : ung xu loai khi xoa
+.HasConstraintName("FK_HangHoa_Loai") : dat ten FK
