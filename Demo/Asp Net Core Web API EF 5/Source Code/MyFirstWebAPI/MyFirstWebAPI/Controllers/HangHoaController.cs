@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFirstWebAPI.Models;
 using System;
@@ -40,6 +41,7 @@ namespace MyFirstWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(HangHoa hangHoa)
         {
             var newHH = new HangHoa()

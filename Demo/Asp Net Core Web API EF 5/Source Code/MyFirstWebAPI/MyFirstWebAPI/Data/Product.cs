@@ -10,6 +10,11 @@ namespace MyFirstWebAPI.Data
     [Table("Product")]
     public class Product
     {
+        public Product()
+        {
+            OrderDetails = new HashSet<OrderDetails>();
+        }
+
         [Key]
         public Guid MaHH { get; set; }
         [Required]
@@ -22,5 +27,7 @@ namespace MyFirstWebAPI.Data
         public int? MaLoai { get; set; }
         [ForeignKey("MaLoai")]
         public Category Category { get; set; }
+        public ICollection<OrderDetails> OrderDetails { get; set; }
+        
     }
 }

@@ -7,6 +7,7 @@ using MyFirstWebAPI.Context;
 using MyFirstWebAPI.Data;
 using System.Threading.Tasks;
 using MyFirstWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyFirstWebAPI.Controllers
 {
@@ -22,8 +23,16 @@ namespace MyFirstWebAPI.Controllers
 
         [HttpGet]
         public IActionResult GetAllCategories() {
-            var listCategories = _myDbContext.Categories.ToList();
-            return Ok(listCategories);
+            try
+            {
+                var listCategories = _myDbContext.Categories.ToList();
+                return Ok(listCategories);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            
         }
 
         [HttpGet("{id}")]
@@ -49,7 +58,7 @@ namespace MyFirstWebAPI.Controllers
                 };
                 _myDbContext.Add(newCategory);
                 _myDbContext.SaveChanges();
-                return Ok(newCategory);
+                return StatusCode(StatusCodes.Status201Created, newCategory);
             }
             catch (Exception)
             {
@@ -80,6 +89,22 @@ namespace MyFirstWebAPI.Controllers
                 return BadRequest();
             }
 
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCategoryById(int id)
+        {
+            var category = _myDbContext.Categories.SingleOrDefault(x => x.MaLoai == id);
+            if (category != null)
+            {
+                _myDbContext.Remove(category);
+                _myDbContext.SaveChanges();
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

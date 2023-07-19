@@ -22,7 +22,6 @@ D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWeb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.OpenApi.dll
-D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -59,3 +58,4 @@ D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWeb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\ref\MyFirstWebAPI.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.pdb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.genruntimeconfig.cache
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
