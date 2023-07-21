@@ -40,7 +40,7 @@ namespace MyFirstWebAPI
 
             //services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryInMemory>();
-
+            services.AddScoped<IProductRepository, ProductRepository>();
             var secretkey = Configuration["AppSettings:SecretKey"];
             var secretKeyBytes = Encoding.UTF8.GetBytes(secretkey);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {

@@ -5,7 +5,6 @@ D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWeb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\MyFirstWebAPI.runtimeconfig.json
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\MyFirstWebAPI.runtimeconfig.dev.json
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\MyFirstWebAPI.dll
-D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\ref\MyFirstWebAPI.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\MyFirstWebAPI.pdb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Humanizer.dll
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.Data.SqlClient.dll
@@ -50,7 +49,6 @@ D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWeb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.MvcApplicationPartsAssemblyInfo.cs
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.MvcApplicationPartsAssemblyInfo.cache
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\MyFirstWebAPI.StaticWebAssets.Manifest.cache
-D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\MyFirstWebAPI.StaticWebAssets.xml
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\scopedcss\bundle\MyFirstWebAPI.styles.css
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.RazorTargetAssemblyInfo.cache
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.csproj.CopyComplete
@@ -59,3 +57,9 @@ D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWeb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.pdb
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\MyFirstWebAPI.genruntimeconfig.cache
 D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\MyFirstWebAPI.StaticWebAssets.Pack.cache
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\msbuild.MyFirstWebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\msbuild.build.MyFirstWebAPI.props
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.MyFirstWebAPI.props
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.MyFirstWebAPI.props
+D:\Knowledge\Demo\Asp Net Core Web API EF 5\Source Code\MyFirstWebAPI\MyFirstWebAPI\obj\Debug\net5.0\refint\MyFirstWebAPI.dll

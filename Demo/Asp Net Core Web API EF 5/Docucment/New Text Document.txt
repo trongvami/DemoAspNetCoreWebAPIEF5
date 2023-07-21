@@ -55,6 +55,93 @@ repository pattern interface
 + the data required for each of the operations i.e the parameters that need to be passed to the method and the data the method returns
 + the implementation details are in the respective repository class that implements the repository interface.
 
+-------------
+
+Lambda syntax
+var dsHH = ctx.HangHoas.where(hh=>hh.DonGia > 10)
+var dsHH = ctx.HangHoas.Select(hh=>hh.TenHH)
+var dsHH = ctx.HangHoas.Select(hh=>new {hh.TenHH,HH.DonGia})
+var dsHH = ctx.hanghoas.where(hh>hh.DonGia > 10 && || hh.DonGia = 100)
+var hh = ctx.HangHoas.where(hh=>hh.TenHH.Contains(search));
+
+only read
++ asnotracking()
+
+Query Syntax
+var dsHH = from hh in ctx.HangHoas where hhDonGia > 10 select hh;
+var dsHH = from hh in ctx.HangHoas select hhTenHH
+var dsHH = from hh in ctx Hanghoas select new {hh.TenHH, hh.DonGia}
+var dsHH = from hh in ctx.HangHoas where hh.DonGia > 10 and hh.DonGia < 1000 select hh;
+
+lay phan tu dau tien
++ First(), FirstOrDefault()
+lay phan tu cuoi cung
++ Last(), LastOrDefault()
+lay phan tu duy nhat
++ single(), singleordefault()
+
+sorting
++ query.OrderVt()
++ query.OrderByDescending()
++ query.ThenBy()
+
+phan trang: skip(), take()
++ query.Skip(skipN).take(pageSize)
+
+
+Authentication: who are you? dung de xac thuc ban la ai, xac thuc ng dung, validate a system is accessing by the right person
++ dung jwt
++ call api http post for login with username, password
++ create jwt by secret key and return to client
++ call api get/update with jwt in authorization header
++ validates token and return the reponse
+Authorization: are u allowed to do that? check user's permissions to access data
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
