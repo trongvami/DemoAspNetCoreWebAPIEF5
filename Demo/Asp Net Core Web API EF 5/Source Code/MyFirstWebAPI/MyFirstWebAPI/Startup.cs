@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyFirstWebAPI.Context;
+using MyFirstWebAPI.Models;
 using MyFirstWebAPI.Respositories;
 using MyFirstWebAPI.Services;
 using System;
@@ -41,6 +42,7 @@ namespace MyFirstWebAPI
             //services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryInMemory>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             var secretkey = Configuration["AppSettings:SecretKey"];
             var secretKeyBytes = Encoding.UTF8.GetBytes(secretkey);
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {

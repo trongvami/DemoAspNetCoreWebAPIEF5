@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFirstWebAPI.Models;
 using MyFirstWebAPI.Services;
@@ -95,6 +96,7 @@ namespace MyFirstWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(CategoryResponse categoryResponse)
         {
             try

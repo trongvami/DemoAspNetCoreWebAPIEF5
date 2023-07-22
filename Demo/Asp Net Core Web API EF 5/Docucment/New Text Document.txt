@@ -104,7 +104,12 @@ Authentication: who are you? dung de xac thuc ban la ai, xac thuc ng dung, valid
 	- install jwtbearer package
 	- configure authorization service
 		- services.AddAuthentication
-		-
+		- JwtBearerDefaults
+		- AddJwtBearer
+	- Generate token ( after check authentication )
+		- su dung sso de cap token, cap 1 lan su dung dc o nhieu noi,... microservices
+	- secure API
+		- Add property [Authorize]
 Authorization: are u allowed to do that? check user's permissions to access data
  
 
