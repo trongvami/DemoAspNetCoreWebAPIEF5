@@ -91,10 +91,20 @@ phan trang: skip(), take()
 
 Authentication: who are you? dung de xac thuc ban la ai, xac thuc ng dung, validate a system is accessing by the right person
 + dung jwt
+	- chua thong tin ng dung
+	- role
+	- expire time
+
 + call api http post for login with username, password
 + create jwt by secret key and return to client
 + call api get/update with jwt in authorization header
 + validates token and return the reponse
++ some steps to action
+	- create secretKey in appsetting
+	- install jwtbearer package
+	- configure authorization service
+		- services.AddAuthentication
+		-
 Authorization: are u allowed to do that? check user's permissions to access data
  
 

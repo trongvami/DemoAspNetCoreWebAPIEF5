@@ -31,11 +31,19 @@ namespace MyFirstWebAPI.Context
                         .HasForeignKey(o => o.MaHH)
                         .HasConstraintName("FK_OrderDetails_Product");
             });
+
+            modelBuilder.Entity<NguoiDung>(entity =>
+            {
+                entity.HasIndex(e => e.UserName).IsUnique();
+                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(150);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(150);
+            });
         }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
     }
