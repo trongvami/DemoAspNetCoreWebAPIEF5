@@ -111,7 +111,32 @@ Authentication: who are you? dung de xac thuc ban la ai, xac thuc ng dung, valid
 	- secure API
 		- Add property [Authorize]
 Authorization: are u allowed to do that? check user's permissions to access data
- 
+
+Refresh Token + Security
+-- muon truy xuat nguon tai nguyen duoc bao ve thi phai gui request va cung cap access token
+-- access token no co thoi han va khi minh het han thi phai login lai
+-- vi vay de han che login qua nhieu trong qua trinh su dung
+-- ho se tra ve luon bo refresh token de khi can refresh thi minh se tao moi
+-- khi access token expire thi dung bo refresh token de sinh ra 1 bo ms refresh token va token
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

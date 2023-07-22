@@ -43,6 +43,7 @@ namespace MyFirstWebAPI.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<NguoiDung> NguoiDungs { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 

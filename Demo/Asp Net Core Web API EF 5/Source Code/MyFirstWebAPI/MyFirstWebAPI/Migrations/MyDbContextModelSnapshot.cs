@@ -158,6 +158,40 @@ namespace MyFirstWebAPI.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("MyFirstWebAPI.Data.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JwtId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken");
+                });
+
             modelBuilder.Entity("MyFirstWebAPI.Data.OrderDetails", b =>
                 {
                     b.HasOne("MyFirstWebAPI.Data.Order", "Order")
@@ -186,6 +220,17 @@ namespace MyFirstWebAPI.Migrations
                         .HasForeignKey("MaLoai");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MyFirstWebAPI.Data.RefreshToken", b =>
+                {
+                    b.HasOne("MyFirstWebAPI.Data.NguoiDung", "NguoiDung")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NguoiDung");
                 });
 
             modelBuilder.Entity("MyFirstWebAPI.Data.Category", b =>
