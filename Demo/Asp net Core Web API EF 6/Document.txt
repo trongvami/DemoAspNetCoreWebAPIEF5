@@ -14,3 +14,4 @@ CORS ( cross-origin resource sharing ) in asp net core
 + 1 ung dung web se thuc hien truy van http cross-origin neu no yeu cau den cac tai nguyen o origin khac vs origin no dang chay.
 
 automapper de map viewmodel voi entity
+Data Source=ADMIN\\SQLEXPRESS;Persist Security Info=True;User ID=sa;Password=sa

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\GroceryStoreEF6.props" />
+</Project>
