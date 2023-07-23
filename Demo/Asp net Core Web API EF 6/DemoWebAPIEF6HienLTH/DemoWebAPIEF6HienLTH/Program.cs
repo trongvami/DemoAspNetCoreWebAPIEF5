@@ -1,4 +1,6 @@
 using DemoWebAPIEF6HienLTH.Entities;
+using DemoWebAPIEF6HienLTH.Repositories;
+using DemoWebAPIEF6HienLTH.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<MyShopHienLTHAspNetCoreEF6Context>(option => optio
 //    build.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
 //}));
 builder.Services.AddCors(option=>option.AddDefaultPolicy(policy=> policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

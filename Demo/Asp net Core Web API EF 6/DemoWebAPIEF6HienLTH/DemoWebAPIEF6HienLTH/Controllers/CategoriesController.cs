@@ -1,4 +1,5 @@
 ﻿using DemoWebAPIEF6HienLTH.Entities;
+using DemoWebAPIEF6HienLTH.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +12,15 @@ namespace DemoWebAPIEF6HienLTH.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly MyShopHienLTHAspNetCoreEF6Context _context;
-        public CategoriesController(MyShopHienLTHAspNetCoreEF6Context context) {
-            _context = context;
+        private readonly ICategoryRepository _services;
+        public CategoriesController(ICategoryRepository services) {
+            _services = services;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategories() {
-            return Ok(await _context.Categories.Include(x=>x.Products).ToListAsync());
+            var result = await _services.GetAllCategoriesAsync();
+            return Ok(result);
         }
     }
 }
