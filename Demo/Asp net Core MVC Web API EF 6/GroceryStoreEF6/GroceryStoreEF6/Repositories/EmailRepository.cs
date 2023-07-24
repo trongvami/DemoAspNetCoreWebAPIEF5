@@ -26,10 +26,15 @@ namespace GroceryStoreEF6.Repositories
 
         private MimeMessage CreateEmailMessage(MessageResponse message, EmailConfiguration _emailConfig) { 
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("email",_emailConfig.From));
+            emailMessage.From.Add(new MailboxAddress(string.Format("{0}", message.Subject),_emailConfig.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content };
+            if (!string.IsNullOrEmpty(_emailConfig.CC))
+            {
+                var ccEmail = _emailConfig.CC.Split(';').Where(x => x.Length > 0).ToList();
+                emailMessage.Cc.AddRange(ccEmail.Select(x => new MailboxAddress("email", x)).ToList());
+            }
             return emailMessage;
         }
 
