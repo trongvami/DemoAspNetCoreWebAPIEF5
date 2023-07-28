@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\DemoFullIdentityEF6.props" />
+</Project>
