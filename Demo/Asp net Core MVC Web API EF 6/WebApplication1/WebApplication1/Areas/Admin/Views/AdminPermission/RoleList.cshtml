@@ -1,0 +1,134 @@
+﻿@*@model IEnumerable<WebApplication1.ViewModels.RoleListViewModel>*@
+@model PagedList.Core.IPagedList<WebApplication1.ViewModels.RoleListViewModel>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "List of role - Page : " + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+}
+
+<div class="page-header">
+    <h2 class="header-title">Roles List</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="anticon anticon-lock"></i>
+                </span>
+                <span class="title">Authorization</span>
+            </a>
+            <span class="breadcrumb-item active">Roles List : Page @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                
+            </div>
+            <div class="col-lg-4 text-right">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add New Role</span>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>ConcurrencyStamp</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>
+                                    #@role.Id
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <strong>@role.Name</strong>
+                                    </div>
+                                </td>
+                                <td>@role.ConcurrencyStamp</td>
+                                <td class="text-right">
+                                    <button class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+                                        <i class="anticon anticon-edit"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-hover btn-sm btn-rounded">
+                                        <i class="anticon anticon-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminPermission" asp-action="RoleList" list="@Model" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalScrollable">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <form asp-action="CreateRole" asp-area="Admin" asp-controller="AdminPermission" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Add Role</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="anticon anticon-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Role Name:</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter role name" name="rolename" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+}
+
