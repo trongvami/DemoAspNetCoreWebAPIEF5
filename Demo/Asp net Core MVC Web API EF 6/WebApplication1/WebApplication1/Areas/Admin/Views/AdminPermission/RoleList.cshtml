@@ -39,50 +39,16 @@
                 
             </div>
             <div class="col-lg-4 text-right">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+                <button class="btn btn-primary" onclick="ShowInPupupRole('@Url.Action("AddorEdit","AdminPermission", null, Context.Request.Scheme)', 'Create New Role');">
                     <i class="anticon anticon-plus-circle m-r-5"></i>
                     <span>Add New Role</span>
                 </button>
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>ConcurrencyStamp</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Any())
-                    {
-                        @foreach (var role in Model)
-                        {
-                            <tr>
-                                <td>
-                                    #@role.Id
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <strong>@role.Name</strong>
-                                    </div>
-                                </td>
-                                <td>@role.ConcurrencyStamp</td>
-                                <td class="text-right">
-                                    <button class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
-                                        <i class="anticon anticon-edit"></i>
-                                    </button>
-                                    <button class="btn btn-icon btn-hover btn-sm btn-rounded">
-                                        <i class="anticon anticon-delete"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+            <div id="view-all-role">
+                <partial name="_pvRoleList" model="@Model" />
+            </div>
             <div aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminPermission" asp-action="RoleList" list="@Model" />
@@ -92,29 +58,10 @@
     </div>
 </div>
 
-<div class="modal fade" id="exampleModalScrollable">
-    <div class="modal-dialog modal-dialog-scrollable">
+<div class="modal fade" id="Form-Modal-AddorEditRole">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form asp-action="CreateRole" asp-area="Admin" asp-controller="AdminPermission" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalScrollableTitle">Add Role</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <i class="anticon anticon-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Role Name:</span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Enter role name" name="rolename" aria-label="Username" aria-describedby="basic-addon1">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+            
         </div>
     </div>
 </div>
@@ -127,7 +74,6 @@
     <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
     <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
     <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
-
     <!-- Core JS -->
     <script src="~/assets/js/app.min.js"></script>
 }

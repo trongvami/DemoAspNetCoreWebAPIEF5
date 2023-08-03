@@ -3113,6 +3113,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\js\\notify.min.js",
+      "PackagePath": "staticwebassets\\js\\notify.min.js"
+    },
+    {
       "Id": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

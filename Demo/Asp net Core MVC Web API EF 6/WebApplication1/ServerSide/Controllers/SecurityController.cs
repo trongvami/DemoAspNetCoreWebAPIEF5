@@ -159,7 +159,7 @@ namespace ServerSide.Controllers
         {
             //checking the user
             var user = await _userManager.FindByEmailAsync(loginModel.Username);
-            if (user.TwoFactorEnabled)
+            if (user.TwoFactorEnabled && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 await _signInManager.SignOutAsync();
                 await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, true);

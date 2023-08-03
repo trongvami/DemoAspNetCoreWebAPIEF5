@@ -287,6 +287,8 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\refs\System.Xml.XPath.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\refs\System.Xml.XPath.XDocument.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\refs\WindowsBase.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\AspNetCoreHero.ToastNotification.Views.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\AspNetCoreHero.ToastNotification.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\AutoMapper.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\Humanizer.dll
@@ -349,6 +351,8 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\NuGet.ProjectModel.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\NuGet.Protocol.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\NuGet.Versioning.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\PagedList.Core.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\PagedList.Core.Mvc.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\System.Composition.AttributedModel.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\System.Composition.Convention.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\System.Composition.Hosting.dll
@@ -532,5 +536,3 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.pdb
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.genruntimeconfig.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\ref\WebApplication1.dll
-D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\PagedList.Core.dll
-D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\PagedList.Core.Mvc.dll

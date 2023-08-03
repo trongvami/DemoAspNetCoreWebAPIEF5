@@ -1,0 +1,142 @@
+﻿@model IEnumerable<System.Security.Claims.Claim>
+@*@model PagedList.Core.IPagedList<WebApplication1.ViewModels.RoleListViewModel>*@
+@{
+    //int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Employees In Role";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+
+    <style>
+        /* Màu nền cho dòng khi được chọn */
+        .selected-row {
+            background-color: rgba(63,135,245,0.15);
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h2 class="header-title">Employees List In Role</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" href="#">Authorization</a>
+            <span class="breadcrumb-item active">Employees List In Role</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="custom-select" style="min-width: 180px;">
+                            <option selected>Role</option>
+                            <option value="all">All</option>
+                            <option value="homeDeco">Customer</option>
+                            <option value="eletronic">Employee</option>
+                            <option value="jewellery">Cashier</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <button class="btn btn-primary">
+                    <i class="anticon anticon-save m-r-5"></i>
+                    <span>Save change</span>
+                </button>
+            </div>
+        </div>
+
+
+
+
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @*<div class="checkbox">
+                            <input id="checkAll" type="checkbox">
+                            <label for="checkAll" class="m-b-0"></label>
+                            </div>*@
+                        </th>
+                        <th>STT</th>
+                        <th>Employee Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        int check = 1;
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="@role.Type" type="checkbox">
+                                        <label for="@role.Type" class="m-b-0"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @check
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="m-b-0 m-l-10">@role.Type</h6>
+                                    </div>
+                                </td>
+                            </tr>
+                            check = check + 1;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+
+    <script>
+        // Sử dụng jQuery để thêm sự kiện click vào tất cả các hàng (tr) trong bảng
+        $(document).ready(function () {
+            $('.views-table tr').click(function () {
+                // Xóa lớp 'selected-row' của tất cả các hàng trước khi thêm vào hàng mới
+                $('.views-table tr').removeClass('selected-row');
+                // Thêm lớp 'selected-row' vào hàng được chọn
+                $(this).addClass('selected-row');
+
+                // Lấy giá trị (value) của cột ID trong dòng đang được chọn
+                var selectedId = $(this).find('td:eq(0)').text().trim();
+
+                // Hiển thị giá trị trong một thông báo (alert)
+                //alerts(selectedId);
+            });
+        });
+
+                //function alerts(selectedId) {
+                //    alert('ID của dòng đang chọn là: ' + selectedId);
+                //}
+    </script>
+}
+

@@ -1,0 +1,36 @@
+﻿@model WebApplication1.ViewModels.RoleListViewModel
+@{
+    ViewData["Title"] = "Role Information";
+    Layout = "";
+}
+@*
+onsubmit="return jQueryAjaxPostModalRole(this)"*@
+
+<form asp-action="AddorEdit" asp-area="Admin" asp-controller="AdminPermission" method="post" asp-route-id="@Model.Id" enctype="multipart/form-data" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Add Role</h5>
+        <button type="button" class="close" data-dismiss="modal">
+            <i class="anticon anticon-close"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Role Name:</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Enter role name" asp-for="Name" name="name" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        @*<div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Role Level:</span>
+            </div>
+            <input type="number" class="form-control" placeholder="Enter role level" asp-for="ConcurrencyStamp" name="concurrencystamp" aria-label="ConcurrencyStamp" aria-describedby="basic-addon1">
+        </div>*@
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>

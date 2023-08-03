@@ -36,12 +36,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5Ib21lXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/AddorEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXEFkZG9yRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/ClaimList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXENsYWltTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/EmployeeList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXEVtcGxveWVlTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/RoleList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXFJvbGVMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/UsersInRole.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXFVzZXJzSW5Sb2xlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/_pvClaimsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXF9wdkNsYWltc0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/_pvRoleList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXF9wdlJvbGVMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/Shared/_SideNavPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9TaWRlTmF2UGFydGlhbFZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]

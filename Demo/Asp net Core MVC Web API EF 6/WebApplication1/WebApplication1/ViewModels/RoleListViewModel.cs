@@ -7,6 +7,6 @@
 
         public string NormalizedName { get; set; }
 
-        public string ConcurrencyStamp { get; set; }
+        //public string ConcurrencyStamp { get; set; }
     }
 }

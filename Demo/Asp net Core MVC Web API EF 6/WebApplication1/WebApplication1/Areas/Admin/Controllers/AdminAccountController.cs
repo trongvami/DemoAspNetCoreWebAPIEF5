@@ -18,9 +18,11 @@ namespace WebApplication1.Areas.Admin.Controllers
     {
         private static readonly HttpClient _httpClientt = new HttpClient();
         private readonly IToastNotification _toastNotification;
-        public AdminAccountController(IToastNotification toastNotification)
+        public AspNetCoreHero.ToastNotification.Abstractions.INotyfService _notyfService { get; set; }
+        public AdminAccountController(IToastNotification toastNotification, AspNetCoreHero.ToastNotification.Abstractions.INotyfService notyfService)
         {
             _toastNotification = toastNotification;
+            _notyfService = notyfService;
         }
 
         [Route("Admin/AdminAccount/Register")]
@@ -36,7 +38,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                registerViewModel.Service = "User";
+                registerViewModel.Service = "Employee";
                 var response = await HttpClientHelper.PostAsync("https://localhost:7071/api/Security/Register", registerViewModel);
                 if (response.IsSuccessStatusCode)
                 {
@@ -104,7 +106,6 @@ namespace WebApplication1.Areas.Admin.Controllers
                         var userNameClaim = userElement;
 
                         claims.Add(new Claim(ClaimTypes.Name, userNameClaim.GetString()));
-
                         var roles = token.Claims
                             .Where(c => c.Type == ClaimTypes.Role)
                             .Select(c => new Claim(ClaimTypes.Role, c.Value));
@@ -121,7 +122,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                             HttpOnly = true,
                             Secure = true
                         });
-                        _toastNotification.AddSuccessToastMessage("Login Successfully !");
+                        _notyfService.Information("Login Successfully !", 4);
                         return RedirectToAction("Index", "AdminHome", new { area = "Admin" });
                     }
                     catch (Exception ex)

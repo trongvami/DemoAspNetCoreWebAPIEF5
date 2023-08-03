@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
+using NuGet.Common;
+using System.Security.Policy;
 
 namespace WebApplication1.Helpers
 {
@@ -15,6 +17,14 @@ namespace WebApplication1.Helpers
             return await _httpClient.PostAsync(url, content);
         }
 
+        public static async Task<HttpResponseMessage> PostWithTokenAsync<T>(string url, T data, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return await _httpClient.PostAsync(url, content);
+        }
+        
         public static async Task<T> GetAsync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);
@@ -40,6 +50,14 @@ namespace WebApplication1.Helpers
             });
         }
 
+        public static async Task<HttpResponseMessage> PutWithTokenAsync<T>(string url, T data, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return await _httpClient.PutAsync(url, content);
+        }
+
         public static async Task<HttpResponseMessage> PutAsync<T>(string url, T data)
         {
             var json = JsonSerializer.Serialize(data);
@@ -50,6 +68,18 @@ namespace WebApplication1.Helpers
         public static async Task<HttpResponseMessage> DeleteAsync(string url)
         {
             return await _httpClient.DeleteAsync(url);
+        }
+
+        public static async Task<HttpResponseMessage> DeleteWithTokenAsync(string url, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return await _httpClient.DeleteAsync(url);
+        }
+
+        public static async Task<HttpResponseMessage> DeleteWithTokenAndIdAsync(string url, string token, string id)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return await _httpClient.DeleteAsync(url + id);
         }
     }
 }

@@ -1,0 +1,65 @@
+﻿<div class="side-nav">
+    <div class="side-nav-inner">
+        <ul class="side-nav-menu scrollable">
+            <li class="nav-item dropdown" id="dashboard">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-dashboard"></i>
+                    </span>
+                    <span class="title">Dashboard</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="dashboardDefault">
+                        <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome">Default</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" id="dropdownUser">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-lock"></i>
+                    </span>
+                    <span class="title">User</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="EmployeeList">
+                        <a asp-action="EmployeeList" asp-controller="AdminPermission" asp-area="Admin">Employee List</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="CustomerList">
+                        <a asp-action="CustomerList" asp-controller="AdminPermission" asp-area="Admin">Customer List</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" id="dropdownAuthorization">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-lock"></i>
+                    </span>
+                    <span class="title">Authorization</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="RoleList">
+                        <a asp-action="RoleList" asp-controller="AdminPermission" asp-area="Admin">Role List</a>
+                    </li>
+                    <li id="ClaimList">
+                        <a asp-action="ClaimList" asp-controller="AdminPermission" asp-area="Admin">Claim List</a>
+                    </li>
+                    <li id="EmployeesInRole">
+                        <a asp-action="EmployeesInRole" asp-controller="AdminPermission" asp-area="Admin">Employees in Role</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

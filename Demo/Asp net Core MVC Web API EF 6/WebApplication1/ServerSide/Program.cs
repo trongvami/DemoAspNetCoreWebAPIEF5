@@ -10,7 +10,6 @@ using ServerSide.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddDbContext<DbNet6Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbNet6Connect")));
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
