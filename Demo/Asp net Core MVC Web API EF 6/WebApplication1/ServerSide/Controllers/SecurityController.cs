@@ -9,6 +9,7 @@ using ServerSide.Models.ResponseModels;
 using ServerSide.Models.ViewModels.Authentication.Login;
 using ServerSide.Models.ViewModels.Authentication.SignUp;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -93,6 +94,47 @@ namespace ServerSide.Controllers
 
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ExternalConfirmEmailRegisters")]
+        public async Task<IActionResult> ExternalConfirmEmailRegisters([FromBody] string email)
+        {
+            // Check User Exist
+            var userExist = await _userManager.FindByEmailAsync(email);
+            if (userExist == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ResponseBase { Message = "User doesn't exist !", Status = "Error" });
+            }
+
+            // Add the user in the database
+            var user = new ApplicationUser
+            {
+                Email = email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = email,
+                TwoFactorEnabled = true,
+                Fullname = email,
+                Service = "Employee"
+            };
+
+            await _userManager.AddToRoleAsync(user, user.Service);
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Security", new { token, email = user.Email }, Request.Scheme);
+
+            string Attention1 = @"<p>We have received your request to register in our store.</p>";
+            string Attention2 = @"<p>If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.</p>";
+            string Signature = @"<p>Thanks,</p><p>The GroceryStore Team</p>";
+            string Hi = String.Format(@"Hi {0},<br /> {1} <p>Please click here: <b>{2}</b></p> {3} {4}", user.UserName, Attention1, confirmationLink, Attention2, Signature);
+            IEnumerable<string> lstEmail = new string[] { user.Email };
+            MessageResponse messageModel = new MessageResponse(lstEmail, "GroceryStore - Link Confirmation to Create New Account", Hi);
+
+            _emailService.SendEmail(messageModel);
+
+            return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"User Created & Email Sent to {user.Email} Successfully !", Status = "Success" });
+
+        }
+
 
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
@@ -159,6 +201,7 @@ namespace ServerSide.Controllers
         {
             //checking the user
             var user = await _userManager.FindByEmailAsync(loginModel.Username);
+
             if (user.TwoFactorEnabled && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 await _signInManager.SignOutAsync();
@@ -270,5 +313,71 @@ namespace ServerSide.Controllers
             HttpContext.Response.Cookies.Delete("access_token");
             return Ok();
         }
+
+        [HttpGet]
+        [Route("ExternalLogins")]
+        public async Task<IActionResult> ExternalLogins()
+        {
+            var rs = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            return Ok(rs);
+        }
+
+        [HttpGet]
+        [Route("GetExternalLoginInfor")]
+        public async Task<IActionResult> GetExternalLoginInfor()
+        {
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            return Ok(info);
+        }
+
+        [HttpGet]
+        [Route("ConfigureExternalAuthentication/{provider}/{redirectUrl}")]
+        public async Task<IActionResult> ConfigureExternalAuthentication(string provider, string redirectUrl)
+        {
+            var decodedRedirectUrl = WebUtility.UrlDecode(redirectUrl);
+            var rs = _signInManager.ConfigureExternalAuthenticationProperties(provider, decodedRedirectUrl);
+            return Ok(rs);
+        }
+
+        [HttpPost]
+        [Route("ExternalLogInSignIn")]
+        public async Task<IActionResult> ExternalLogInSignIn([FromBody] ExternalLoginVM externalLoginVM)
+        {
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(externalLoginVM.LoginProvider, externalLoginVM.ProviderKey, externalLoginVM.isPersistent, externalLoginVM.bypassTwoFactor);
+            if (signInResult.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseBase { Status = "Success", Message = $"Login Successfully" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ResponseBase { Status = "Error", Message = $"Cannot found" });
+            }
+        }
+
+        [HttpPost]
+        [Route("AddLogInAndSignin")]
+        public async Task<IActionResult> AddLogInAndSignin([FromBody] ExternalLoginInfo externalLoginInfo)
+        {
+            var user = await _userManager.FindByEmailAsync(externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email));
+
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    UserName = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+                    Email = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+                    Service = "Employee",
+                    Fullname = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+                };
+
+                await _userManager.CreateAsync(user);
+            }
+
+            await _userManager.AddLoginAsync(user, externalLoginInfo);
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            return StatusCode(StatusCodes.Status200OK, new ResponseBase { Status = "Success", Message = $"Login Successfully" });
+        }
+
     }
 }

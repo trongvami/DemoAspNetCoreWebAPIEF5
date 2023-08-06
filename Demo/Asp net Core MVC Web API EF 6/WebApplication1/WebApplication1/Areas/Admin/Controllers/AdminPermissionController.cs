@@ -195,35 +195,31 @@ namespace WebApplication1.Areas.Admin.Controllers
         #region Employee
         [Route("Admin/AdminPermission/Employee-List")]
         [HttpGet]
-        public async Task<IActionResult> EmployeeList(int? page)
+        public async Task<IActionResult> EmployeeList(string? idRole)
         {
-            //var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            //var pageSize = Utilities.PAGE_SIZE;
-            //var token = Request.Cookies["IdentityToken"];
+            var token = Request.Cookies["IdentityToken"];
 
-            //if (string.IsNullOrEmpty(token))
-            //{
-            //    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
-            //}
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
 
-            //var apiGetAllEmployeeUrl = "https://localhost:7071/api/RolePermission/EmployeeList";
-            //var httpClient = _httpClientFactory.CreateClient();
-            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            //var response = JsonConvert.DeserializeObject<List<RoleListViewModel>>(httpClient.GetStringAsync(apiGetAllEmployeeUrl).Result);
+            var apiGetAllRoleUrl = "https://localhost:7071/api/RolePermission/RoleList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<RoleListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
+            var firstData = response.FirstOrDefault();
 
-            //var queryableResponse = response.AsQueryable().OrderBy(x => x.Name);
-            //PagedList.Core.PagedList<RoleListViewModel> models = new PagedList.Core.PagedList<RoleListViewModel>(queryableResponse, pageNumber, pageSize);
-            //ViewBag.CurrentPage = pageNumber;
+            if (idRole == null)
+            {
+                idRole = firstData.Id;
+            }
+            ViewBag.Id = idRole;
 
-            //if (response != null)
-            //{
-            //    return View(models);
-            //}
-            //else
-            //{
-            //    return View(models);
-            //}
-            return View();
+            var apiGetAllRoleClaimsUrl = "https://localhost:7071/api/RolePermission/GetClaimsByRoleId/";
+            var claimsRoleData = JsonConvert.DeserializeObject<RoleClaimsViewModel>(httpClient.GetStringAsync(apiGetAllRoleClaimsUrl + idRole).Result);
+
+            return View(claimsRoleData);
         }
         #endregion
 

@@ -80,6 +80,19 @@
                                         </div>
                                     </div>
                                 </form>
+                                <form asp-action="ExternalLogin" asp-controller="AdminAccount" asp-area="Admin" method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                                    <div>
+                                        @if (Model.ExternalLogins != null)
+                                        {
+                                            @foreach (var provider in Model.ExternalLogins)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Login using your @provider.DisplayName account">
+                                                    @provider.DisplayName
+                                                </button>
+                                            }
+                                        }
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

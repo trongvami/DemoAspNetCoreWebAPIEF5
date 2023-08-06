@@ -1,11 +1,19 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using System.Data;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis;
+using WebApplication1.Persistent;
+using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,19 +27,36 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 //}).AddXmlSerializerFormatters();
 builder.Services.AddMvc();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
+builder.Services.AddDbContext<DbNet6Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbNet6Connect")));
 builder.Services.AddRazorPages().AddNToastNotifyNoty(new NotyOptions
 {
     ProgressBar = true,
     Timeout = 5000
 });
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+{
+    option.Password.RequiredLength = 9;
+    option.Password.RequiredUniqueChars = 3;
+    option.Password.RequireNonAlphanumeric = false;
+})
+    .AddEntityFrameworkStores<DbNet6Context>()
+    .AddDefaultTokenProviders();
+builder.Services.AddAuthentication(optionsd => {
+    optionsd.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    optionsd.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    optionsd.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+})
+        .AddCookie(option =>
         {
-            options.Cookie.Name = "AccessToken";
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // expire session
-            options.SlidingExpiration = true;
-            options.LoginPath = "/Admin/AdminAccount/Login";
-            options.AccessDeniedPath = "/Admin/AdminAccount/AccessDenied";
+            option.Cookie.Name = "AccessToken";
+            option.ExpireTimeSpan = TimeSpan.FromMinutes(20); // expire session
+            option.SlidingExpiration = true;
+            option.LoginPath = "/Admin/AdminAccount/Login";
+            option.AccessDeniedPath = "/Admin/AdminAccount/AccessDenied";
+        }).AddGoogle(option => {
+            option.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            option.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            option.CallbackPath = "/signin-google";
         });
 builder.Services.AddAuthorization(options =>
 {
@@ -48,6 +73,7 @@ builder.Services.AddSession(options =>
 });
 //builder.Services.AddStackExchangeRedisCache(options => { options.Configuration = builder.Configuration["RedisCacheUrl"]; });
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

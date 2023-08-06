@@ -236,5 +236,61 @@ namespace ServerSide.Controllers
             return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = "Add New Claims Successfully", Status = "Success" });
         }
         #endregion
+
+        #region UserRoles
+
+        //[HttpGet]
+        //[Route("GetUsersByRoleId/{id}")]
+        //public async Task<IActionResult> GetUsersByRoleId(string? id)
+        //{
+        //    var allRoles = await _roleManager.Roles.ToListAsync();
+        //    var roleById = allRoles.SingleOrDefault(x => x.Id == id);
+
+        //    var listUsersResponse = new List<UsersResponse>();
+        //    var listUsersByRole = await _roleManager.(roleFirst);
+        //    foreach (var claim in claimList)
+        //    {
+        //        var claimsResponse = new ClaimsResponse
+        //        {
+        //            ClaimType = claim.Type,
+        //            ClaimValue = claim.Value
+        //        };
+
+        //        if (listClaimsByRole.Count == 0)
+        //        {
+        //            claimsResponse.IsSelected = false;
+        //        }
+        //        else
+        //        {
+        //            var matchingClaims = listClaimsByRole.Where(c => c.Type == claim.Type);
+        //            if (matchingClaims.Any())
+        //            {
+        //                claimsResponse.IsSelected = true;
+        //            }
+        //        }
+        //        listClaimsResponse.Add(claimsResponse);
+        //    }
+
+        //    var model = new RoleClaimsResponse();
+        //    model.listClaims = listClaimsResponse;
+        //    model.roleId = roleFirst.Id;
+        //    var rs = await _roleManager.Roles.ToListAsync();
+        //    var rsRLR = new List<RoleListResponse>();
+        //    foreach (var r in rs)
+        //    {
+        //        var row = new RoleListResponse
+        //        {
+        //            Id = r.Id,
+        //            Name = r.Name,
+        //            NormalizedName = r.NormalizedName
+        //        };
+        //        rsRLR.Add(row);
+        //    }
+        //    model.listRoles = rsRLR;
+
+        //    return Ok(model);
+        //}
+
+        #endregion
     }
 }

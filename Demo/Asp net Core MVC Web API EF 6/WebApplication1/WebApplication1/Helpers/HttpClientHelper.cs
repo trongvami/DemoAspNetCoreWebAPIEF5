@@ -3,12 +3,29 @@ using System.Text.Json;
 using System.Text;
 using NuGet.Common;
 using System.Security.Policy;
+using System.Text.Json.Serialization;
 
 namespace WebApplication1.Helpers
 {
     public static class HttpClientHelper
     {
         private static readonly HttpClient _httpClient = new HttpClient();
+
+        public static async Task<T> Post2Async<T>(string url, T data)
+        {
+            var httpClient = new HttpClient();
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<T>(responseString);
+            }
+
+            return default;
+        }
 
         public static async Task<HttpResponseMessage> PostAsync<T>(string url, T data)
         {

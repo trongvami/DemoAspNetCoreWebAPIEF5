@@ -10,19 +10,30 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net;
+using Microsoft.AspNetCore.Identity;
+using WebApplication1.Models;
 
 namespace WebApplication1.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AdminAccountController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private static readonly HttpClient _httpClientt = new HttpClient();
         private readonly IToastNotification _toastNotification;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         public AspNetCoreHero.ToastNotification.Abstractions.INotyfService _notyfService { get; set; }
-        public AdminAccountController(IToastNotification toastNotification, AspNetCoreHero.ToastNotification.Abstractions.INotyfService notyfService)
+        public AdminAccountController(IToastNotification toastNotification, AspNetCoreHero.ToastNotification.Abstractions.INotyfService notyfService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _toastNotification = toastNotification;
             _notyfService = notyfService;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [Route("Admin/AdminAccount/Register")]
@@ -50,9 +61,129 @@ namespace WebApplication1.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string? returnUrl)
         {
-            return View();
+            var apiUrl = "https://localhost:7071/api/Security/ExternalLogins";
+            var res = JsonConvert.DeserializeObject<List<AuthenticationScheme>>(_httpClientt.GetStringAsync(apiUrl).Result);
+            LoginViewModel model = new LoginViewModel {
+                ReturnUrl = returnUrl,
+                ExternalLogins = res
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
+        {
+            var apiUrl = "https://localhost:7071/api/Security/ConfigureExternalAuthentication/";
+            var redirectUrl = Url.Action("ExternalLoginCallback", "AdminAccount", new { ReturnUrl = returnUrl });
+            var encodedRedirectUrl = WebUtility.UrlEncode(redirectUrl);
+            var apiUrlWithParams = apiUrl + provider + "/" + encodedRedirectUrl;
+            var res = JsonConvert.DeserializeObject<AuthenticationProperties>(_httpClientt.GetStringAsync(apiUrlWithParams).Result);
+            return new ChallengeResult(provider, res);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl, string remoteError)
+        {
+            var apiUrl = "https://localhost:7071/api/Security/ExternalLogins";
+            var res = JsonConvert.DeserializeObject<List<AuthenticationScheme>>(_httpClientt.GetStringAsync(apiUrl).Result);
+            returnUrl = returnUrl ?? Url.Content("~/");
+            LoginViewModel loginViewModel = new LoginViewModel {
+                ReturnUrl = returnUrl,
+                ExternalLogins = res
+            };
+
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return View("Login", loginViewModel);
+            }
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            var apiGetExternalLoginInfoUrl = "https://localhost:7071/api/Security/GetExternalLoginInfor";
+            var info2 = JsonConvert.DeserializeObject<ExternalLoginInfo>(_httpClientt.GetStringAsync(apiGetExternalLoginInfoUrl).Result);
+            if (info == null)
+            {
+                ModelState.AddModelError(string.Empty,"Error loading external login information");
+                return View("Login",loginViewModel);
+            }
+
+            var tempLoginProviders = info.LoginProvider;
+            var tempProviderKeys = info.ProviderKey;
+            bool isPersistents = false;
+            bool bypassTwoFactors = true;
+
+            ExternalLoginModel externalLoginModel = new ExternalLoginModel { 
+                LoginProvider = tempLoginProviders,
+                ProviderKey = tempProviderKeys,
+                isPersistent = isPersistents,
+                bypassTwoFactor = bypassTwoFactors
+            };
+
+            var apiSignInUrl = "https://localhost:7071/api/Security/ExternalLogInSignIn";
+            var result = await HttpClientHelper.PostAsync(apiSignInUrl, externalLoginModel);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                LoginViewModel model = new LoginViewModel
+                {
+                    UserName = email,
+                    Password = "Exter1234"
+                };
+
+                var response = await HttpClientHelper.PostAsync("https://localhost:7071/api/Security/login", model);
+                return RedirectToAction("Login2FA");
+            }
+            else
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+                if (email != null)
+                {
+                    AddLoginUserManager addLoginUserManager = new AddLoginUserManager { 
+                        email = email,
+                        ExternalLoginInfo = info
+                    };
+                    //var apiAddLoginUserManagerAndSignInUrl = "https://localhost:7071/api/Security/AddLogInAndSignin";
+                    //var data = await HttpClientHelper.Post2Async(apiAddLoginUserManagerAndSignInUrl, info);
+
+                    var user = await _userManager.FindByEmailAsync(email);
+
+                    if (user == null)
+                    {
+                        user = new ApplicationUser
+                        {
+                            UserName = email,
+                            Email = email,
+                            Service = "Employee",
+                            Fullname = email,
+                            SecurityStamp = Guid.NewGuid().ToString(),
+                            TwoFactorEnabled = true,
+                            EmailConfirmed = true
+                        };
+                        var status1 = await _userManager.CreateAsync(user,"Exter1234");
+                        var status2 = await _userManager.AddToRoleAsync(user, user.Service);
+                    }
+
+                    await _userManager.AddLoginAsync(user, info);
+
+                    LoginViewModel model = new LoginViewModel
+                    {
+                        UserName = email,
+                        Password = "Exter1234"
+                    };
+
+                    var response = await HttpClientHelper.PostAsync("https://localhost:7071/api/Security/login", model);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Login2FA");
+                    }
+                }
+                _notyfService.Error($"Email claim not received from: {info.LoginProvider}");
+                _notyfService.Error($"Please contact support on ndtrong1803@gmail.com");
+                return View("Error");
+            }
         }
 
         [HttpPost]
@@ -89,7 +220,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                     try
                     {
                         var tokenFromAPI = await response.Content.ReadAsStringAsync();
-                        var responseData = JsonSerializer.Deserialize<JsonElement>(tokenFromAPI);
+                        var responseData = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenFromAPI);
                         JObject jsonObject = JObject.Parse(tokenFromAPI);
                         string tokenValue = (string)jsonObject["token"];
                         var tokenElement = responseData.GetProperty("token");

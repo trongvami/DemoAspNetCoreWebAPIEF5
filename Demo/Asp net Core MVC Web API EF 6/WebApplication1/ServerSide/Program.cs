@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -31,6 +35,8 @@ builder.Services.AddCors(option => option.AddDefaultPolicy(policy => policy.Allo
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthentication(options =>
 {
+    options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -47,6 +53,12 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
+})
+.AddGoogle(option => {
+    option.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    option.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    option.CallbackPath = "/signin-google";
+    option.SaveTokens = true;
 });
 builder.Services.AddTransient<IEmailService, EmailRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -84,7 +96,7 @@ builder.Services.AddSwaggerGen(option =>
     });
 
 });
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
