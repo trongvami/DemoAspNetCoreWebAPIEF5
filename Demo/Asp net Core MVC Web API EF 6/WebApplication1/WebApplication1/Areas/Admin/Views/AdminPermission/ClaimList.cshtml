@@ -1,8 +1,9 @@
-﻿@using WebApplication1.ViewModels;
+﻿@using Newtonsoft.Json;
+@using WebApplication1.ViewModels;
 @model WebApplication1.ViewModels.RoleClaimsViewModel
-@*@model PagedList.Core.IPagedList<WebApplication1.ViewModels.RoleListViewModel>*@
 
 @{
+    //var sltRoleId = Model.roleId;
     //int CurrentPage = ViewBag.CurrentPage;
     ViewData["Title"] = "Claim List";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -56,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive" style="overflow:scroll;height:500px">
                 <div id="view-all-claims">
                     <partial name="_pvClaimsList" model="@Model" />
                     @*<table class="table table-hover">
@@ -92,6 +93,11 @@
                         </tbody>
                     </table>*@
                 </div>
+                @*<div aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <pager class="pager-container" style="padding-left:2px;padding-right:2px" onclick="LoadClaimsByRolePagedlist(this)" asp-area="Admin" asp-route-idRole="@Model.roleId" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminPermission" asp-action="ClaimsListByRoleId" list="@Model.listClaims" />
+                    </ul>
+                </div>*@
             </div>
         </form>
     </div>
@@ -110,6 +116,7 @@
     <script>
         // Sử dụng jQuery để thêm sự kiện click vào tất cả các hàng (tr) trong bảng
         $(document).ready(function () {
+            var selectedClaims = [];
             $('.views-table tr').click(function () {
                 // Xóa lớp 'selected-row' của tất cả các hàng trước khi thêm vào hàng mới
                 $('.views-table tr').removeClass('selected-row');
@@ -121,6 +128,18 @@
 
                 // Hiển thị giá trị trong một thông báo (alert)
                 //alerts(selectedId);
+            });
+
+            $('.e-commerce-table').on('change', 'input[type="checkbox"]', function () {
+                var claimType = $(this).val();
+                if ($(this).prop('checked')) {
+                    selectedClaims.push(claimType);
+                } else {
+                    var index = selectedClaims.indexOf(claimType);
+                    if (index !== -1) {
+                        selectedClaims.splice(index, 1);
+                    }
+                }
             });
         });
 
@@ -137,6 +156,7 @@
                 success: function (res) {
                     if (res.isValid) {
                         $('#view-all-claims').html(res.html);
+                        InitializeDataTables();
                     } else {
 
                     }
@@ -144,6 +164,11 @@
                 error: function (xhr, status, error) {
                     // Handle the error response here
                 }
+            });
+        }
+
+        function InitializeDataTables() {
+            $('.e-commerce-table').DataTable({
             });
         }
     </script>

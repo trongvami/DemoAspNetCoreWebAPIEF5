@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "BT2r4V2uRnAKf9QbIGgtnYUouSSqxyQjtOg6HATesEg=",
+  "Hash": "B27CT7wJGxAgfDKqX4Tasn9bpszZMshCLBLYj/6jYZ4=",
   "Source": "WebApplication1",
   "BasePath": "_content/WebApplication1",
   "Mode": "Default",
@@ -14363,6 +14363,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\manifest.json",
+      "SourceId": "WebApplication1",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\",
+      "BasePath": "_content/WebApplication1",
+      "RelativePath": "manifest.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\manifest.json"
     }
   ]
 }

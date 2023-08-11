@@ -228,6 +228,9 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ClaimList(string? idRole)
         {
+            //var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            //var pageSize = Utilities.PAGE_SIZE;
+
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
@@ -249,7 +252,15 @@ namespace WebApplication1.Areas.Admin.Controllers
 
             var apiGetAllRoleClaimsUrl = "https://localhost:7071/api/RolePermission/GetClaimsByRoleId/";
             var claimsRoleData = JsonConvert.DeserializeObject<RoleClaimsViewModel>(httpClient.GetStringAsync(apiGetAllRoleClaimsUrl + idRole).Result);
+            //var claimsQueryable = claimsRoleData.listClaims.AsQueryable();
 
+            //PagedList.Core.PagedList<ClaimsViewModel> models = new PagedList.Core.PagedList<ClaimsViewModel>(claimsQueryable, pageNumber, pageSize);
+            //RoleClaimsPagedListViewModel pagedList = new RoleClaimsPagedListViewModel();
+            //pagedList.listClaims = models;
+            //pagedList.listRoles = claimsRoleData.listRoles;
+            //pagedList.roleId = claimsRoleData.roleId;
+
+            //ViewBag.CurrentPage = pageNumber;
             return View(claimsRoleData);
         }
 
@@ -257,6 +268,9 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ClaimsListByRoleId(string? idRole)
         {
+            //var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            //var pageSize = Utilities.PAGE_SIZE;
+
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
@@ -278,6 +292,15 @@ namespace WebApplication1.Areas.Admin.Controllers
 
             var apiGetAllRoleClaimsUrl = "https://localhost:7071/api/RolePermission/GetClaimsByRoleId/";
             var claimsRoleData = JsonConvert.DeserializeObject<RoleClaimsViewModel>(httpClient.GetStringAsync(apiGetAllRoleClaimsUrl + idRole).Result);
+
+            //var claimsQueryable = claimsRoleData.listClaims.AsQueryable();
+
+            //PagedList.Core.PagedList<ClaimsViewModel> models = new PagedList.Core.PagedList<ClaimsViewModel>(claimsQueryable, pageNumber, pageSize);
+            //RoleClaimsPagedListViewModel pagedList = new RoleClaimsPagedListViewModel();
+            //pagedList.listClaims = models;
+            //pagedList.listRoles = claimsRoleData.listRoles;
+            //pagedList.roleId = claimsRoleData.roleId;
+
             //_notyfService.Success("Load Successfully !", 4);
             return Json(new { isValid = true, html = RenderHelper.RenderRazorViewToString(this, "_pvClaimsList", claimsRoleData) });
         }

@@ -372,6 +372,10 @@
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("Notyf")
     @await Component.InvokeAsync("NToastNotify")
+    <script src='https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js' type="text/javascript"></script>
+
+    <script src='https://www.gstatic.com/firebasejs/6.4.2/firebase-messaging.js' type="text/javascript"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             var asd = '@ViewBag.Title';
@@ -391,6 +395,78 @@
                 $('#dashboard').addClass('open');
                 $('#dashboardDefault').addClass('active');
             }
+            $(function () {
+                var token = null;
+                var config = {
+                    apiKey: "AIzaSyCvo3iIk1pciaR-Ttim3qs73_K32xnTKe8",
+                    authDomain: "demopushnotification-52866.firebaseapp.com",
+                    projectId: "demopushnotification-52866",
+                    storageBucket: "demopushnotification-52866.appspot.com",
+                    messagingSenderId: "427429577725",
+                    appId: "1:427429577725:web:d03df7baeadad559310f94",
+                    measurementId: "G-DQXS404B75"
+                };
+                firebase.initializeApp(config);
+
+                const messaging = firebase.messaging();
+
+                messaging.requestPermission()
+                    .then(function () {
+                        console.log("granted");
+                        if (isTokenSentToServer()) {
+                            console.log("already granted");
+                        } else {
+                            getRegtoken();
+                        }
+                    });
+
+
+                function getRegtoken() {
+                    messaging.getToken().then((currentToken) => {
+                        if (currentToken) {
+                            console.log(currentToken);
+                            setTokenSentToServer(true);
+                            saveToken(currentToken)
+                            //   updateUIForPushEnabled(currentToken);
+                        } else {
+                            console.log('No Instance ID token available. Request permission to generate one.');
+                            setTokenSentToServer(false);
+                        }
+                    }).catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                        setTokenSentToServer(false);
+                    });
+
+                }
+                function setTokenSentToServer(sent) {
+                    window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+                }
+                function isTokenSentToServer() {
+                    return window.localStorage.getItem('sentToServer') === '1';
+                }
+                messaging.onMessage(function (payload) {
+                    console.log('Message received. ', payload);
+
+                    //notificationTitle = payload.notification.title;
+                    //notificationOptions = {
+                    //    body: payload.notification.body,
+                    //    icon: payload.notification.icon
+                    //};
+
+                    const notificationTitle = payload.notification.title;
+                    const notificationOptions = {
+                        body: payload.notification.body,
+                        icon: payload.notification.icon
+                    };
+
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification(notificationTitle, notificationOptions);
+                        }
+                    });
+
+                });
+            });
         });
     </script>
 </body>

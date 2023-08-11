@@ -126,14 +126,49 @@ namespace WebApplication1.Areas.Admin.Controllers
             if (result.IsSuccessStatusCode)
             {
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                LoginViewModel model = new LoginViewModel
+                LoginVerifyModel model = new LoginVerifyModel
                 {
-                    UserName = email,
-                    Password = "Exter1234"
+                    email = email,
+                    code = "Exter1234"
                 };
 
-                var response = await HttpClientHelper.PostAsync("https://localhost:7071/api/Security/login", model);
-                return RedirectToAction("Login2FA");
+                var response = await HttpClientHelper.PostAsync("https://localhost:7071/api/Security/login-2FA", model);
+                var tokenFromAPI = await response.Content.ReadAsStringAsync();
+                var responseData = System.Text.Json.JsonSerializer.Deserialize<JsonElement>(tokenFromAPI);
+                JObject jsonObject = JObject.Parse(tokenFromAPI);
+                string tokenValue = (string)jsonObject["token"];
+                var tokenElement = responseData.GetProperty("token");
+                //var expirationElement = responseData.GetProperty("expiration");
+                var userElement = responseData.GetProperty("user");
+
+                var claims = new List<Claim>();
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.ReadJwtToken(tokenValue);
+
+                //var token = new JwtSecurityToken(tokenFromAPI);
+
+                var userNameClaim = userElement;
+
+                claims.Add(new Claim(ClaimTypes.Name, userNameClaim.GetString()));
+                var roles = token.Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => new Claim(ClaimTypes.Role, c.Value));
+                claims.AddRange(roles);
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                HttpContext.Response.Cookies.Append("IdentityToken", tokenValue.ToString(), new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMinutes(20),
+                    HttpOnly = true,
+                    Secure = true
+                });
+                _notyfService.Information("Login Successfully !", 4);
+                return RedirectToAction("Index", "AdminHome", new { area = "Admin" });
             }
             else
             {
