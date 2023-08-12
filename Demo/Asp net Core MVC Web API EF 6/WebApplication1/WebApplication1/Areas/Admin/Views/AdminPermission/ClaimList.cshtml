@@ -24,6 +24,23 @@
         .selected-row {
             background-color: rgba(63,135,245,0.15);
         }
+
+        .tblClaim {
+            max-height: 350px;
+            overflow-y: scroll;
+        }
+
+        .tblClaim table {
+                width: 100%;
+                border-collapse: collapse;
+        }
+
+        .tblClaim thead {
+                position: sticky;
+                top: 0;
+                background-color: #f8f9fa;
+                z-index: 1;
+        }
     </style>
 }
 
@@ -57,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive" style="overflow:scroll;height:500px">
+            <div class="table-responsive tblClaim">
                 <div id="view-all-claims">
                     <partial name="_pvClaimsList" model="@Model" />
                     @*<table class="table table-hover">

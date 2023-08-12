@@ -5,6 +5,11 @@ namespace ServerSide.Entities
 {
     public partial class TbCategory
     {
+        public TbCategory()
+        {
+            TbProducts = new HashSet<TbProduct>();
+        }
+
         public int CatId { get; set; }
         public string? CatName { get; set; }
         public string? ShortContent { get; set; }
@@ -21,5 +26,7 @@ namespace ServerSide.Entities
         public string? Cover { get; set; }
         public string? SchemaMarkup { get; set; }
         public bool? IsDeleted { get; set; }
+
+        public virtual ICollection<TbProduct> TbProducts { get; set; }
     }
 }
