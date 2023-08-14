@@ -31,6 +31,7 @@ namespace ServerSide.Entities
         public virtual DbSet<TbShipper> TbShippers { get; set; } = null!;
         public virtual DbSet<TbTinDang> TbTinDangs { get; set; } = null!;
         public virtual DbSet<TbTransactStatus> TbTransactStatuses { get; set; } = null!;
+        public virtual DbSet<TbUnit> TbUnits { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,6 +45,7 @@ namespace ServerSide.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<TbAttribute>(entity =>
             {
                 entity.HasKey(e => e.AttributeId);
@@ -238,6 +240,8 @@ namespace ServerSide.Entities
 
                 entity.Property(e => e.Title).HasMaxLength(255);
 
+                entity.Property(e => e.UnitId).HasColumnName("UnitID");
+
                 entity.Property(e => e.Video).HasMaxLength(255);
 
                 entity.HasOne(d => d.Cat)
@@ -326,6 +330,15 @@ namespace ServerSide.Entities
                 entity.Property(e => e.TransactStatusId).HasColumnName("TransactStatusID");
 
                 entity.Property(e => e.Status).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<TbUnit>(entity =>
+            {
+                entity.HasKey(e => e.UnitId);
+
+                entity.Property(e => e.UnitId).HasColumnName("UnitID");
+
+                entity.Property(e => e.UnitName).HasMaxLength(250);
             });
 
             OnModelCreatingPartial(modelBuilder);

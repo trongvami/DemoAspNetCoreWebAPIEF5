@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis;
 using WebApplication1.Persistent;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 var builder = WebApplication.CreateBuilder(args);
 

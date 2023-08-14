@@ -23,6 +23,34 @@ namespace ServerSide.Controllers
             _userManager = userManager;
         }
 
+        #region Employee
+
+        [HttpGet]
+        [Route("EmployeesList")]
+        public async Task<IActionResult> EmployeesList()
+        {
+            var users = await _userManager.Users.AsNoTracking().ToListAsync();
+            List<EmployeesListResponse> empList = new List<EmployeesListResponse>();
+            foreach (var user in users)
+            {
+                EmployeesListResponse er = new EmployeesListResponse();
+                er.id = user.Id;
+                er.fullname = user.Email;
+                if (user.Fullname != null) {
+                    if (user.Fullname != "") {
+                        er.fullname = user.Fullname;
+                    }
+                }
+                er.role = user.Service;
+                er.email = user.Email;
+                empList.Add(er);
+            }
+            
+            return Ok(empList);
+        }
+
+        #endregion
+
         #region Role
 
         [HttpGet]

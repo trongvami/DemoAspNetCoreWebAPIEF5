@@ -1,0 +1,199 @@
+﻿@model WebApplication1.ViewModels.ProductsListViewModel
+@{
+    ViewData["Title"] = "Create New Product";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/select2/select2.css" rel="stylesheet">
+    <link href="~/assets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/assets/summernote/summernote.css" rel="stylesheet" />
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+}
+<div class="page-header">
+    <h2 class="header-title">Create New Product</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <a asp-action="ProductsList" asp-area="Admin" asp-controller="AdminWarehouse" class="breadcrumb-item">Products List</a>
+            <span class="breadcrumb-item active">Create New Product</span>
+        </nav>
+    </div>
+</div>
+<form asp-controller="AdminWarehouse" asp-area="Admin" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+                <div class="avatar avatar-image rounded" style="height: 70px; width: 70px">
+                    <img src="~/assets/images/others/thumb-16.jpg" alt="">
+                </div>
+                <div class="m-l-15">
+                    <h4 class="m-b-0">New Product</h4>
+                    <p class="text-muted m-b-0">Code: #?</p>
+                </div>
+            </div>
+            <div class="m-b-15">
+                <button type="submit" class="btn btn-primary">
+                    <i class="anticon anticon-save"></i>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">BASIC INFO</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-seo">SEO INFO</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">DESCRIPTION</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Title</label>
+                        <input type="text" class="form-control" asp-for="Title" placeholder="Enter Title Product">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="proName">Product Name</label>
+                        <input type="text" class="form-control" id="proName" placeholder="Enter Product Name" asp-for="ProductName">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="shortContent">Short Content</label>
+                        <input type="text" class="form-control" id="shortContent" placeholder="Enter Short Content" asp-for="ShortDesc">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="shortContent">Quantity</label>
+                        <input type="number" class="form-control" id="shortContent" placeholder="Enter Quantity" asp-for="SoLuongBanDau">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="price">Price</label>
+                        <input type="number" class="form-control" id="price" placeholder="Enter Price" asp-for="Price">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="discount">Discount</label>
+                        <input type="number" class="form-control" id="discount" placeholder="Enter Discount" asp-for="Discount">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productCategory">Product portfolio</label>
+                        <select required asp-for="CatID" class="custom-select" id="productCategory" asp-items="ViewBag.DanhMuc">
+                            <option disabled value="" selected>Select Type Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productUnitID">Unit</label>
+                        <select required asp-for="UnitID" class="custom-select" id="productUnitID" asp-items="ViewBag.DonVi">
+                            <option disabled value="" selected>Select Unit</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-seo">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Thumbnail Image</label>
+                        <input name="fThumb" id="fThumb" type="file" class="form-control-file" />
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Another Image</label>
+                        <input name="fThumb2" multiple id="fThumb2" type="file" class="form-control-file" />
+                        <p id="errorMsg" style="color: red;"></p>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="checkbox">
+                            <input id="Active" asp-for="Active" type="checkbox" />
+                            <label for="Active">Active</label>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="checkbox">
+                            <input id="HomeFlag" asp-for="HomeFlag" type="checkbox" />
+                            <label for="HomeFlag">HomeFlag</label>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="checkbox">
+                            <input id="BestSellers" asp-for="BestSellers" type="checkbox" />
+                            <label for="BestSellers">BestSellers</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="metaDesc">Meta Desc</label>
+                        <input type="text" class="form-control" id="metaDesc" placeholder="Enter Meta Desc" asp-for="MetaDesc">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="metaKey">Meta Key</label>
+                        <input type="text" class="form-control" id="metaKey" placeholder="Enter Meta Key" asp-for="MetaKey">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+                <div class="card-body">
+                    <div id="productDescription">
+                        <textarea class="summernote" asp-for="Description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/select2/select2.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <script src="~/assets/summernote/summernote-bs4.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            $('.summernote').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true
+            });
+        });
+
+        document.getElementById("fThumb2").addEventListener("change", function () {
+            var fileList = this.files;
+            var maxFiles = 6; // Số hình tối đa cho phép
+
+            if (fileList.length > maxFiles) {
+                alert("Chỉ được chọn tối đa " + maxFiles + " hình.");
+                document.getElementById("errorMsg").textContent = "Chỉ được chọn tối đa " + maxFiles + " hình.";
+                this.value = ""; // Xóa hình đã chọn
+            } else {
+                document.getElementById("errorMsg").textContent = "";
+            }
+        });
+    </script>
+}

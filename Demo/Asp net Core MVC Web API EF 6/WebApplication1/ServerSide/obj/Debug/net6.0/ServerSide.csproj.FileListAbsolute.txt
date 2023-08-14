@@ -263,3 +263,4 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\D
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\Debug\net6.0\ServerSide.genruntimeconfig.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\Debug\net6.0\ref\ServerSide.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Certificate.dll

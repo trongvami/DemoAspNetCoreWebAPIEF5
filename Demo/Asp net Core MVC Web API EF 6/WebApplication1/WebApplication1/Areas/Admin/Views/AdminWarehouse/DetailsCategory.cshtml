@@ -1,0 +1,147 @@
+﻿@model WebApplication1.ViewModels.CategoriesListViewModel
+
+@{
+    ViewData["Title"] = "Details Category : " + Model.CatName;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/select2/select2.css" rel="stylesheet">
+    <link href="~/assets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/assets/summernote/summernote.css" rel="stylesheet" />
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+}
+
+<div class="page-header">
+    <h2 class="header-title">Category details</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <a class="breadcrumb-item" asp-action="CategoriesList" asp-area="Admin" asp-controller="AdminWarehouse">List of Categories</a>
+            <span class="breadcrumb-item">Category details : @Model.CatName</span>
+        </nav>
+    </div>
+</div>
+
+<div class="page-header no-gutters has-tab">
+    <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+        <div class="media align-items-center m-b-15">
+            <div class="avatar avatar-image rounded" style="height: 100px; width: 100px">
+                <img src="~/images/imgsCategory/@Model.Thumb" alt="">
+            </div>
+            <div class="m-l-15">
+                <h4 class="m-b-0">CATEGORY NAME : @Model.CatName</h4>
+                <p class="text-muted m-b-0">Category code: #@Model.CatId</p>
+            </div>
+        </div>
+        <div class="m-b-15">
+            <div class="m-b-15">
+                <a class="btn btn-warning btn-tone m-r-5" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@Model.CatId">
+                    <span>Edit</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Overview</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Image</a>
+        </li>
+    </ul>
+</div>
+<div class="tab-content m-t-15">
+    <div class="tab-pane fade show active" id="product-edit-basic">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="font-weight-semibold">Category</label>
+                    <input type="text" class="form-control" asp-for="CatName">
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold">Alias</label>
+                    <input type="text" min="0" class="form-control" asp-for="Alias">
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-semibold">Status</label>
+                    @if (Model.Published)
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-success badge-dot m-r-10"></div>
+                            <div>Public</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                            <div>Non-Public</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="font-weight-semibold">Description Information : </label>
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="product-edit-option">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <img src="~/images/imgsCategory/@Model.Thumb" width="300px" height="200px" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="CategoriesList" asp-controller="AdminWarehouse" class="btn btn-outline-primary" asp-area="Admin">Back to List</a>
+</div>
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/select2/select2.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <script src="~/assets/summernote/summernote-bs4.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            $('.summernote').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true
+            });
+        });
+    </script>
+}

@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "Microsoft.AspNetCore.Authentication.Certificate": "6.0.20",
           "Microsoft.AspNetCore.Authentication.Google": "6.0.20",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.20",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.20",
@@ -626,6 +627,17 @@
         }
       },
       "MessagePackAnalyzer/2.1.152": {},
+      "Microsoft.AspNetCore.Authentication.Certificate/6.0.20": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "6.0.1"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Certificate.dll": {
+            "assemblyVersion": "6.0.20.0",
+            "fileVersion": "6.0.2023.32106"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Authentication.Google/6.0.20": {
         "runtime": {
           "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
@@ -3105,6 +3117,13 @@
       "sha512": "sha512-uJhZlGMkXDaFYsH8V9S6o1EyvsUqB9mpU4DVBXNr0DXZVzZMhuLP1IkLj5xK3EKlaAcvkFkZv3eSvuz360wb3Q==",
       "path": "messagepackanalyzer/2.1.152",
       "hashPath": "messagepackanalyzer.2.1.152.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Certificate/6.0.20": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HHOe4ZcckOw/plaWF3Cdy6MPEUa0mhvfZ/l8HGgOgZrPxjOj5iKbhpOB2+CTLG2I4DMBxxfdMn87EZv0Kxfz7Q==",
+      "path": "microsoft.aspnetcore.authentication.certificate/6.0.20",
+      "hashPath": "microsoft.aspnetcore.authentication.certificate.6.0.20.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.Google/6.0.20": {
       "type": "package",

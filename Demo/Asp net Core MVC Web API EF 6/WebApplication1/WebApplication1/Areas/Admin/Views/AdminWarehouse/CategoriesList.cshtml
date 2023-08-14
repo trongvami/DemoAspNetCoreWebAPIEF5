@@ -1,0 +1,101 @@
+﻿@*@model IEnumerable<WebApplication1.ViewModels.RoleListViewModel>*@
+@model PagedList.Core.IPagedList<WebApplication1.ViewModels.CategoriesListViewModel>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "List of Categories - Page : " + 1;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+
+    <style>
+        /* Màu nền cho dòng khi được chọn */
+        .selected-row {
+            background-color: rgba(63,135,245,0.15);
+        }
+
+        .tblCate {
+            max-height: 350px;
+            overflow-y: scroll;
+        }
+
+        .tblCate table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .tblCate thead {
+                position: sticky;
+                top: 0;
+                background-color: #f8f9fa;
+                z-index: 1;
+            }
+    </style>
+}
+
+<div class="page-header">
+    <h2 class="header-title">Categories List</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <span class="breadcrumb-item active">Categories List : Page @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-action="CreateCategory" asp-area="Admin" asp-controller="AdminWarehouse">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add New Category</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive tblCate">
+            <div id="view-all-role">
+                <partial name="_pvCategoriesList" model="@Model" />
+            </div>
+            <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminPermission" asp-action="RoleList" list="@Model" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Form-Modal-AddorEditRole">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+}

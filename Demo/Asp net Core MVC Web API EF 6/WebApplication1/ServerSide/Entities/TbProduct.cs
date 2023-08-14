@@ -38,6 +38,7 @@ namespace ServerSide.Entities
         public string? Image4 { get; set; }
         public string? Image5 { get; set; }
         public string? Image6 { get; set; }
+        public int? UnitId { get; set; }
 
         public virtual TbCategory? Cat { get; set; }
         public virtual ICollection<TbOrderDetail> TbOrderDetails { get; set; }

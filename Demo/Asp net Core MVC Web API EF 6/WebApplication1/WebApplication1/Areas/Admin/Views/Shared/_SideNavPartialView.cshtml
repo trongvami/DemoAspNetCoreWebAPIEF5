@@ -4,7 +4,7 @@
             <li class="nav-item dropdown" id="dashboard">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
-                        <i class="anticon anticon-dashboard"></i>
+                        <i class="fas fa-home"></i>
                     </span>
                     <span class="title">Dashboard</span>
                     <span class="arrow">
@@ -17,10 +17,36 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item dropdown" id="dropdownWarehouse">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="fas fa-warehouse"></i>
+                    </span>
+                    <span class="title">Warehouse</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="UnitsList">
+                        <a asp-action="UnitsList" asp-controller="AdminWarehouse" asp-area="Admin">Units List</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="CategoriesList">
+                        <a asp-action="CategoriesList" asp-controller="AdminWarehouse" asp-area="Admin">Categories List</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="ProductsList">
+                        <a asp-action="ProductsList" asp-controller="AdminWarehouse" asp-area="Admin">Products List</a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item dropdown" id="dropdownUser">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
-                        <i class="anticon anticon-lock"></i>
+                        <i class="fas fa-users-cog"></i>
                     </span>
                     <span class="title">User</span>
                     <span class="arrow">
@@ -41,7 +67,7 @@
             <li class="nav-item dropdown" id="dropdownAuthorization">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
-                        <i class="anticon anticon-lock"></i>
+                        <i class="fas fa-lock"></i>
                     </span>
                     <span class="title">Authorization</span>
                     <span class="arrow">
@@ -54,9 +80,6 @@
                     </li>
                     <li id="ClaimList">
                         <a asp-action="ClaimList" asp-controller="AdminPermission" asp-area="Admin">Claim List</a>
-                    </li>
-                    <li id="EmployeeList">
-                        <a asp-action="EmployeeList" asp-controller="AdminPermission" asp-area="Admin">Employees in Role</a>
                     </li>
                 </ul>
             </li>

@@ -17,10 +17,14 @@ namespace WebApplication1.Areas.Admin.Controllers
         
         [HttpGet]
         [Route("Admin/AdminHome/Index")]
-        [Authorize]
         public IActionResult Index()
         {
-            //notyfService.Success("Hello world !");
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
             return View();
         }
     }

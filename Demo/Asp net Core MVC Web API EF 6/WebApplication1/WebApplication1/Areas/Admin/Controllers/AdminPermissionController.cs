@@ -195,8 +195,11 @@ namespace WebApplication1.Areas.Admin.Controllers
         #region Employee
         [Route("Admin/AdminPermission/Employee-List")]
         [HttpGet]
-        public async Task<IActionResult> EmployeeList(string? idRole)
+        public async Task<IActionResult> EmployeeList(int? page)
         {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            //var pageSize = 1;
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
@@ -204,22 +207,23 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
             }
 
-            var apiGetAllRoleUrl = "https://localhost:7071/api/RolePermission/RoleList";
+            var apiGetAllUserUrl = "https://localhost:7071/api/RolePermission/EmployeesList";
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = JsonConvert.DeserializeObject<List<RoleListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
-            var firstData = response.FirstOrDefault();
+            var response = JsonConvert.DeserializeObject<List<EmployeesListViewModel>>(httpClient.GetStringAsync(apiGetAllUserUrl).Result);
+            var usersQueryable = response.AsQueryable();
+            PagedList.Core.PagedList<EmployeesListViewModel> models = new PagedList.Core.PagedList<EmployeesListViewModel>(usersQueryable, pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
 
-            if (idRole == null)
+            if (response != null)
             {
-                idRole = firstData.Id;
+                return View(models);
             }
-            ViewBag.Id = idRole;
+            else
+            {
+                return View(models);
+            }
 
-            var apiGetAllRoleClaimsUrl = "https://localhost:7071/api/RolePermission/GetClaimsByRoleId/";
-            var claimsRoleData = JsonConvert.DeserializeObject<RoleClaimsViewModel>(httpClient.GetStringAsync(apiGetAllRoleClaimsUrl + idRole).Result);
-
-            return View(claimsRoleData);
         }
         #endregion
 

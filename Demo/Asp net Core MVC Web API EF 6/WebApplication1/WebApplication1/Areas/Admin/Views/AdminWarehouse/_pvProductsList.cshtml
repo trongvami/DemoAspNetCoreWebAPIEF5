@@ -1,0 +1,95 @@
+﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.ProductsListViewModel>
+
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Active</th>
+            <th>HomeFlag</th>
+            <th>BestSellers</th>
+            <th>Thumb</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        #@product.ProductId
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <strong>@product.ProductName</strong>
+                        </div>
+                    </td>
+                    <td>
+                        @if (product.Active == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>Active</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-Active</div>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (product.HomeFlag == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>HomeFlag</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-HomeFlag</div>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (product.BestSellers == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>BestSellers</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-BestSellers</div>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        <img src="~/images/imgsProduct/@product.Thumb" width="80px" height="80px" style="background-color:white" alt="">
+                    </td>
+                    <td class="text-right">
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-eye"></i>
+                        </a>
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-delete"></i>
+                        </a>
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

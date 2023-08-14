@@ -379,19 +379,27 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var asd = '@ViewBag.Title';
-            if (asd.includes("role") || asd.includes("Claim") || asd.includes("Employees")) {
+            if (asd.includes("role") || asd.includes("Claim")) {
                 if (asd.includes("Claim")) {
                     $('#ClaimList').addClass('active');
                 }else if (asd.includes("role")) {
                     $('#RoleList').addClass('active');
-                } else if (asd.includes("Employees")) {
-                    $('#EmployeeList').addClass('active');
                 }
                 $('#dropdownAuthorization').addClass('open');
-            } else if (asd.includes("Employee")) {
+            } else if (asd.includes("Employees")) {
                 $('#EmployeeList').addClass('active');
                 $('#dropdownUser').addClass('open');
-            }else{
+            } else if (asd.includes("Catego") || asd.includes("Product") || asd.includes("Unit")) {
+                if (asd.includes("Unit")) {
+                    $('#UnitsList').addClass('active');
+                }
+                else if (asd.includes("Catego")) {
+                    $('#CategoriesList').addClass('active');
+                } else if (asd.includes("Product")) {
+                    $('#ProductsList').addClass('active');
+                }
+                $('#dropdownWarehouse').addClass('open');
+            } else {
                 $('#dashboard').addClass('open');
                 $('#dashboardDefault').addClass('active');
             }
@@ -446,12 +454,6 @@
                 }
                 messaging.onMessage(function (payload) {
                     console.log('Message received. ', payload);
-
-                    //notificationTitle = payload.notification.title;
-                    //notificationOptions = {
-                    //    body: payload.notification.body,
-                    //    icon: payload.notification.icon
-                    //};
 
                     const notificationTitle = payload.notification.title;
                     const notificationOptions = {

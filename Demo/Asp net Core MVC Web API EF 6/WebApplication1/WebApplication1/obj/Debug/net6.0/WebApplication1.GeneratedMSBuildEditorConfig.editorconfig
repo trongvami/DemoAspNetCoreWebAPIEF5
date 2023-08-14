@@ -60,8 +60,60 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXF9wdkNsYWltc0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/_pvEmployeesList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXF9wdkVtcGxveWVlc0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminPermission/_pvRoleList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5QZXJtaXNzaW9uXF9wdlJvbGVMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CategoriesList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ2F0ZWdvcmllc0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CreateCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ3JlYXRlQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CreateProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ3JlYXRlUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CreateUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ3JlYXRlVW5pdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/DetailsCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcRGV0YWlsc0NhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcRWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/ProductsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcUHJvZHVjdHNMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/UnitsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcVW5pdHNMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/UpdateUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcVXBkYXRlVW5pdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/_pvCategoriesList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcX3B2Q2F0ZWdvcmllc0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/_pvProductsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcX3B2UHJvZHVjdHNMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/_pvUnitsList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcX3B2VW5pdHNMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/Shared/Error.cshtml]
