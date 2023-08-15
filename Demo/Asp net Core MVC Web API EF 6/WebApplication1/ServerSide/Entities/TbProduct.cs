@@ -41,6 +41,7 @@ namespace ServerSide.Entities
         public int? UnitId { get; set; }
 
         public virtual TbCategory? Cat { get; set; }
+        public virtual TbUnit? Unit { get; set; }
         public virtual ICollection<TbOrderDetail> TbOrderDetails { get; set; }
     }
 }

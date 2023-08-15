@@ -27,6 +27,8 @@ namespace ServerSide.Entities
         public string? SchemaMarkup { get; set; }
         public bool? IsDeleted { get; set; }
 
+        public virtual TbLevel? LevelsNavigation { get; set; }
+        public virtual TbParent? Parent { get; set; }
         public virtual ICollection<TbProduct> TbProducts { get; set; }
     }
 }

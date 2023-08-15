@@ -389,7 +389,7 @@
             } else if (asd.includes("Employees")) {
                 $('#EmployeeList').addClass('active');
                 $('#dropdownUser').addClass('open');
-            } else if (asd.includes("Catego") || asd.includes("Product") || asd.includes("Unit")) {
+            } else if (asd.includes("Catego") || asd.includes("Product") || asd.includes("Unit") || asd.includes("Parent") || asd.includes("Level")) {
                 if (asd.includes("Unit")) {
                     $('#UnitsList').addClass('active');
                 }
@@ -397,6 +397,10 @@
                     $('#CategoriesList').addClass('active');
                 } else if (asd.includes("Product")) {
                     $('#ProductsList').addClass('active');
+                } else if (asd.includes("Parent")) {
+                    $('#ParentsList').addClass('active');
+                } else if (asd.includes("Level")) {
+                    $('#LevelsList').addClass('active');
                 }
                 $('#dropdownWarehouse').addClass('open');
             } else {

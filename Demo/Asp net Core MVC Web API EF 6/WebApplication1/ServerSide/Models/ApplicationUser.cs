@@ -3,7 +3,7 @@
 namespace ServerSide.Models
 {
     // IdentityDbContext<ApplicationUser>
-    // base.OnModelCreating(modelBuilder) : cái này cực kì quan trọng, để có thể add-migration;
+    // base.OnModelCreating(modelBuilder); : cái này cực kì quan trọng, để có thể add-migration;
     public class ApplicationUser : IdentityUser
     {
         public string? Firstname { get; set; }

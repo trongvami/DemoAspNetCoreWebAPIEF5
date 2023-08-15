@@ -22,10 +22,12 @@ namespace ServerSide.Entities
         public virtual DbSet<TbAttributesPrice> TbAttributesPrices { get; set; } = null!;
         public virtual DbSet<TbCaLamViec> TbCaLamViecs { get; set; } = null!;
         public virtual DbSet<TbCategory> TbCategories { get; set; } = null!;
+        public virtual DbSet<TbLevel> TbLevels { get; set; } = null!;
         public virtual DbSet<TbLocation> TbLocations { get; set; } = null!;
         public virtual DbSet<TbOrder> TbOrders { get; set; } = null!;
         public virtual DbSet<TbOrderDetail> TbOrderDetails { get; set; } = null!;
         public virtual DbSet<TbPage> TbPages { get; set; } = null!;
+        public virtual DbSet<TbParent> TbParents { get; set; } = null!;
         public virtual DbSet<TbProduct> TbProducts { get; set; } = null!;
         public virtual DbSet<TbQuangCao> TbQuangCaos { get; set; } = null!;
         public virtual DbSet<TbShipper> TbShippers { get; set; } = null!;
@@ -105,6 +107,30 @@ namespace ServerSide.Entities
                 entity.Property(e => e.Thumb).HasMaxLength(250);
 
                 entity.Property(e => e.Title).HasMaxLength(250);
+
+                entity.HasOne(d => d.LevelsNavigation)
+                    .WithMany(p => p.TbCategories)
+                    .HasForeignKey(d => d.Levels)
+                    .HasConstraintName("FK_TbCategory_TbLevels");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.TbCategories)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_TbCategory_TbParents");
+            });
+
+            modelBuilder.Entity<TbLevel>(entity =>
+            {
+                entity.HasKey(e => e.LevelCode);
+
+                entity.Property(e => e.LevelName).HasMaxLength(250);
+
+                entity.Property(e => e.ParentId).HasColumnName("ParentID");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.TbLevels)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_TbLevels_TbParents");
             });
 
             modelBuilder.Entity<TbLocation>(entity =>
@@ -202,6 +228,15 @@ namespace ServerSide.Entities
                 entity.Property(e => e.Title).HasMaxLength(250);
             });
 
+            modelBuilder.Entity<TbParent>(entity =>
+            {
+                entity.HasKey(e => e.ParentId);
+
+                entity.Property(e => e.ParentId).HasColumnName("ParentID");
+
+                entity.Property(e => e.ParentName).HasMaxLength(250);
+            });
+
             modelBuilder.Entity<TbProduct>(entity =>
             {
                 entity.HasKey(e => e.ProductId);
@@ -248,6 +283,11 @@ namespace ServerSide.Entities
                     .WithMany(p => p.TbProducts)
                     .HasForeignKey(d => d.CatId)
                     .HasConstraintName("FK_TbProducts_TbCategory");
+
+                entity.HasOne(d => d.Unit)
+                    .WithMany(p => p.TbProducts)
+                    .HasForeignKey(d => d.UnitId)
+                    .HasConstraintName("FK_TbProducts_TbUnits");
             });
 
             modelBuilder.Entity<TbQuangCao>(entity =>

@@ -19,6 +19,153 @@ namespace ServerSide.Controllers
            _dbNet6Context = dbNet6Context;
         }
 
+        #region Parent
+
+        [HttpGet]
+        [Route("ParentsList")]
+        public async Task<IActionResult> ParentsList()
+        {
+            var units = await _dbNet6Context.TbParents.AsNoTracking().ToListAsync();
+            List<ParentsListResponse> parentList = new List<ParentsListResponse>();
+            if (units != null)
+            {
+                foreach (var item in units)
+                {
+                    ParentsListResponse parent = new ParentsListResponse
+                    {
+                        ParentID = item.ParentId.ToString(),
+                        ParentActive = (bool)item.ParentActive,
+                        ParentDelete = item.ParentDelete,
+                        ParentName = item.ParentName
+                    };
+
+                    parentList.Add(parent);
+                }
+            }
+            return Ok(parentList);
+        }
+
+        [HttpPost]
+        [Route("AddNewParent")]
+        public async Task<IActionResult> AddNewParent([FromBody] ParentsListResponse parent)
+        {
+            TbParent tbParent = new TbParent
+            {
+                ParentActive = (bool)parent.ParentActive,
+                ParentDelete = parent.ParentDelete,
+                ParentName = parent.ParentName
+            };
+
+            await _dbNet6Context.TbParents.AddAsync(tbParent);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Add New Parent Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Add New Parent !", Status = "Error" });
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateParent")]
+        public async Task<IActionResult> UpdateParent([FromBody] ParentsListResponse parent)
+        {
+            var oldParent = await _dbNet6Context.TbParents.SingleOrDefaultAsync(x => x.ParentId.ToString() == parent.ParentID);
+
+            oldParent.ParentName = parent.ParentName;
+            oldParent.ParentDelete = parent.ParentDelete;
+            oldParent.ParentActive = parent.ParentActive;
+
+            _dbNet6Context.TbParents.Update(oldParent);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Update Parent Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Update Parent !", Status = "Error" });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteParent/{id}")]
+        public async Task<IActionResult> DeleteParent(string? id)
+        {
+            var parent = await _dbNet6Context.TbParents.SingleOrDefaultAsync(x => x.ParentId.ToString() == id);
+            var rs = _dbNet6Context.TbParents.Remove(parent);
+            var rs2 = await _dbNet6Context.SaveChangesAsync();
+            if (rs2 > 0)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseBase { Message = "Delete Parent Successfully", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Delete Parent !", Status = "Error" });
+            }
+
+        }
+
+        #endregion
+
+        #region Level
+
+        [HttpGet]
+        [Route("LevelsList")]
+        public async Task<IActionResult> LevelsList()
+        {
+            var levels = await _dbNet6Context.TbLevels.AsNoTracking().ToListAsync();
+            List<LevelsListResponse> levelList = new List<LevelsListResponse>();
+            if (levels != null)
+            {
+                foreach (var item in levels)
+                {
+                    LevelsListResponse level = new LevelsListResponse
+                    {
+                        LevelActive = (bool)item.LevelActive,
+                        LevelDelete = item.LevelDelete,
+                        LevelName = item.LevelName,
+                        LevelCode = item.LevelCode.ToString(),
+                        ParentID = item.ParentId.ToString()
+                    };
+
+                    levelList.Add(level);
+                }
+            }
+            return Ok(levelList);
+        }
+
+        [HttpPost]
+        [Route("AddNewLevel")]
+        public async Task<IActionResult> AddNewLevel([FromBody] LevelsListResponse level)
+        {
+            TbLevel tbLevel = new TbLevel
+            {
+                LevelActive = (bool)level.LevelActive,
+                LevelDelete = level.LevelDelete,
+                LevelName = level.LevelName,
+                ParentId = int.Parse(level.ParentID)
+            };
+
+            await _dbNet6Context.TbLevels.AddAsync(tbLevel);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Add New Level Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Add New Level !", Status = "Error" });
+            }
+        }
+
+        #endregion
+
         #region Unit
 
         [HttpGet]

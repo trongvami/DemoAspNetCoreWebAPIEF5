@@ -16,3 +16,5 @@ CORS ( cross-origin resource sharing ) in asp net core
 automapper de map viewmodel voi entity
 Scaffold-DbContext 'Data Source=ADMINSQLEXPRESS;Initial Catalog=DemoFullIdentityEF6;Integrated Security=True;User ID=sa;Password=sa' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f
 Scaffold-DbContext "Data Source=ADMIN\SQLEXPRESS;Initial Catalog=DemoFullIdentityEF6;Persist Security Info=True;User ID=sa;Password=sa" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Context DemoFullIdentityEF6Context
+
+Scaffold-DbContext "Data Source=ADMIN\SQLEXPRESS;Initial Catalog=DemoFullIdentityNet6;Persist Security Info=True;User ID=sa;Password=sa" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -Context DbNet6Context -f

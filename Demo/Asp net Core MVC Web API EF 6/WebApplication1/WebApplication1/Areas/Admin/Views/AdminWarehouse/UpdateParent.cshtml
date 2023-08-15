@@ -1,0 +1,84 @@
+﻿@model WebApplication1.ViewModels.ParentsListViewModel
+@{
+    ViewData["Title"] = "Edit Parent : " + Model.ParentName;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/select2/select2.css" rel="stylesheet">
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+}
+<div class="page-header">
+    <h2 class="header-title">Parent Edit</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <a asp-action="ParentsList" asp-area="Admin" asp-controller="AdminWarehouse" class="breadcrumb-item">Parents List</a>
+            <span class="breadcrumb-item active">Parent Edit : @Model.ParentName</span>
+        </nav>
+    </div>
+</div>
+
+<form asp-controller="AdminWarehouse" asp-area="Admin" asp-route-id="@Model.ParentID" asp-action="UpdateParent" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ParentID" />
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+            </div>
+            <div class="m-b-15">
+                <button type="submit" class="btn btn-primary">
+                    <i class="anticon anticon-save"></i>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">BASIC INFORMATION</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="parentName">Parent Name</label>
+                        <input type="text" class="form-control" id="parentName" placeholder="Enter Unit Name" asp-for="ParentName">
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="checkbox">
+                            <input asp-for="ParentActive" id="Active" type="checkbox" />
+                            <label for="Active">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/select2/select2.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+}

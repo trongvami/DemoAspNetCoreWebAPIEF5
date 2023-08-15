@@ -11,6 +11,8 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\D
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\MailKit.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\MessagePack.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\MessagePack.Annotations.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Certificate.dll
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -262,5 +264,3 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\D
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\Debug\net6.0\ServerSide.pdb
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\Debug\net6.0\ServerSide.genruntimeconfig.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\obj\Debug\net6.0\ref\ServerSide.dll
-D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
-D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\ServerSide\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Certificate.dll

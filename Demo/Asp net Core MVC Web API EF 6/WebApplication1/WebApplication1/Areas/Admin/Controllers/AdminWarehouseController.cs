@@ -28,6 +28,239 @@ namespace WebApplication1.Areas.Admin.Controllers
             _toastNotification = toastNotification;
         }
 
+        #region Parent
+
+        [Route("Admin/AdminWarehouse/Parents-List")]
+        [HttpGet]
+        public async Task<IActionResult> ParentsList(int? page)
+        {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient.GetStringAsync(apiGetAllParentUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            PagedList.Core.PagedList<ParentsListViewModel> models = new PagedList.Core.PagedList<ParentsListViewModel>(queryableResponse, pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(models);
+        }
+
+        [Route("Admin/AdminWarehouse/Add-New-Parent")]
+        [HttpGet]
+        public async Task<IActionResult> CreateParent()
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Add-New-Parent")]
+        public async Task<IActionResult> CreateParent([Bind("ParentID,ParentName,ParentActive,ParentDelete")] ParentsListViewModel parent)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                parent.ParentDelete = 0;
+
+                var apiAddNewParentUrl = "https://localhost:7071/api/Warehouse/AddNewParent";
+                var response = await HttpClientHelper.PostWithTokenAsync(apiAddNewParentUrl, parent, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Add New Parent Successfully !", 4);
+                    return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View();
+            }
+            return View(parent);
+        }
+
+        [Route("Admin/AdminWarehouse/Update-Parent/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateParent(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient.GetStringAsync(apiGetAllParentUrl).Result);
+            var queryableResponse = response.AsQueryable();
+
+            var data = response.SingleOrDefault(x => x.ParentID == id);
+
+            return View(data);
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Update-Parent/{id}")]
+        public async Task<IActionResult> UpdateParent(string? id, [Bind("ParentID,ParentName,ParentActive,ParentDelete")] ParentsListViewModel parent)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                parent.ParentID = id;
+
+                var apiUpdateParentUrl = "https://localhost:7071/api/Warehouse/UpdateParent";
+                var response = await HttpClientHelper.PutWithTokenAsync(apiUpdateParentUrl, parent, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Update Parent Successfully !", 4);
+                    return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View();
+            }
+            return View(parent);
+        }
+
+        [Route("Admin/AdminWarehouse/Delete-Parent/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteParent(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiDeleteParentUrl = "https://localhost:7071/api/Warehouse/DeleteParent/";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var rs = await HttpClientHelper.DeleteWithTokenAndIdAsync(apiDeleteParentUrl, token, id);
+
+            if (rs.IsSuccessStatusCode)
+            {
+                _notyfService.Success("Delete Parent Successfully !", 4);
+                return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+            }
+            else
+            {
+                _notyfService.Warning("Try again !", 4);
+                return View();
+            }
+        }
+
+        #endregion
+
+        #region Level
+
+        [Route("Admin/AdminWarehouse/Levels-List")]
+        [HttpGet]
+        public async Task<IActionResult> LevelsList(int? page)
+        {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            PagedList.Core.PagedList<LevelsListViewModel> models = new PagedList.Core.PagedList<LevelsListViewModel>(queryableResponse, pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(models);
+        }
+
+        [Route("Admin/AdminWarehouse/Add-New-Level")]
+        [HttpGet]
+        public async Task<IActionResult> CreateLevel()
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Add-New-Level")]
+        public async Task<IActionResult> CreateLevel([Bind("ParentID,ParentName,ParentActive,ParentDelete")] LevelsListViewModel level)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                level.LevelDelete = 0;
+
+                var apiAddNewParentUrl = "https://localhost:7071/api/Warehouse/AddNewParent";
+                var response = await HttpClientHelper.PostWithTokenAsync(apiAddNewParentUrl, level, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Add New Level Successfully !", 4);
+                    return RedirectToAction("LevelsList", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View();
+            }
+            return View(level);
+        }
+
+        #endregion
+
         #region Unit
 
         [Route("Admin/AdminWarehouse/Units-List")]
