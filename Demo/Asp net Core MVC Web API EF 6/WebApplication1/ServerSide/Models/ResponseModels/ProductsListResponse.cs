@@ -8,7 +8,8 @@ namespace ServerSide.Models.ResponseModels
         public string ProductName { get; set; }
         public string? ShortDesc { get; set; }
         public string? Description { get; set; }
-        public string CatID { get; set; }
+        public string? CatID { get; set; }
+        public string LevelCode { get; set; }
         public int Price { get; set; }
         public int Discount { get; set; }
         public string? Thumb { get; set; }
@@ -27,6 +28,8 @@ namespace ServerSide.Models.ResponseModels
         public int SoLuongDaBan { get; set; }
         public int UnitsInStock { get; set; }
         public int? UnitID { get; set; }
+        public int? UpayId { get; set; }
+        public int? Height { get; set; }
         public string? Image1 { get; set; }
         public string? Image2 { get; set; }
         public string? Image3 { get; set; }

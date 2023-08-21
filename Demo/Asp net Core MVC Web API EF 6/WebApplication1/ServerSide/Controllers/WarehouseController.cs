@@ -166,6 +166,58 @@ namespace ServerSide.Controllers
 
         #endregion
 
+        #region Unit Payment
+
+        [HttpGet]
+        [Route("UnitPaymentsList")]
+        public async Task<IActionResult> UnitPaymentsList()
+        {
+            var units = await _dbNet6Context.TbUnitsPayments.AsNoTracking().ToListAsync();
+            List<UnitPaymentsListResponse> unitList = new List<UnitPaymentsListResponse>();
+            if (units != null)
+            {
+                foreach (var item in units)
+                {
+                    UnitPaymentsListResponse unit = new UnitPaymentsListResponse
+                    {
+                        UpayId = item.UpayId.ToString(),
+                        IsActive = (bool)item.IsActive,
+                        IsDelete = item.IsDelete,
+                        UpayName = item.UpayName
+                    };
+
+                    unitList.Add(unit);
+                }
+            }
+            return Ok(unitList);
+        }
+
+        [HttpPost]
+        [Route("AddNewUnitpay")]
+        public async Task<IActionResult> AddNewUnitpay([FromBody] UnitPaymentsListResponse unit)
+        {
+            TbUnitsPayment tbUnit = new TbUnitsPayment
+            {
+                IsActive = (bool)unit.IsActive,
+                UpayName = unit.UpayName,
+                IsDelete = unit.IsDelete
+            };
+
+            await _dbNet6Context.TbUnitsPayments.AddAsync(tbUnit);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Add New Unitpay Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Add New Unitpay !", Status = "Error" });
+            }
+        }
+
+        #endregion
+
         #region Unit
 
         [HttpGet]
@@ -297,6 +349,7 @@ namespace ServerSide.Controllers
         [Route("AddNewCategory")]
         public async Task<IActionResult> AddNewCategory([FromBody] CategoriesListResponse category)
         {
+            var level = await _dbNet6Context.TbLevels.SingleOrDefaultAsync(x=>x.LevelCode == category.Levels);
             TbCategory tbCategory = new TbCategory {
                 CatName = category.CatName,
                 Alias = category.Alias,
@@ -306,7 +359,7 @@ namespace ServerSide.Controllers
                 MetaKey = category.MetaKey,
                 Ordering = category.Ordering,
                 IsDeleted = false,
-                ParentId = category.ParentID,
+                ParentId = level.ParentId,
                 SchemaMarkup = category.SchemaMarkup,
                 Published = category.Published,
                 ShortContent = category.ShortContent,
@@ -402,7 +455,68 @@ namespace ServerSide.Controllers
                         Thumb = item.Thumb,
                         Title = item.Title,
                         UnitsInStock = (int)item.UnitsInStock,
-                        Video = item.Video
+                        Video = item.Video,
+                        UnitID = item.UnitId,
+                        Height = (int)item.Height,
+                        LevelCode = item.LevelCode != null ? item.LevelCode.ToString() : null,
+                        UpayId = item.UpayId
+                    };
+
+                    prosList.Add(product);
+                }
+            }
+
+            return Ok(prosList);
+        }
+
+        [HttpGet]
+        [Route("ProductsList2")]
+        public async Task<IActionResult> ProductsList2()
+        {
+            var products = await _dbNet6Context.TbProducts.AsNoTracking().Include(x => x.Cat).Include(x => x.LevelCodeNavigation).Include(x => x.Unit).Include(x => x.Upay).ToListAsync();
+            List<ProductsListResponse2> prosList = new List<ProductsListResponse2>();
+            if (products != null)
+            {
+                foreach (var item in products)
+                {
+                    ProductsListResponse2 product = new ProductsListResponse2
+                    {
+                        ProductId = item.ProductId.ToString(),
+                        Active = (bool)item.Active,
+                        Alias = item.Alias,
+                        BestSellers = (bool)item.BestSellers,
+                        CatID = item.CatId.ToString(),
+                        DateCreated = (DateTime)item.DateCreated,
+                        DateModified = (DateTime)item.DateModified,
+                        Description = item.Description,
+                        Discount = (int)item.Discount,
+                        HomeFlag = (bool)item.HomeFlag,
+                        Image1 = item.Image1,
+                        Image2 = item.Image2,
+                        Image3 = item.Image3,
+                        Image4 = item.Image4,
+                        Image5 = item.Image5,
+                        Image6 = item.Image6,
+                        MetaDesc = item.MetaDesc,
+                        MetaKey = item.MetaKey,
+                        Price = (int)item.Price,
+                        ProductName = item.ProductName,
+                        ShortDesc = item.ShortDesc,
+                        SoLuongBanDau = (int)item.SoLuongBanDau,
+                        SoLuongDaBan = (int)item.SoLuongDaBan,
+                        Tags = item.Tags,
+                        Thumb = item.Thumb,
+                        Title = item.Title,
+                        UnitsInStock = (int)item.UnitsInStock,
+                        Video = item.Video,
+                        UnitID = item.UnitId,
+                        Height = (int)item.Height,
+                        LevelCode = item.LevelCode != null ? item.LevelCode.ToString() : null,
+                        UpayId = item.UpayId,
+                        Unit = item.Unit,
+                        Category = item.Cat,
+                        UnitsPayment = item.Upay,
+                        Level = item.LevelCodeNavigation
                     };
 
                     prosList.Add(product);
@@ -416,7 +530,23 @@ namespace ServerSide.Controllers
         [Route("AddNewProduct")]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductsListResponse product)
         {
-            var cat = await _dbNet6Context.TbCategories.SingleOrDefaultAsync(x=>x.CatId == int.Parse(product.CatID));
+            var cat = new TbCategory();
+            if (product.CatID != null) {
+                cat = await _dbNet6Context.TbCategories.SingleOrDefaultAsync(x => x.CatId == int.Parse(product.CatID));
+            }
+
+            var unit = new TbUnit();
+            if (product.UnitID != null)
+            {
+                unit = await _dbNet6Context.TbUnits.SingleOrDefaultAsync(x => x.UnitId == product.UnitID);
+            }
+
+            var unitpayment = new TbUnitsPayment();
+            if (product.UpayId != null)
+            {
+                unitpayment = await _dbNet6Context.TbUnitsPayments.SingleOrDefaultAsync(x => x.UpayId == product.UpayId);
+            }
+
             TbProduct tp = new TbProduct
             {
                 ProductName = product.ProductName,
@@ -431,7 +561,8 @@ namespace ServerSide.Controllers
                 Active = product.Active,
                 Alias = product.Alias,
                 BestSellers = product.BestSellers,
-                CatId = int.Parse(product.CatID),
+                CatId = product.CatID != null ? int.Parse(product.CatID) : null,
+                LevelCode = int.Parse(product.LevelCode),
                 DateCreated = product.DateCreated,
                 DateModified = product.DateModified,
                 Description = product.Description,
@@ -447,8 +578,35 @@ namespace ServerSide.Controllers
                 UnitsInStock = product.UnitsInStock,
                 Video = product.Video,
                 UnitId = product.UnitID,
-                Cat = cat
+                UpayId = product.UpayId,
+                Height = product.Height
             };
+
+            if (product.CatID != null) {
+                tp.Cat = cat;
+            }
+            else
+            {
+                tp.Cat = null;
+            }
+
+            if (product.UnitID != null)
+            {
+                tp.Unit = unit;
+            }
+            else
+            {
+                tp.Cat = null;
+            }
+
+            if (product.CatID != null)
+            {
+                tp.Upay = unitpayment;
+            }
+            else
+            {
+                tp.Cat = null;
+            }
 
             await _dbNet6Context.TbProducts.AddAsync(tp);
             var result2 = await _dbNet6Context.SaveChangesAsync();

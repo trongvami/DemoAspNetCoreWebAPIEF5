@@ -223,12 +223,18 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
             }
 
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resParent = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient.GetStringAsync(apiGetAllParentUrl).Result);
+            var queryableResParent = resParent.AsQueryable();
+            ViewData["Parent"] = new SelectList(resParent, "ParentID", "ParentName");
             return View();
         }
 
         [HttpPost]
         [Route("Admin/AdminWarehouse/Add-New-Level")]
-        public async Task<IActionResult> CreateLevel([Bind("ParentID,ParentName,ParentActive,ParentDelete")] LevelsListViewModel level)
+        public async Task<IActionResult> CreateLevel([Bind("LevelCode,ParentID,LevelName,LevelActive,LevelDelete")] LevelsListViewModel level)
         {
             if (ModelState.IsValid)
             {
@@ -242,8 +248,8 @@ namespace WebApplication1.Areas.Admin.Controllers
 
                 level.LevelDelete = 0;
 
-                var apiAddNewParentUrl = "https://localhost:7071/api/Warehouse/AddNewParent";
-                var response = await HttpClientHelper.PostWithTokenAsync(apiAddNewParentUrl, level, token);
+                var apiAddNewLevelUrl = "https://localhost:7071/api/Warehouse/AddNewLevel";
+                var response = await HttpClientHelper.PostWithTokenAsync(apiAddNewLevelUrl, level, token);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -257,6 +263,81 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return View();
             }
             return View(level);
+        }
+
+        #endregion
+
+        #region Unit Payment
+
+        [Route("Admin/AdminWarehouse/Unitpays-List")]
+        [HttpGet]
+        public async Task<IActionResult> UnitpaysList(int? page)
+        {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllUnitpayUrl = "https://localhost:7071/api/Warehouse/UnitPaymentsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<UnitPaymentsListViewModel>>(httpClient.GetStringAsync(apiGetAllUnitpayUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            PagedList.Core.PagedList<UnitPaymentsListViewModel> models = new PagedList.Core.PagedList<UnitPaymentsListViewModel>(queryableResponse, pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(models);
+        }
+
+        [Route("Admin/AdminWarehouse/Add-New-Unitpay")]
+        [HttpGet]
+        public async Task<IActionResult> CreateUnitpay()
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Add-New-Unitpay")]
+        public async Task<IActionResult> CreateUnitpay([Bind("UpayId,UpayName,IsActive,IsDelete")] UnitPaymentsListViewModel unit)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                unit.IsDelete = 0;
+
+                var apiAddNewUnitpayUrl = "https://localhost:7071/api/Warehouse/AddNewUnitpay";
+                var response = await HttpClientHelper.PostWithTokenAsync(apiAddNewUnitpayUrl, unit, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Add New Unitpay Successfully !", 4);
+                    return RedirectToAction("UnitpaysList", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View();
+            }
+            return View(unit);
         }
 
         #endregion
@@ -371,6 +452,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 }
 
                 unit.UnitID = id;
+                unit.IsDelete = 0;
 
                 var apiUpdateUnitUrl = "https://localhost:7071/api/Warehouse/UpdateUnit";
                 var response = await HttpClientHelper.PutWithTokenAsync(apiUpdateUnitUrl, unit, token);
@@ -547,6 +629,12 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
             }
 
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            ViewData["Level"] = new SelectList(response, "LevelCode", "LevelName");
             return View();
         }
 
@@ -580,7 +668,6 @@ namespace WebApplication1.Areas.Admin.Controllers
                 category.SchemaMarkup = category.CatName;
                 category.Alias = Utilities.SEOUrl(category.CatName);
                 category.CatId = null;
-                category.Levels = 0;
                 category.ParentID = 0;
 
                 var apiAddNewCategoryUrl = "https://localhost:7071/api/Warehouse/AddNewCategory";
@@ -603,12 +690,41 @@ namespace WebApplication1.Areas.Admin.Controllers
 
         #region Product
 
+        [Route("Admin/AdminWarehouse/GetCategories")]
+        [HttpGet]
+        public async Task<IActionResult> GetCategories(string? selectedLevel)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(selectedLevel)) {
+                List<SelectListItem> categories = response.Where(c=>c.Levels.ToString() == selectedLevel).Select(
+                    n=> new SelectListItem { 
+                        Value = n.CatId,
+                        Text = n.CatName
+                    }).ToList();
+                return Json(categories);
+            }
+
+            return null;
+        }
+
         [Route("Admin/AdminWarehouse/Products-List")]
         [HttpGet]
         public async Task<IActionResult> ProductsList(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = Utilities.PAGE_SIZE;
+            //var pageSize = Utilities.PAGE_SIZE;
+            var pageSize = 20;
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
@@ -627,6 +743,30 @@ namespace WebApplication1.Areas.Admin.Controllers
             return View(models);
         }
 
+        [Route("Admin/AdminWarehouse/Products-List-2")]
+        [HttpGet]
+        public async Task<IActionResult> ProductsList2(int? page)
+        {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllProductUrl = "https://localhost:7071/api/Warehouse/ProductsList2";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<ProductsListViewModel2>>(httpClient.GetStringAsync(apiGetAllProductUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            PagedList.Core.PagedList<ProductsListViewModel2> models = new PagedList.Core.PagedList<ProductsListViewModel2>(queryableResponse, pageNumber, pageSize);
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(models);
+        }
+
         [Route("Admin/AdminWarehouse/Add-New-Product")]
         [HttpGet]
         public async Task<IActionResult> CreateProduct()
@@ -638,25 +778,54 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
             }
 
-            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
-            var queryableResponse = response.AsQueryable();
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
 
-            var apiGetAllUnitUrl = "https://localhost:7071/api/Warehouse/UnitsList";
+            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
             var httpClient2 = _httpClientFactory.CreateClient();
             httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response2 = JsonConvert.DeserializeObject<List<UnitsListViewModel>>(httpClient.GetStringAsync(apiGetAllUnitUrl).Result);
+            var response2 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient2.GetStringAsync(apiGetAllRoleUrl).Result);
 
-            ViewData["DanhMuc"] = new SelectList(response, "CatId", "CatName");
-            ViewData["DonVi"] = new SelectList(response2, "UnitID", "UnitName");
-            return View();
+            var apiGetAllUnitUrl = "https://localhost:7071/api/Warehouse/UnitsList";
+            var httpClient3 = _httpClientFactory.CreateClient();
+            httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response3 = JsonConvert.DeserializeObject<List<UnitsListViewModel>>(httpClient3.GetStringAsync(apiGetAllUnitUrl).Result);
+
+            var apiGetAllUnitpayUrl = "https://localhost:7071/api/Warehouse/UnitPaymentsList";
+            var httpClient4 = _httpClientFactory.CreateClient();
+            httpClient4.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response4 = JsonConvert.DeserializeObject<List<UnitPaymentsListViewModel>>(httpClient4.GetStringAsync(apiGetAllUnitpayUrl).Result);
+
+            ProductCreateViewModel productCreateViewModel = new ProductCreateViewModel();
+            productCreateViewModel.Product = new ProductsListViewModel();
+            List<SelectListItem> levels = response.Select(n=> new SelectListItem { 
+                Value = n.LevelCode,
+                Text = n.LevelName
+            }).ToList();
+            List<SelectListItem> units = response3.Select(n => new SelectListItem
+            {
+                Value = n.UnitID,
+                Text = n.UnitName
+            }).ToList();
+            List<SelectListItem> unitpays = response4.Select(n => new SelectListItem
+            {
+                Value = n.UpayId,
+                Text = n.UpayName
+            }).ToList();
+
+            productCreateViewModel.Levels = levels;
+            productCreateViewModel.Categories = new List<SelectListItem>();
+            productCreateViewModel.Units = units;
+            productCreateViewModel.Unitpays = unitpays;
+
+            return View(productCreateViewModel);
         }
 
         [HttpPost]
         [Route("Admin/AdminWarehouse/Add-New-Product")]
-        public async Task<IActionResult> CreateProduct([Bind("ProductId,ProductName,ShortDesc,Description,CatID,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,SoLuongBanDau,SoLuongDaBan,UnitsInStock,UnitID,Image1,Image2,Image3,Image4,Image5,Image6")] ProductsListViewModel product, Microsoft.AspNetCore.Http.IFormFile? fThumb, List<IFormFile> fThumb2)
+        public async Task<IActionResult> CreateProduct([Bind("ProductId,ProductName,ShortDesc,Description,CatID,LevelCode,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,SoLuongBanDau,SoLuongDaBan,UnitsInStock,UnitID,UpayId,Height,Image1,Image2,Image3,Image4,Image5,Image6")] ProductsListViewModel product, Microsoft.AspNetCore.Http.IFormFile? fThumb, List<IFormFile> fThumb2, string? levelCode)
         {
             var token = Request.Cookies["IdentityToken"];
 
@@ -757,6 +926,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (product.MetaDesc == null || product.MetaDesc == "") {
                     product.MetaDesc = product.ProductName;
                 }
+
                 if (product.MetaKey == null || product.MetaKey == "")
                 {
                     product.MetaKey = product.ProductName;
@@ -767,7 +937,10 @@ namespace WebApplication1.Areas.Admin.Controllers
                 product.DateModified = DateTime.UtcNow.Date;
                 product.UnitsInStock = product.SoLuongBanDau;
                 product.SoLuongDaBan = 0;
-
+                if (product.UnitID == 22 || product.Height == null)
+                {
+                    product.Height = 0;
+                }
                 var apiAddNewProductUrl = "https://localhost:7071/api/Warehouse/AddNewProduct";
                 var res = await HttpClientHelper.PostWithTokenAsync(apiAddNewProductUrl, product, token);
 

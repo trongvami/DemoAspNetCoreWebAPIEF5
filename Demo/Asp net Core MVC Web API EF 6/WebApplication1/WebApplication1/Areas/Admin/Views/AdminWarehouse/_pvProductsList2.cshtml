@@ -1,0 +1,258 @@
+﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.ProductsListViewModel2>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th></th>
+            <th>Id</th>
+            <th>Product Name</th>
+            @*<th>Active</th>*@
+            @*<th>HomeFlag</th>
+            <th>BestSellers</th>*@
+            @*<th>Thumb</th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var product in Model)
+            {
+                <tr class="accordion-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#collapse-@product.ProductId"
+                    aria-expanded="false"
+                    aria-controls="collapse-@product.ProductId">
+                    <th class="expand-button">
+
+                    </th>
+                    <td>
+                        #@product.ProductId
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <strong>@product.ProductName</strong>
+                        </div>
+                    </td>
+                    @*<td>
+                        @if (product.Active == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>Active</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-Active</div>
+                            </div>
+                        }
+                    </td>*@
+                    @*<td>
+                        @if (product.HomeFlag == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>HomeFlag</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-HomeFlag</div>
+                            </div>
+                        }
+                    </td>*@
+                    @*<td>
+                        @if (product.BestSellers == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>BestSellers</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-BestSellers</div>
+                            </div>
+                        }
+                    </td>*@
+                   @* <td>
+                        <img src="~/images/imgsProduct/@product.Thumb" width="80px" height="80px" style="background-color:white" alt="">
+                    </td>*@
+                    <td class="text-right">
+                        @*<a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-eye"></i>
+                        </a>*@
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-delete"></i>
+                        </a>
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@product.ProductId">
+                            <i class="anticon anticon-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr id="collapse-@product.ProductId" class="hide-table-padding">
+                    <td colspan="5">
+                        <div id="collapse-@product.ProductId" class="collapse p-3">
+                            <div class="tab-content m-l-15" id="myTabContentVertical">
+                                <div class="tab-pane fade show active" id="home-vertical-@product.ProductId" role="tabpanel" aria-labelledby="home-tab-vertical-@product.ProductId">
+                                    <div class="page-header no-gutters has-tab">
+                                        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+                                            <div class="media align-items-center m-b-15">
+                                                <div class="avatar avatar-image rounded" style="height: 70px; width: 70px">
+                                                    <img src="~/images/imgsProduct/@product.Thumb" alt="">
+                                                </div>
+                                                <div class="m-l-15">
+                                                    <h4 class="m-b-0">Product : @product.ProductName</h4>
+                                                    <p class="text-muted m-b-0">Code: #@product.ProductId</p>
+                                                </div>
+                                            </div>
+                                            <div class="m-b-15">
+                                                <a class="btn btn-primary" >
+                                                    <i class="anticon anticon-save"></i>
+                                                    <span>Save</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic-@product.ProductId">BASIC INFO</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#product-edit-seo-@product.ProductId">SEO INFO</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#product-edit-description-@product.ProductId">DESCRIPTION</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content m-t-15">
+                                        <div class="tab-pane fade show active" id="product-edit-basic-@product.ProductId">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold">Title : @product.Title</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="proName">Product Name : @product.ProductName</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="shortContent">Short Content : @product.ShortDesc</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="shortContent">Quantity : @product.SoLuongBanDau</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="price">Price : @product.Price</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="height">Weight : @product.Height</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="discount">Discount : @product.Discount</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="listLevels">Level : @product.Level.LevelName</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        @if (product.Category == null)
+                                                        {
+                                                            <label class="font-weight-semibold" for="listCategories">Category :</label>
+                                                        }
+
+                                                        @if (product.Category != null)
+                                                        {
+                                                            <label class="font-weight-semibold" for="listCategories">Category : @product.Category.CatName</label>
+                                                        }
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="listUnits">Unit : @product.Unit.UnitName</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="listUnitpays">Unit Payment : @product.UnitsPayment.UpayName</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="product-edit-seo-@product.ProductId">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="form-group d-flex align-items-center">
+                                                        @if (product.Active == true)
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                <div>Active</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                <div>Non-Active</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center">
+                                                        @if (product.HomeFlag == true)
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                <div>HomeFlag</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                <div>Non-HomeFlag</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="form-group d-flex align-items-center">
+                                                        @if (product.BestSellers == true)
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                <div>BestSellers</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                <div>Non-BestSellers</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="metaDesc">Meta Desc : @product.MetaDesc</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="font-weight-semibold" for="metaKey">Meta Key : @product.MetaKey</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="product-edit-description-@product.ProductId">
+                                            @Html.Raw(product.Description)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile-vertical-@product.ProductId" role="tabpanel" aria-labelledby="profile-tab-vertical-@product.ProductId">
+                                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

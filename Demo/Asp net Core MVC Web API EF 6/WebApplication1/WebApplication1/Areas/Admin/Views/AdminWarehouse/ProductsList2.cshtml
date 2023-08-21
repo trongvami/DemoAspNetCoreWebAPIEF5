@@ -1,0 +1,263 @@
+﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.ProductsListViewModel2>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "List of ProductsList2 - Page : " + 1;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/select2/select2.css" rel="stylesheet">
+    <link href="~/assets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/assets/summernote/summernote.css" rel="stylesheet" />
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+
+    <style>
+        /* Màu nền cho dòng khi được chọn */
+        .selected-row {
+            background-color: rgba(63,135,245,0.15);
+        }
+
+        .tblProduct {
+            max-height: 500px;
+            overflow-y: scroll;
+        }
+
+            .tblProduct table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .tblProduct thead {
+                position: sticky;
+                top: 0;
+                background-color: #f8f9fa;
+                z-index: 1;
+            }
+
+        tr.hide-table-padding td {
+            padding: 0;
+        }
+
+        .expand-button {
+            position: relative;
+        }
+
+        .accordion-toggle .expand-button:after {
+            position: absolute;
+            left: .75rem;
+            top: 50%;
+            transform: translate(0, -50%);
+            content: '-';
+        }
+
+        .accordion-toggle.collapsed .expand-button:after {
+            content: '+';
+        }
+    </style>
+}
+<div class="page-header">
+    <h2 class="header-title">Products List</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <span class="breadcrumb-item active">Products List : Page @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-action="CreateProduct" asp-area="Admin" asp-controller="AdminWarehouse">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Add New Product</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive tblProduct">
+            <div id="view-all-role">
+                <partial name="_pvProductsList2" model="@Model" />
+            </div>
+            <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminWarehouse" asp-action="ProductsList2" list="@Model" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Form-Modal-AddorEditRole">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@*<div class="card">
+    <div class="card-body">
+        <h4>Basic Usage</h4>
+        <p>Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap.</p>
+        <div class="m-t-25">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th></th>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="accordion-toggle collapsed"
+                            data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="false"
+                            aria-controls="collapseOne">
+                            <th class="expand-button">
+                                
+                            </th>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>ads</td>
+                        </tr>
+                        <tr id="collapseOne" class="hide-table-padding">
+                            <td></td>
+                            <td colspan="4">
+                                <div id="collapseOne" class="collapse p-3">
+                                    <div class="m-t-25">
+                                        <div class="d-flex">
+                                            <ul class="nav nav-tabs flex-column" id="myTabVertical" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="home-tab-vertical" data-toggle="tab" href="#home-vertical" role="tab" aria-controls="home-vertical" aria-selected="true">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="profile-tab-vertical" data-toggle="tab" href="#profile-vertical" role="tab" aria-controls="profile-vertical" aria-selected="false">Profile</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="contact-tab-vertical" data-toggle="tab" href="#contact-vertical" role="tab" aria-controls="contact-vertical" aria-selected="false">Contact</a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content m-l-15" id="myTabContentVertical">
+                                                <div class="tab-pane fade show active" id="home-vertical" role="tabpanel" aria-labelledby="home-tab-vertical">
+                                                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                                                </div>
+                                                <div class="tab-pane fade" id="profile-vertical" role="tabpanel" aria-labelledby="profile-tab-vertical">
+                                                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                                                </div>
+                                                <div class="tab-pane fade" id="contact-vertical" role="tabpanel" aria-labelledby="contact-tab-vertical">
+                                                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Repeat for other rows and panels -->
+                        <tr class="accordion-toggle collapsed"
+                            data-toggle="collapse"
+                            data-target="#collapseOne2"
+                            aria-expanded="false"
+                            aria-controls="collapseOne2">
+                            <th class="expand-button">
+                                
+                            </th>
+                            <th scope="row">1</th>
+                            <td>Mark2</td>
+                            <td>Otto</td>
+                            <td>ads</td>
+                        </tr>
+                        <tr id="collapseOne2" class="hide-table-padding">
+                            <td></td>
+                            <td colspan="4">
+                                <div id="collapseOne2" class="collapse p-3">
+                                    <div class="m-t-25">
+                                        <div class="d-flex">
+                                            <ul class="nav nav-tabs flex-column" id="myTabVertical" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="home-tab-vertical1" data-toggle="tab" href="#home-vertical1" role="tab" aria-controls="home-vertical1" aria-selected="true">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="profile-tab-vertical1" data-toggle="tab" href="#profile-vertical1" role="tab" aria-controls="profile-vertical1" aria-selected="false">Profile</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="contact-tab-vertical1" data-toggle="tab" href="#contact-vertical1" role="tab" aria-controls="contact-vertical1" aria-selected="false">Contact</a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content m-l-15" id="myTabContentVertical">
+                                                <div class="tab-pane fade show active" id="home-vertical1" role="tabpanel" aria-labelledby="home-tab-vertical1">
+                                                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                                                </div>
+                                                <div class="tab-pane fade" id="profile-vertical1" role="tabpanel" aria-labelledby="profile-tab-vertical1">
+                                                    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                                                </div>
+                                                <div class="tab-pane fade" id="contact-vertical1" role="tabpanel" aria-labelledby="contact-tab-vertical1">
+                                                    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>*@
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/select2/select2.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <script src="~/assets/summernote/summernote-bs4.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle click on expand button
+            $('.hide-table-padding').hide();
+            $('.accordion-toggle').click(function () {
+                var $toggleIcon = $(this).find('.accordion-toggle-icon');
+                var $collapsePanel = $($(this).data('target'));
+                $collapsePanel.collapse('toggle');
+                
+                // Change the icon based on panel state
+                if ($collapsePanel.hasClass('show')) {
+                    $toggleIcon.text('-');
+                    $(this).next('.hide-table-padding').hide();
+                } else {
+                    $toggleIcon.text('+');
+                    $(this).next('.hide-table-padding').show();
+                }
+            });
+        });
+    </script>
+}
+

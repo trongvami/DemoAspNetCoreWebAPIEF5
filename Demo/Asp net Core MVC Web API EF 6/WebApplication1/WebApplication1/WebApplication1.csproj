@@ -47,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ServerSide\ServerSide.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

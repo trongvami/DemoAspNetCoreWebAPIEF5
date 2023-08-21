@@ -1,0 +1,54 @@
+﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.UnitPaymentsListViewModel>
+
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Id</th>
+            <th>Unitpay Name</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var unit in Model)
+            {
+                <tr>
+                    <td>
+                        #@unit.UpayId
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <strong>@unit.UpayName</strong>
+                        </div>
+                    </td>
+                    <td>
+                        @if (unit.IsActive == true)
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-success badge-dot m-r-10"></div>
+                                <div>Active</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center">
+                                <div class="badge badge-danger badge-dot m-r-10"></div>
+                                <div>Non-Active</div>
+                            </div>
+                        }
+                    </td>
+                    <td class="text-right">
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteUnitpay" asp-area="Admin" asp-controller="AdminWarehouse" asp-route-id="@unit.UpayId">
+                            <i class="anticon anticon-delete"></i>
+                        </a>
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="UpdateUnitpay" asp-route-id="@unit.UpayId">
+                            <i class="anticon anticon-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

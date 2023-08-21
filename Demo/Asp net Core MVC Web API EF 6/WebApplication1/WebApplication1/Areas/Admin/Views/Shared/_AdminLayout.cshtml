@@ -386,11 +386,16 @@
                     $('#RoleList').addClass('active');
                 }
                 $('#dropdownAuthorization').addClass('open');
+            } else if (asd.includes("ProductsList2")) {
+                $('#ProductsList2').addClass('active');
+                $('#dropdownWarehouse').addClass('open');
             } else if (asd.includes("Employees")) {
                 $('#EmployeeList').addClass('active');
                 $('#dropdownUser').addClass('open');
-            } else if (asd.includes("Catego") || asd.includes("Product") || asd.includes("Unit") || asd.includes("Parent") || asd.includes("Level")) {
-                if (asd.includes("Unit")) {
+            } else if (asd.includes("Catego") || asd.includes("Product") || asd.includes("Unit") || asd.includes("Parent") || asd.includes("Level") || asd.includes("Unitpay")) {
+                if (asd.includes("Unitpay")) {
+                    $('#UnitpaysList').addClass('active');
+                } else if (asd.includes("Unit")) {
                     $('#UnitsList').addClass('active');
                 }
                 else if (asd.includes("Catego")) {
@@ -402,8 +407,8 @@
                 } else if (asd.includes("Level")) {
                     $('#LevelsList').addClass('active');
                 }
-                $('#dropdownWarehouse').addClass('open');
-            } else {
+                $('#dropdownItem').addClass('open');
+            }else {
                 $('#dashboard').addClass('open');
                 $('#dashboardDefault').addClass('active');
             }

@@ -1,4 +1,4 @@
-﻿@model WebApplication1.ViewModels.ProductsListViewModel
+﻿@model WebApplication1.ViewModels.ProductCreateViewModel
 @{
     ViewData["Title"] = "Create New Product";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -68,38 +68,54 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label class="font-weight-semibold">Title</label>
-                        <input type="text" class="form-control" asp-for="Title" placeholder="Enter Title Product">
+                        <input type="text" class="form-control" asp-for="@Model.Product.Title" placeholder="Enter Title Product">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="proName">Product Name</label>
-                        <input type="text" class="form-control" id="proName" placeholder="Enter Product Name" asp-for="ProductName">
+                        <input type="text" class="form-control" id="proName" placeholder="Enter Product Name" asp-for="@Model.Product.ProductName">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="shortContent">Short Content</label>
-                        <input type="text" class="form-control" id="shortContent" placeholder="Enter Short Content" asp-for="ShortDesc">
+                        <input type="text" class="form-control" id="shortContent" placeholder="Enter Short Content" asp-for="@Model.Product.ShortDesc">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="shortContent">Quantity</label>
-                        <input type="number" class="form-control" id="shortContent" placeholder="Enter Quantity" asp-for="SoLuongBanDau">
+                        <input type="number" class="form-control" id="shortContent" placeholder="Enter Quantity" asp-for="@Model.Product.SoLuongBanDau">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="price">Price</label>
-                        <input type="number" class="form-control" id="price" placeholder="Enter Price" asp-for="Price">
+                        <input type="number" class="form-control" id="price" placeholder="Enter Price" asp-for="@Model.Product.Price">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="height">Weight</label>
+                        <input type="number" class="form-control" id="height" placeholder="Enter Weight" asp-for="@Model.Product.Height">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="discount">Discount</label>
-                        <input type="number" class="form-control" id="discount" placeholder="Enter Discount" asp-for="Discount">
+                        <input type="number" class="form-control" id="discount" placeholder="Enter Discount" asp-for="@Model.Product.Discount">
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-semibold" for="productCategory">Product portfolio</label>
-                        <select required asp-for="CatID" class="custom-select" id="productCategory" asp-items="ViewBag.DanhMuc">
+                        <label class="font-weight-semibold" for="listLevels">Level</label>
+                        <select required asp-for="@Model.Product.LevelCode" class="custom-select" id="listLevels" asp-items="@Model.Levels">
+                            <option disabled value="" selected>Select Type Level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="listCategories">Category</label>
+                        <select asp-for="@Model.Product.CatID" class="custom-select" id="listCategories" asp-items="@Model.Categories">
                             <option disabled value="" selected>Select Type Category</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-semibold" for="productUnitID">Unit</label>
-                        <select required asp-for="UnitID" class="custom-select" id="productUnitID" asp-items="ViewBag.DonVi">
+                        <label class="font-weight-semibold" for="listUnits">Unit</label>
+                        <select required asp-for="@Model.Product.UnitID" class="custom-select" id="listUnits" asp-items="@Model.Units">
                             <option disabled value="" selected>Select Unit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="listUnitpays">Unit Payment</label>
+                        <select required asp-for="@Model.Product.UpayId" class="custom-select" id="listUnitpays" asp-items="@Model.Unitpays">
+                            <option disabled value="" selected>Select Unit Payment</option>
                         </select>
                     </div>
                 </div>
@@ -119,29 +135,29 @@
                     </div>
                     <div class="form-group d-flex align-items-center">
                         <div class="checkbox">
-                            <input id="Active" asp-for="Active" type="checkbox" />
+                            <input id="Active" asp-for="@Model.Product.Active" type="checkbox" />
                             <label for="Active">Active</label>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-center">
                         <div class="checkbox">
-                            <input id="HomeFlag" asp-for="HomeFlag" type="checkbox" />
+                            <input id="HomeFlag" asp-for="@Model.Product.HomeFlag" type="checkbox" />
                             <label for="HomeFlag">HomeFlag</label>
                         </div>
                     </div>
                     <div class="form-group d-flex align-items-center">
                         <div class="checkbox">
-                            <input id="BestSellers" asp-for="BestSellers" type="checkbox" />
+                            <input id="BestSellers" asp-for="@Model.Product.BestSellers" type="checkbox" />
                             <label for="BestSellers">BestSellers</label>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="metaDesc">Meta Desc</label>
-                        <input type="text" class="form-control" id="metaDesc" placeholder="Enter Meta Desc" asp-for="MetaDesc">
+                        <input type="text" class="form-control" id="metaDesc" placeholder="Enter Meta Desc" asp-for="@Model.Product.MetaDesc">
                     </div>
                     <div class="form-group">
                         <label class="font-weight-semibold" for="metaKey">Meta Key</label>
-                        <input type="text" class="form-control" id="metaKey" placeholder="Enter Meta Key" asp-for="MetaKey">
+                        <input type="text" class="form-control" id="metaKey" placeholder="Enter Meta Key" asp-for="@Model.Product.MetaKey">
                     </div>
                 </div>
             </div>
@@ -150,7 +166,7 @@
             <div class="card">
                 <div class="card-body">
                     <div id="productDescription">
-                        <textarea class="summernote" asp-for="Description"></textarea>
+                        <textarea class="summernote" asp-for="@Model.Product.Description"></textarea>
                     </div>
                 </div>
             </div>
@@ -180,6 +196,36 @@
                 minHeight: null,
                 maxHeight: null,
                 focus: true
+            });
+
+            $('#listLevels').change(function(){
+                var selectedLevel = $("#listLevels").val();
+                var categoriesSelect = $('#listCategories');
+                categoriesSelect.empty();
+                if (selectedLevel != null && selectedLevel != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Admin/AdminWarehouse/GetCategories",
+                        data: { 'selectedLevel': selectedLevel },
+                        success: function (res) {
+                            if (res != null) {
+                                categoriesSelect.append('<option disabled value="" selected>Select Type Category</option>');
+                                $.each(res, function (index, cate){
+                                    categoriesSelect.append($('<option/>',{
+                                        value: cate.value,
+                                        text: cate.text
+                                    }));
+                                });
+
+                            } else {
+
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response here
+                        }
+                    });
+                }
             });
         });
 

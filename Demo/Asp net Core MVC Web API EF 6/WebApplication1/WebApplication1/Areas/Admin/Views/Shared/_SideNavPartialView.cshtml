@@ -17,6 +17,47 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item dropdown" id="dropdownItem">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="fas fa-box-open"></i>
+                    </span>
+                    <span class="title">Items</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li id="UnitsList">
+                        <a asp-action="UnitsList" asp-controller="AdminWarehouse" asp-area="Admin">Unit</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="UnitpaysList">
+                        <a asp-action="UnitpaysList" asp-controller="AdminWarehouse" asp-area="Admin">Unit Payment</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="ParentsList">
+                        <a asp-action="ParentsList" asp-controller="AdminWarehouse" asp-area="Admin">Type</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="LevelsList">
+                        <a asp-action="LevelsList" asp-controller="AdminWarehouse" asp-area="Admin">Type of Category</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="CategoriesList">
+                        <a asp-action="CategoriesList" asp-controller="AdminWarehouse" asp-area="Admin">Category</a>
+                    </li>
+                </ul>
+                <ul class="dropdown-menu">
+                    <li id="ProductsList">
+                        <a asp-action="ProductsList" asp-controller="AdminWarehouse" asp-area="Admin">Product</a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item dropdown" id="dropdownWarehouse">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
@@ -28,30 +69,15 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li id="UnitsList">
-                        <a asp-action="UnitsList" asp-controller="AdminWarehouse" asp-area="Admin">Units List</a>
+                    <li id="ProductsList2">
+                        <a asp-action="ProductsList2" asp-controller="AdminWarehouse" asp-area="Admin">Products List 2</a>
                     </li>
                 </ul>
-                <ul class="dropdown-menu">
-                    <li id="ParentsList">
-                        <a asp-action="ParentsList" asp-controller="AdminWarehouse" asp-area="Admin">Parents List</a>
+                @*<ul class="dropdown-menu">
+                    <li id="CustomerList">
+                        <a asp-action="CustomerList" asp-controller="AdminPermission" asp-area="Admin">Customer List</a>
                     </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li id="LevelsList">
-                        <a asp-action="LevelsList" asp-controller="AdminWarehouse" asp-area="Admin">Levels List</a>
-                    </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li id="CategoriesList">
-                        <a asp-action="CategoriesList" asp-controller="AdminWarehouse" asp-area="Admin">Categories List</a>
-                    </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li id="ProductsList">
-                        <a asp-action="ProductsList" asp-controller="AdminWarehouse" asp-area="Admin">Products List</a>
-                    </li>
-                </ul>
+                </ul>*@
             </li>
             <li class="nav-item dropdown" id="dropdownUser">
                 <a class="dropdown-toggle" href="javascript:void(0);">

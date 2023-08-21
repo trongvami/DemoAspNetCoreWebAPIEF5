@@ -8,6 +8,7 @@ namespace ServerSide.Entities
         public TbLevel()
         {
             TbCategories = new HashSet<TbCategory>();
+            TbProducts = new HashSet<TbProduct>();
         }
 
         public int LevelCode { get; set; }
@@ -18,5 +19,6 @@ namespace ServerSide.Entities
 
         public virtual TbParent? Parent { get; set; }
         public virtual ICollection<TbCategory> TbCategories { get; set; }
+        public virtual ICollection<TbProduct> TbProducts { get; set; }
     }
 }

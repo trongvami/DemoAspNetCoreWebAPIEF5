@@ -34,6 +34,7 @@ namespace ServerSide.Entities
         public virtual DbSet<TbTinDang> TbTinDangs { get; set; } = null!;
         public virtual DbSet<TbTransactStatus> TbTransactStatuses { get; set; } = null!;
         public virtual DbSet<TbUnit> TbUnits { get; set; } = null!;
+        public virtual DbSet<TbUnitsPayment> TbUnitsPayments { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -277,6 +278,8 @@ namespace ServerSide.Entities
 
                 entity.Property(e => e.UnitId).HasColumnName("UnitID");
 
+                entity.Property(e => e.UpayId).HasColumnName("UpayID");
+
                 entity.Property(e => e.Video).HasMaxLength(255);
 
                 entity.HasOne(d => d.Cat)
@@ -284,10 +287,20 @@ namespace ServerSide.Entities
                     .HasForeignKey(d => d.CatId)
                     .HasConstraintName("FK_TbProducts_TbCategory");
 
+                entity.HasOne(d => d.LevelCodeNavigation)
+                    .WithMany(p => p.TbProducts)
+                    .HasForeignKey(d => d.LevelCode)
+                    .HasConstraintName("FK_TbProducts_TbLevels");
+
                 entity.HasOne(d => d.Unit)
                     .WithMany(p => p.TbProducts)
                     .HasForeignKey(d => d.UnitId)
                     .HasConstraintName("FK_TbProducts_TbUnits");
+
+                entity.HasOne(d => d.Upay)
+                    .WithMany(p => p.TbProducts)
+                    .HasForeignKey(d => d.UpayId)
+                    .HasConstraintName("FK_TbProducts_TbUnitsPayment");
             });
 
             modelBuilder.Entity<TbQuangCao>(entity =>
@@ -379,6 +392,15 @@ namespace ServerSide.Entities
                 entity.Property(e => e.UnitId).HasColumnName("UnitID");
 
                 entity.Property(e => e.UnitName).HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<TbUnitsPayment>(entity =>
+            {
+                entity.HasKey(e => e.UpayId);
+
+                entity.ToTable("TbUnitsPayment");
+
+                entity.Property(e => e.UpayName).HasMaxLength(250);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -37,7 +37,7 @@ namespace WebApplication1.Common
             }
         }
 
-        public static int PAGE_SIZE = 4;
+        public static int PAGE_SIZE = 10;
         public static void CreateIfMissing(string path)
         {
             bool folderExists = Directory.Exists(path);
