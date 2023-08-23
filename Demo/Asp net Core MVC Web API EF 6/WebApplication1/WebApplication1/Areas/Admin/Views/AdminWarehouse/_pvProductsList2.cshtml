@@ -6,11 +6,12 @@
             <th></th>
             <th>Id</th>
             <th>Product Name</th>
+            <th>Type of Product</th>
             @*<th>Active</th>*@
             @*<th>HomeFlag</th>
             <th>BestSellers</th>*@
             @*<th>Thumb</th>*@
-            <th></th>
+            @*<th></th>*@
         </tr>
     </thead>
     <tbody>
@@ -34,68 +35,71 @@
                             <strong>@product.ProductName</strong>
                         </div>
                     </td>
-                    @*<td>
-                        @if (product.Active == true)
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                <div>Active</div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                <div>Non-Active</div>
-                            </div>
-                        }
-                    </td>*@
-                    @*<td>
-                        @if (product.HomeFlag == true)
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                <div>HomeFlag</div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                <div>Non-HomeFlag</div>
-                            </div>
-                        }
-                    </td>*@
-                    @*<td>
-                        @if (product.BestSellers == true)
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                <div>BestSellers</div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex align-items-center">
-                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                <div>Non-BestSellers</div>
-                            </div>
-                        }
-                    </td>*@
-                   @* <td>
-                        <img src="~/images/imgsProduct/@product.Thumb" width="80px" height="80px" style="background-color:white" alt="">
-                    </td>*@
-                    <td class="text-right">
-                        @*<a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@product.ProductId">
-                            <i class="anticon anticon-eye"></i>
-                        </a>*@
-                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@product.ProductId">
-                            <i class="anticon anticon-delete"></i>
-                        </a>
-                        <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@product.ProductId">
-                            <i class="anticon anticon-edit"></i>
-                        </a>
+                    <td>
+                        @product.Level.LevelName
                     </td>
+                    @*<td>
+            @if (product.Active == true)
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-success badge-dot m-r-10"></div>
+            <div>Active</div>
+            </div>
+            }
+            else
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-danger badge-dot m-r-10"></div>
+            <div>Non-Active</div>
+            </div>
+            }
+            </td>*@
+                    @*<td>
+            @if (product.HomeFlag == true)
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-success badge-dot m-r-10"></div>
+            <div>HomeFlag</div>
+            </div>
+            }
+            else
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-danger badge-dot m-r-10"></div>
+            <div>Non-HomeFlag</div>
+            </div>
+            }
+            </td>*@
+                    @*<td>
+            @if (product.BestSellers == true)
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-success badge-dot m-r-10"></div>
+            <div>BestSellers</div>
+            </div>
+            }
+            else
+            {
+            <div class="d-flex align-items-center">
+            <div class="badge badge-danger badge-dot m-r-10"></div>
+            <div>Non-BestSellers</div>
+            </div>
+            }
+            </td>*@
+                    @* <td>
+            <img src="~/images/imgsProduct/@product.Thumb" width="80px" height="80px" style="background-color:white" alt="">
+            </td>*@
+                    @*<td class="text-right">
+            <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@product.ProductId">
+            <i class="anticon anticon-eye"></i>
+            </a>
+            <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@product.ProductId">
+            <i class="anticon anticon-delete"></i>
+            </a>
+            <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@product.ProductId">
+            <i class="anticon anticon-edit"></i>
+            </a>
+            </td>*@
                 </tr>
                 <tr id="collapse-@product.ProductId" class="hide-table-padding">
                     <td colspan="5">
@@ -114,9 +118,11 @@
                                                 </div>
                                             </div>
                                             <div class="m-b-15">
-                                                <a class="btn btn-primary" >
-                                                    <i class="anticon anticon-save"></i>
-                                                    <span>Save</span>
+                                                <a class="btn btn-icon btn-hover btn-lg btn-rounded pull-right" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@product.ProductId">
+                                                    <i class="anticon anticon-delete"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-hover btn-lg btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@product.ProductId">
+                                                    <i class="anticon anticon-edit"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -136,46 +142,105 @@
                                         <div class="tab-pane fade show active" id="product-edit-basic-@product.ProductId">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold">Title : @product.Title</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="proName">Product Name : @product.ProductName</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="shortContent">Short Content : @product.ShortDesc</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="shortContent">Quantity : @product.SoLuongBanDau</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="price">Price : @product.Price</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="height">Weight : @product.Height</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="discount">Discount : @product.Discount</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="listLevels">Level : @product.Level.LevelName</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        @if (product.Category == null)
-                                                        {
-                                                            <label class="font-weight-semibold" for="listCategories">Category :</label>
-                                                        }
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Title</label>
+                                                                <input readonly type="text" class="form-control" asp-for="@product.Title">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Product Name</label>
+                                                                <input readonly type="text" class="form-control" asp-for="@product.ProductName">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Quantity</label>
+                                                                <input readonly type="number" class="form-control" asp-for="@product.SoLuongBanDau">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Price</label>
+                                                                <input readonly type="number" class="form-control" asp-for="@product.Price">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Weight</label>
+                                                                <input readonly type="number" class="form-control" asp-for="@product.Height">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Discount</label>
+                                                                <input readonly type="number" class="form-control" asp-for="@product.Discount">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Level</label>
+                                                                @if (product.Level == null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="None-data" />
+                                                                }
 
-                                                        @if (product.Category != null)
-                                                        {
-                                                            <label class="font-weight-semibold" for="listCategories">Category : @product.Category.CatName</label>
-                                                        }
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="listUnits">Unit : @product.Unit.UnitName</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="listUnitpays">Unit Payment : @product.UnitsPayment.UpayName</label>
+                                                                @if (product.Level != null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="@product.Level.LevelName" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Category</label>
+                                                                @if (product.Category == null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="None-data" />
+                                                                }
+
+                                                                @if (product.Category != null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="@product.Category.CatName" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Unit</label>
+                                                                @if (product.Unit == null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="None-data" />
+                                                                }
+
+                                                                @if (product.Unit != null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="@product.Unit.UnitName" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Unit Payment</label>
+                                                                @if (product.UnitsPayment == null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="None-data" />
+                                                                }
+
+                                                                @if (product.UnitsPayment != null)
+                                                                {
+                                                                    <input readonly type="text" class="form-control" value="@product.UnitsPayment.UpayName" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Short Content</label>
+                                                                <input readonly type="text" class="form-control" asp-for="@product.ShortDesc">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,65 +248,85 @@
                                         <div class="tab-pane fade" id="product-edit-seo-@product.ProductId">
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <div class="form-group d-flex align-items-center">
-                                                        @if (product.Active == true)
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                                                <div>Active</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group d-flex align-items-center">
+                                                                @if (product.Active == true)
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                        <div>Active</div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                        <div>Non-Active</div>
+                                                                    </div>
+                                                                }
                                                             </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                                                <div>Non-Active</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group d-flex align-items-center">
+                                                                @if (product.HomeFlag == true)
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                        <div>HomeFlag</div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                        <div>Non-HomeFlag</div>
+                                                                    </div>
+                                                                }
                                                             </div>
-                                                        }
-                                                    </div>
-                                                    <div class="form-group d-flex align-items-center">
-                                                        @if (product.HomeFlag == true)
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                                                <div>HomeFlag</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group d-flex align-items-center">
+                                                                @if (product.BestSellers == true)
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-success badge-dot m-r-10"></div>
+                                                                        <div>BestSellers</div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="badge badge-danger badge-dot m-r-10"></div>
+                                                                        <div>Non-BestSellers</div>
+                                                                    </div>
+                                                                }
                                                             </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                                                <div>Non-HomeFlag</div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Meta Desc</label>
+                                                                <input readonly type="text" class="form-control" asp-for="@product.MetaDesc" />
                                                             </div>
-                                                        }
-                                                    </div>
-                                                    <div class="form-group d-flex align-items-center">
-                                                        @if (product.BestSellers == true)
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-success badge-dot m-r-10"></div>
-                                                                <div>BestSellers</div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="font-weight-semibold">Meta Key</label>
+                                                                <input readonly type="text" class="form-control" asp-for="@product.MetaKey" />
                                                             </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="badge badge-danger badge-dot m-r-10"></div>
-                                                                <div>Non-BestSellers</div>
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="metaDesc">Meta Desc : @product.MetaDesc</label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="font-weight-semibold" for="metaKey">Meta Key : @product.MetaKey</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="product-edit-description-@product.ProductId">
-                                            @Html.Raw(product.Description)
+                                            <div class="form-group">
+                                                @if (product.Description == null)
+                                                {
+                                                    <p style="text-align:center">None-data</p>
+                                                }
+                                                @Html.Raw(product.Description)
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -723,8 +723,8 @@ namespace WebApplication1.Areas.Admin.Controllers
         public async Task<IActionResult> ProductsList(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            //var pageSize = Utilities.PAGE_SIZE;
-            var pageSize = 20;
+            var pageSize = Utilities.PAGE_SIZE;
+            //var pageSize = 20;
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
@@ -748,7 +748,8 @@ namespace WebApplication1.Areas.Admin.Controllers
         public async Task<IActionResult> ProductsList2(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = Utilities.PAGE_SIZE;
+            //var pageSize = Utilities.PAGE_SIZE;
+            var pageSize = 20;
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))

@@ -39,7 +39,7 @@
                 </ul>
                 <ul class="dropdown-menu">
                     <li id="ParentsList">
-                        <a asp-action="ParentsList" asp-controller="AdminWarehouse" asp-area="Admin">Type</a>
+                        <a asp-action="ParentsList" asp-controller="AdminWarehouse" asp-area="Admin">Type of Product</a>
                     </li>
                 </ul>
                 <ul class="dropdown-menu">
@@ -54,7 +54,8 @@
                 </ul>
                 <ul class="dropdown-menu">
                     <li id="ProductsList">
-                        <a asp-action="ProductsList" asp-controller="AdminWarehouse" asp-area="Admin">Product</a>
+                       @* <a asp-action="ProductsList" asp-controller="AdminWarehouse" asp-area="Admin">Product</a>*@
+                        <a asp-action="ProductsList2" asp-controller="AdminWarehouse" asp-area="Admin">Product</a>
                     </li>
                 </ul>
             </li>
@@ -68,11 +69,11 @@
                         <i class="arrow-icon"></i>
                     </span>
                 </a>
-                <ul class="dropdown-menu">
+                @*<ul class="dropdown-menu">
                     <li id="ProductsList2">
                         <a asp-action="ProductsList2" asp-controller="AdminWarehouse" asp-area="Admin">Products List 2</a>
                     </li>
-                </ul>
+                </ul>*@
                 @*<ul class="dropdown-menu">
                     <li id="CustomerList">
                         <a asp-action="CustomerList" asp-controller="AdminPermission" asp-area="Admin">Customer List</a>
