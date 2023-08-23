@@ -6,6 +6,8 @@
             <th>Id</th>
             <th>Parent Name</th>
             <th>Active</th>
+            <th>Amount Type of Category</th>
+            <th>Amount Category</th>
             <th></th>
         </tr>
     </thead>
@@ -38,6 +40,12 @@
                                 <div>Non-Active</div>
                             </div>
                         }
+                    </td>
+                    <td>
+                        @parent.AmountLevel
+                    </td>
+                    <td>
+                        @parent.AmountCategory
                     </td>
                     <td class="text-right">
                         <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteParent" asp-area="Admin" asp-controller="AdminWarehouse" asp-route-id="@parent.ParentID">

@@ -7,5 +7,7 @@
         public string? LevelName { get; set; }
         public bool LevelActive { get; set; }
         public int? LevelDelete { get; set; }
+        public int? AmountCategory { get; set; }
+        public int? AmountProduct { get; set; }
     }
 }

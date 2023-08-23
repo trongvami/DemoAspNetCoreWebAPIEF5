@@ -520,16 +520,58 @@ namespace WebApplication1.Areas.Admin.Controllers
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
-            
+
             var queryableResponse = response.AsQueryable();
             PagedList.Core.PagedList<CategoriesListViewModel> models = new PagedList.Core.PagedList<CategoriesListViewModel>(queryableResponse, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
+            return View(models);
+        }
 
+        [Route("Admin/AdminWarehouse/Categories-List-2")]
+        [HttpGet]
+        public async Task<IActionResult> CategoriesList2(int? tab,int? page)
+        {
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageSize = Utilities.PAGE_SIZE;
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            PagedList.Core.PagedList<CategoriesListViewModel> modelsCate = new PagedList.Core.PagedList<CategoriesListViewModel>(queryableResponse, pageNumber, pageSize);
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient2.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse2 = response2.AsQueryable();
+            PagedList.Core.PagedList<LevelsListViewModel> modelsLevel = new PagedList.Core.PagedList<LevelsListViewModel>(queryableResponse2, pageNumber, pageSize);
+
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient3 = _httpClientFactory.CreateClient();
+            httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response3 = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient3.GetStringAsync(apiGetAllParentUrl).Result);
+            var queryableResponse3 = response3.AsQueryable();
+            PagedList.Core.PagedList<ParentsListViewModel> modelsParent = new PagedList.Core.PagedList<ParentsListViewModel>(queryableResponse3, pageNumber, pageSize);
+
+            CategoryViewModel models = new CategoryViewModel();
+            models.pagedCategories = modelsCate;
+            models.pagedLevels = modelsLevel;
+            models.pagedParents = modelsParent;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.Tab = tab == null ? 1 : tab;
             return View(models);
         }
 
         [Route("Admin/AdminWarehouse/Details-Category/{id}")]
-
         [HttpGet]
         public async Task<IActionResult> DetailsCategory(string? id)
         {

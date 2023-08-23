@@ -1,0 +1,165 @@
+﻿@model WebApplication1.ViewModels.CategoryViewModel
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    int tab = ViewBag.Tab;
+    ViewData["Title"] = "List of Categories2 - Page : " + 1;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet">
+
+    <style>
+        /* Màu nền cho dòng khi được chọn */
+        .selected-row {
+            background-color: rgba(63,135,245,0.15);
+        }
+
+        .tblManageCategory {
+            max-height: 350px;
+            overflow-y: scroll;
+        }
+
+            .tblManageCategory table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .tblManageCategory thead {
+                position: sticky;
+                top: 0;
+                background-color: #f8f9fa;
+                z-index: 1;
+            }
+    </style>
+}
+
+<div class="page-header">
+    <h2 class="header-title">Category</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-action="Index" asp-area="Admin" asp-controller="AdminHome" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item">
+                <span class="icon-holder">
+                    <i class="fas fa-warehouse"></i>
+                </span>
+                <span class="title">Warehouse</span>
+            </a>
+            <span class="breadcrumb-item active">Category : Page @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="m-t-25">
+    <ul class="nav nav-tabs nav-justified" id="myTabJustified" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link @(tab == 1 ? "active" : "")" id="top-tab-justified" data-toggle="tab" href="#top-justified" role="tab" aria-controls="top-justified" aria-selected="true">1. Type of Product</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(tab == 2 ? "active" : "")" id="toc-tab-justified" data-toggle="tab" href="#toc-justified" role="tab" aria-controls="toc-justified" aria-selected="true">2. Type of Category</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(tab == 3 ? "active" : "")" id="cat-tab-justified" data-toggle="tab" href="#cat-justified" role="tab" aria-controls="cat-justified" aria-selected="true">3. Category</a>
+        </li>
+    </ul>
+    <div class="tab-content m-t-15" id="myTabContentJustified">
+        <div class="tab-pane fade @(tab == 1 ? "show active" : "")" id="top-justified" role="tabpanel" aria-labelledby="top-tab-justified">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-lg-8">
+                        </div>
+                        <div class="col-lg-4 text-right">
+                            <a class="btn btn-primary" asp-action="CreateParent" asp-area="Admin" asp-controller="AdminWarehouse">
+                                <i class="anticon anticon-plus-circle m-r-5"></i>
+                                <span>Add New Parent</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive tblManageCategory">
+                        <div id="view-all-role">
+                            <partial name="_pvParentsList" model="@Model.pagedParents" />
+                        </div>
+                        <div aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <pager class="pager-container" id="pagerParent" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-tab="1" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminWarehouse" asp-action="CategoriesList2" list="@Model.pagedParents" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade @(tab == 2 ? "show active" : "")" id="toc-justified" role="tabpanel" aria-labelledby="toc-tab-justified">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-lg-8">
+                        </div>
+                        <div class="col-lg-4 text-right">
+                            <a class="btn btn-primary" asp-action="CreateLevel" asp-area="Admin" asp-controller="AdminWarehouse">
+                                <i class="anticon anticon-plus-circle m-r-5"></i>
+                                <span>Add New Level</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive tblManageCategory">
+                        <div id="view-all-role">
+                            <partial name="_pvLevelsList" model="@Model.pagedLevels" />
+                        </div>
+                        <div aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <pager class="pager-container" id="pagerLevel" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-tab="2" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminWarehouse" asp-action="CategoriesList2" list="@Model.pagedLevels" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade @(tab == 3 ? "show active" : "")" id="cat-justified" role="tabpanel" aria-labelledby="cat-tab-justified">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-lg-8">
+                        </div>
+                        <div class="col-lg-4 text-right">
+                            <a class="btn btn-primary" asp-action="CreateCategory" asp-area="Admin" asp-controller="AdminWarehouse">
+                                <i class="anticon anticon-plus-circle m-r-5"></i>
+                                <span>Add New Category</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive tblManageCategory">
+                        <div id="view-all-role">
+                            <partial name="_pvCategoriesList" model="@Model.pagedCategories" />
+                        </div>
+                        <div aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <pager class="pager-container" id="pagerCate" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-tab="3" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminWarehouse" asp-action="CategoriesList2" list="@Model.pagedCategories" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- Core Vendors JS -->
+    <script src="~/assets/js/vendors.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/assets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/js/pages/e-commerce-order-list.js"></script>
+    <!-- Core JS -->
+    <script src="~/assets/js/app.min.js"></script>
+}
+

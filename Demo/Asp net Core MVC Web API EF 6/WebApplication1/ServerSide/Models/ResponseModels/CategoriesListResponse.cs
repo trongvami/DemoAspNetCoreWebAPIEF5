@@ -16,5 +16,6 @@
         public string? MetaDesc { get; set; }
         public string? MetaKey { get; set; }
         public string? SchemaMarkup { get; set; }
+        public int? AmountProduct { get; set; }
     }
 }

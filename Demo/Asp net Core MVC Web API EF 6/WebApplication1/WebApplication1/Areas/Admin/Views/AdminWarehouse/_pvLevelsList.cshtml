@@ -6,6 +6,8 @@
             <th>Id</th>
             <th>Level Name</th>
             <th>Active</th>
+            <th>Amount Category</th>
+            <th>Amount Product</th>
             <th></th>
         </tr>
     </thead>
@@ -38,6 +40,12 @@
                                 <div>Non-Active</div>
                             </div>
                         }
+                    </td>
+                    <td>
+                        @level.AmountCategory
+                    </td>
+                    <td>
+                        @level.AmountProduct
                     </td>
                     <td class="text-right">
                         <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteLevel" asp-area="Admin" asp-controller="AdminWarehouse" asp-route-id="@level.LevelCode">

@@ -25,7 +25,7 @@ namespace ServerSide.Controllers
         [Route("ParentsList")]
         public async Task<IActionResult> ParentsList()
         {
-            var units = await _dbNet6Context.TbParents.AsNoTracking().ToListAsync();
+            var units = await _dbNet6Context.TbParents.AsNoTracking().Include(x=>x.TbLevels).Include(x=>x.TbCategories).ToListAsync();
             List<ParentsListResponse> parentList = new List<ParentsListResponse>();
             if (units != null)
             {
@@ -36,7 +36,9 @@ namespace ServerSide.Controllers
                         ParentID = item.ParentId.ToString(),
                         ParentActive = (bool)item.ParentActive,
                         ParentDelete = item.ParentDelete,
-                        ParentName = item.ParentName
+                        ParentName = item.ParentName,
+                        AmountLevel = item.TbLevels.Count > 0 ? item.TbLevels.Count : 0,
+                        AmountCategory = item.TbCategories.Count > 0 ? item.TbCategories.Count : 0
                     };
 
                     parentList.Add(parent);
@@ -118,7 +120,7 @@ namespace ServerSide.Controllers
         [Route("LevelsList")]
         public async Task<IActionResult> LevelsList()
         {
-            var levels = await _dbNet6Context.TbLevels.AsNoTracking().ToListAsync();
+            var levels = await _dbNet6Context.TbLevels.AsNoTracking().Include(x=>x.TbCategories).Include(x=>x.TbProducts).ToListAsync();
             List<LevelsListResponse> levelList = new List<LevelsListResponse>();
             if (levels != null)
             {
@@ -130,7 +132,9 @@ namespace ServerSide.Controllers
                         LevelDelete = item.LevelDelete,
                         LevelName = item.LevelName,
                         LevelCode = item.LevelCode.ToString(),
-                        ParentID = item.ParentId.ToString()
+                        ParentID = item.ParentId.ToString(),
+                        AmountCategory = item.TbCategories.Count > 0 ? item.TbCategories.Count : 0,
+                        AmountProduct = item.TbProducts.Count > 0 ? item.TbProducts.Count : 0,
                     };
 
                     levelList.Add(level);
@@ -315,7 +319,7 @@ namespace ServerSide.Controllers
         [Route("CategoriesList")]
         public async Task<IActionResult> CategoriesList()
         {
-            var categories = await _dbNet6Context.TbCategories.AsNoTracking().ToListAsync();
+            var categories = await _dbNet6Context.TbCategories.AsNoTracking().Include(x=>x.TbProducts).ToListAsync();
             List<CategoriesListResponse> cateList = new List<CategoriesListResponse>();
             if (categories != null) {
                 foreach (var item in categories)
@@ -335,7 +339,8 @@ namespace ServerSide.Controllers
                         Published = (bool)item.Published,
                         ShortContent = item.ShortContent,
                         Thumb = item.Thumb,
-                        Title = item.Title
+                        Title = item.Title,
+                        AmountProduct = item.TbProducts.Count > 0 ? item.TbProducts.Count : 0
                     };
 
                     cateList.Add(cate);

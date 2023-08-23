@@ -72,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ2F0ZWdvcmllc0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CategoriesList2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ2F0ZWdvcmllc0xpc3QyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Knowledge/Demo/Asp net Core MVC Web API EF 6/WebApplication1/WebApplication1/Areas/Admin/Views/AdminWarehouse/CreateCategory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5XYXJlaG91c2VcQ3JlYXRlQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

@@ -6,6 +6,7 @@
             <th>Id</th>
             <th>Category Name</th>
             <th>Active</th>
+            <th>Amount Product</th>
             <th></th>
         </tr>
     </thead>
@@ -38,6 +39,9 @@
                                 <div>Non-Published</div>
                             </div>
                         }
+                    </td>
+                    <td>
+                        @user.AmountProduct
                     </td>
                     <td class="text-right">
                         <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@user.CatId">
