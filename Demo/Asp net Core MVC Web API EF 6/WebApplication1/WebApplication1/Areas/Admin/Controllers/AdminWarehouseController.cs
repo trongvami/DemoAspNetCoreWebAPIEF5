@@ -90,7 +90,8 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     _notyfService.Success("Add New Parent Successfully !", 4);
-                    return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                    //return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 1, page = 1 });
                 }
                 else
                 {
@@ -145,7 +146,8 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     _notyfService.Success("Update Parent Successfully !", 4);
-                    return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                    //return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 1, page = 1 });
                 }
                 else
                 {
@@ -175,7 +177,8 @@ namespace WebApplication1.Areas.Admin.Controllers
             if (rs.IsSuccessStatusCode)
             {
                 _notyfService.Success("Delete Parent Successfully !", 4);
-                return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                //return RedirectToAction("ParentsList", "AdminWarehouse", new { area = "Admin" });
+                return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 1, page = 1 });
             }
             else
             {
@@ -254,7 +257,8 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     _notyfService.Success("Add New Level Successfully !", 4);
-                    return RedirectToAction("LevelsList", "AdminWarehouse", new { area = "Admin" });
+                    //return RedirectToAction("LevelsList", "AdminWarehouse", new { area = "Admin" });
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 2, page = 1 });
                 }
                 else
                 {
@@ -263,6 +267,96 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return View();
             }
             return View(level);
+        }
+
+        [Route("Admin/AdminWarehouse/Update-Level/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateLevel(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse = response.AsQueryable();
+
+            var data = response.SingleOrDefault(x => x.LevelCode == id);
+
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resParent = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient2.GetStringAsync(apiGetAllParentUrl).Result);
+            var queryableResParent = resParent.AsQueryable();
+            ViewData["Parent"] = new SelectList(resParent, "ParentID", "ParentName");
+
+            return View(data);
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Update-Level/{id}")]
+        public async Task<IActionResult> UpdateLevel(string? id, [Bind("LevelCode,ParentID,LevelName,LevelActive,LevelDelete")] LevelsListViewModel level)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                level.LevelCode = id;
+
+                var apiUpdateLevelUrl = "https://localhost:7071/api/Warehouse/UpdateLevel";
+                var response = await HttpClientHelper.PutWithTokenAsync(apiUpdateLevelUrl, level, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Update Level Successfully !", 4);
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 2, page = 1 });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View(level);
+            }
+            return View(level);
+        }
+
+        [Route("Admin/AdminWarehouse/Delete-Level/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteLevel(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiDeleteLevelUrl = "https://localhost:7071/api/Warehouse/DeleteLevel/";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var rs = await HttpClientHelper.DeleteWithTokenAndIdAsync(apiDeleteLevelUrl, token, id);
+
+            if (rs.IsSuccessStatusCode)
+            {
+                _notyfService.Success("Delete Level Successfully !", 4);
+                return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 2, page = 1 });
+            }
+            else
+            {
+                _notyfService.Warning("Try again !", 4);
+                return View();
+            }
         }
 
         #endregion
@@ -338,6 +432,90 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return View();
             }
             return View(unit);
+        }
+
+        [Route("Admin/AdminWarehouse/Update-Unitpay/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateUnitpay(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllUnitpayUrl = "https://localhost:7071/api/Warehouse/UnitPaymentsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<UnitPaymentsListViewModel>>(httpClient.GetStringAsync(apiGetAllUnitpayUrl).Result);
+            var queryableResponse = response.AsQueryable();
+
+            var data = response.SingleOrDefault(x => x.UpayId == id);
+
+            return View(data);
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Update-Unitpay/{id}")]
+        public async Task<IActionResult> UpdateUnitpay(string? id, [Bind("UpayId,UpayName,IsActive,IsDelete")] UnitPaymentsListViewModel unit)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var token = Request.Cookies["IdentityToken"];
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+                }
+
+                unit.UpayId = id;
+                unit.IsDelete = 0;
+
+                var apiUpdateUnitpayUrl = "https://localhost:7071/api/Warehouse/UpdateUnitpay";
+                var response = await HttpClientHelper.PutWithTokenAsync(apiUpdateUnitpayUrl, unit, token);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Update Unitpay Successfully !", 4);
+                    return RedirectToAction("UnitpaysList", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+                return View();
+            }
+            return View(unit);
+        }
+
+        [Route("Admin/AdminWarehouse/Delete-Unitpay/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteUnitpay(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiDeleteUnitpayUrl = "https://localhost:7071/api/Warehouse/DeleteUnitpay/";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var rs = await HttpClientHelper.DeleteWithTokenAndIdAsync(apiDeleteUnitpayUrl, token, id);
+
+            if (rs.IsSuccessStatusCode)
+            {
+                _notyfService.Success("Delete Unitpay Successfully !", 4);
+                return RedirectToAction("UnitpaysList", "AdminWarehouse", new { area = "Admin" });
+            }
+            else
+            {
+                _notyfService.Warning("Try again !", 4);
+                return View();
+            }
         }
 
         #endregion
@@ -587,6 +765,14 @@ namespace WebApplication1.Areas.Admin.Controllers
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
             var data = response.SingleOrDefault(x => x.CatId == id);
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient2.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse2 = response2.AsQueryable();
+            ViewData["Level"] = new SelectList(queryableResponse2, "LevelCode", "LevelName");
+
             return View(data);
         }
 
@@ -606,6 +792,14 @@ namespace WebApplication1.Areas.Admin.Controllers
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
             var data = response.SingleOrDefault(x => x.CatId == id);
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient2.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse2 = response2.AsQueryable();
+            ViewData["Level"] = new SelectList(queryableResponse2, "LevelCode", "LevelName");
+
             return View(data);
         }
 
@@ -640,7 +834,6 @@ namespace WebApplication1.Areas.Admin.Controllers
                 category.MetaKey = category.CatName;
                 category.SchemaMarkup = category.CatName;
                 category.Alias = Utilities.SEOUrl(category.CatName);
-                category.Levels = 0;
                 category.ParentID = 0;
 
                 var apiUpdateCategoryUrl = "https://localhost:7071/api/Warehouse/UpdateCategory";
@@ -649,7 +842,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     _notyfService.Success("Update Category Successfully !", 4);
-                    return RedirectToAction("CategoriesList", "AdminWarehouse", new { area = "Admin" });
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 3, page = 1 });
                 }
                 else
                 {
@@ -718,13 +911,13 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     _notyfService.Success("Add New Category Successfully !", 4);
-                    return RedirectToAction("CategoriesList", "AdminWarehouse", new { area = "Admin" });
+                    return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 3, page = 1 });
                 }
                 else
                 {
                     _notyfService.Warning("Something is wrong", 4);
                 }
-                return View();
+                return View(category);
             }
             return View(category);
         }

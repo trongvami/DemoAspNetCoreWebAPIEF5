@@ -168,6 +168,50 @@ namespace ServerSide.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("UpdateLevel")]
+        public async Task<IActionResult> UpdateLevel([FromBody] LevelsListResponse level)
+        {
+            var oldLevel = await _dbNet6Context.TbLevels.SingleOrDefaultAsync(x => x.LevelCode.ToString() == level.LevelCode);
+            var parent = await _dbNet6Context.TbParents.SingleOrDefaultAsync(x => x.ParentId.ToString() == level.ParentID);
+
+            oldLevel.LevelName = level.LevelName;
+            oldLevel.LevelDelete = level.LevelDelete;
+            oldLevel.LevelActive = level.LevelActive;
+            oldLevel.ParentId = parent.ParentId;
+            oldLevel.Parent = parent;
+
+            _dbNet6Context.TbLevels.Update(oldLevel);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Update Level Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Update Level !", Status = "Error" });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteLevel/{id}")]
+        public async Task<IActionResult> DeleteLevel(string? id)
+        {
+            var level = await _dbNet6Context.TbLevels.SingleOrDefaultAsync(x => x.LevelCode.ToString() == id);
+            var rs = _dbNet6Context.TbLevels.Remove(level);
+            var rs2 = await _dbNet6Context.SaveChangesAsync();
+            if (rs2 > 0)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseBase { Message = "Delete Level Successfully", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Delete Level !", Status = "Error" });
+            }
+
+        }
+
         #endregion
 
         #region Unit Payment
@@ -218,6 +262,47 @@ namespace ServerSide.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Add New Unitpay !", Status = "Error" });
             }
+        }
+
+        [HttpPut]
+        [Route("UpdateUnitpay")]
+        public async Task<IActionResult> UpdateUnitpay([FromBody] UnitPaymentsListResponse unit)
+        {
+            var oldUnitpay = await _dbNet6Context.TbUnitsPayments.SingleOrDefaultAsync(x => x.UpayId.ToString() == unit.UpayId);
+
+            oldUnitpay.UpayName = unit.UpayName;
+            oldUnitpay.IsDelete = unit.IsDelete;
+            oldUnitpay.IsActive = unit.IsActive;
+
+            _dbNet6Context.TbUnitsPayments.Update(oldUnitpay);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Update Unitpay Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Update Unitpay !", Status = "Error" });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteUnitpay/{id}")]
+        public async Task<IActionResult> DeleteUnitpay(string? id)
+        {
+            var unitpay = await _dbNet6Context.TbUnitsPayments.SingleOrDefaultAsync(x => x.UpayId.ToString() == id);
+            var rs = _dbNet6Context.TbUnitsPayments.Remove(unitpay);
+            var rs2 = await _dbNet6Context.SaveChangesAsync();
+            if (rs2 > 0)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseBase { Message = "Delete Unitpay Successfully", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Delete Unitpay !", Status = "Error" });
+            }
+
         }
 
         #endregion
@@ -389,6 +474,9 @@ namespace ServerSide.Controllers
         public async Task<IActionResult> UpdateCategory([FromBody] CategoriesListResponse category)
         {
             var oldCategory = await _dbNet6Context.TbCategories.SingleOrDefaultAsync(x=>x.CatId.ToString() == category.CatId);
+            var level = await _dbNet6Context.TbLevels.SingleOrDefaultAsync(x => x.LevelCode == category.Levels);
+            var parent = await _dbNet6Context.TbParents.SingleOrDefaultAsync(x => x.ParentId == level.ParentId);
+
             oldCategory.CatName = category.CatName;
             oldCategory.Alias = category.Alias;
             oldCategory.Description = category.Description;
@@ -396,13 +484,14 @@ namespace ServerSide.Controllers
             oldCategory.MetaDesc = category.MetaDesc;
             oldCategory.MetaKey = category.MetaKey;
             oldCategory.Ordering = category.Ordering;
-            oldCategory.IsDeleted = false;
-            oldCategory.ParentId = category.ParentID;
             oldCategory.SchemaMarkup = category.SchemaMarkup;
             oldCategory.Published = category.Published;
             oldCategory.ShortContent = category.ShortContent;
             oldCategory.Thumb = category.Thumb;
             oldCategory.Title = category.Title;
+            oldCategory.ParentId = parent.ParentId;
+            oldCategory.Parent = parent;
+            oldCategory.LevelsNavigation = level;
 
             _dbNet6Context.TbCategories.Update(oldCategory);
             var result2 = await _dbNet6Context.SaveChangesAsync();

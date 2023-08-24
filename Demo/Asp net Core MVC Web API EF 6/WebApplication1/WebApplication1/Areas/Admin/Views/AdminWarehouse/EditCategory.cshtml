@@ -29,7 +29,7 @@
                 </span>
                 <span class="title">Warehouse</span>
             </a>
-            <a class="breadcrumb-item" asp-action="CategoriesList" asp-area="Admin" asp-controller="AdminWarehouse">List of Categories</a>
+            <a class="breadcrumb-item" asp-action="CategoriesList2" asp-area="Admin" asp-controller="AdminWarehouse" asp-route-tab="3" asp-route-page="1">List of Categories</a>
             <span class="breadcrumb-item">Category Edit : @Model.CatName</span>
         </nav>
     </div>
@@ -39,67 +39,71 @@
     <input type="hidden" asp-for="CatId" />
     <input type="hidden" asp-for="Thumb" />
     <input type="hidden" asp-for="Alias" />
-<div class="page-header no-gutters has-tab">
-    <div class="d-md-flex m-b-15 align-items-center justify-content-between">
-        <div class="media align-items-center m-b-15">
-            <div class="avatar avatar-image rounded" style="height: 100px; width: 100px">
-                <img src="~/images/imgsCategory/@Model.Thumb" alt="">
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+                <div class="avatar avatar-image rounded" style="height: 100px; width: 100px">
+                    <img src="~/images/imgsCategory/@Model.Thumb" alt="">
+                </div>
+                <div class="m-l-15">
+                    <h4 class="m-b-0">CATEGORY NAME : @Model.CatName</h4>
+                    <p class="text-muted m-b-0">Category code: #@Model.CatId</p>
+                </div>
             </div>
-            <div class="m-l-15">
-                <h4 class="m-b-0">CATEGORY NAME : @Model.CatName</h4>
-                <p class="text-muted m-b-0">Category code: #@Model.CatId</p>
-            </div>
-        </div>
-        <div class="m-b-15">
             <div class="m-b-15">
+                <div class="m-b-15">
                     <button type="submit" class="btn btn-primary btn-tone m-r-5" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@Model.CatId">
-                    <span>Save</span>
-                </button>
+                        <span>Save</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Overview</a>
-        </li>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Overview</a>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#product-edit-description">Description</a>
             </li>
 
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#product-edit-option">Image</a>
-        </li>
-    </ul>
-</div>
-<div class="tab-content m-t-15">
-    <div class="tab-pane fade show active" id="product-edit-basic">
-        <div class="card">
-            <div class="card-body">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-option">Image</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
                     <div class="form-group">
                         <label class="font-weight-semibold">Title</label>
-                        <input type="text" class="form-control" asp-for="Title" placeholder="Enter Title Category">
+                        <input type="text" class="form-control" asp-for="Title" placeholder="Enter Title Category" />
                     </div>
-                <div class="form-group">
-                    <label class="font-weight-semibold">Category</label>
-                    <input type="text" class="form-control" asp-for="CatName">
-                </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Category Name</label>
+                        <input type="text" class="form-control" asp-for="CatName" placeholder="Enter Category Name">
+                    </div>
                     <div class="form-group">
                         <label class="font-weight-semibold">Image</label>
                         <input name="fThumb" id="fThumb" type="file" class="form-control-file" />
                     </div>
-                <div class="form-group">
-                    <label class="font-weight-semibold">Status</label>
-                        <div class="form-group d-flex align-items-center">
-                            <div class="checkbox">
-                                <input asp-for="Published" type="checkbox" />
-                                <label for="Published">Public</label>
-                            </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="levelParentId">Level</label>
+                        <select required asp-for="Levels" class="custom-select" id="levelParentId" asp-items="ViewBag.Level">
+                            <option disabled value="" selected>Select Type Level</option>
+                        </select>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="checkbox">
+                            <input asp-for="Published" type="checkbox" />
+                            <label for="Published">Public</label>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
         <div class="tab-pane fade" id="product-edit-description">
             <div class="card">
                 <div class="card-body">
@@ -109,16 +113,16 @@
                 </div>
             </div>
         </div>
-    <div class="tab-pane fade" id="product-edit-option">
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                    <img src="~/images/imgsCategory/@Model.Thumb" width="300px" height="200px" alt="">
+        <div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <img src="~/images/imgsCategory/@Model.Thumb" width="300px" height="200px" alt="">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </form>
 <div>
     <a asp-action="CategoriesList" asp-controller="AdminWarehouse" class="btn btn-outline-primary" asp-area="Admin">Back to List</a>
