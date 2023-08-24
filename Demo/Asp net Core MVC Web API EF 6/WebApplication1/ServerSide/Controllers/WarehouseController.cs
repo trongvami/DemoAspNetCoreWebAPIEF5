@@ -506,6 +506,24 @@ namespace ServerSide.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("DeleteCategory/{id}")]
+        public async Task<IActionResult> DeleteCategory(string? id)
+        {
+            var cate = await _dbNet6Context.TbCategories.SingleOrDefaultAsync(x => x.CatId.ToString() == id);
+            var rs = _dbNet6Context.TbCategories.Remove(cate);
+            var rs2 = await _dbNet6Context.SaveChangesAsync();
+            if (rs2 > 0)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseBase { Message = "Delete Category Successfully", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Delete Category !", Status = "Error" });
+            }
+
+        }
+
         #endregion
 
         #region Product
@@ -712,6 +730,167 @@ namespace ServerSide.Controllers
             else
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Add New Category !", Status = "Error" });
+            }
+        }
+
+        [HttpGet]
+        [Route("ProductById/{id}")]
+        public async Task<IActionResult> ProductById(string id)
+        {
+            var item = await _dbNet6Context.TbProducts.AsNoTracking().SingleOrDefaultAsync(x=>x.ProductId.ToString() == id);
+            ProductsListResponse product = new ProductsListResponse
+            {
+                ProductId = item.ProductId.ToString(),
+                Active = (bool)item.Active,
+                Alias = item.Alias,
+                BestSellers = (bool)item.BestSellers,
+                CatID = item.CatId.ToString(),
+                DateCreated = (DateTime)item.DateCreated,
+                DateModified = (DateTime)item.DateModified,
+                Description = item.Description,
+                Discount = (int)item.Discount,
+                HomeFlag = (bool)item.HomeFlag,
+                Image1 = item.Image1,
+                Image2 = item.Image2,
+                Image3 = item.Image3,
+                Image4 = item.Image4,
+                Image5 = item.Image5,
+                Image6 = item.Image6,
+                MetaDesc = item.MetaDesc,
+                MetaKey = item.MetaKey,
+                Price = (int)item.Price,
+                ProductName = item.ProductName,
+                ShortDesc = item.ShortDesc,
+                SoLuongBanDau = (int)item.SoLuongBanDau,
+                SoLuongDaBan = (int)item.SoLuongDaBan,
+                Tags = item.Tags,
+                Thumb = item.Thumb,
+                Title = item.Title,
+                UnitsInStock = (int)item.UnitsInStock,
+                Video = item.Video,
+                UnitID = item.UnitId,
+                Height = (int)item.Height,
+                LevelCode = item.LevelCode != null ? item.LevelCode.ToString() : null,
+                UpayId = item.UpayId
+            };
+
+            return Ok(product);
+        }
+
+        [HttpPost]
+        [Route("EditProduct")]
+        public async Task<IActionResult> EditProduct([FromBody] ProductsListResponse product)
+        {
+            var cat = new TbCategory();
+            if (product.CatID != null)
+            {
+                cat = await _dbNet6Context.TbCategories.SingleOrDefaultAsync(x => x.CatId == int.Parse(product.CatID));
+            }
+
+            var unit = new TbUnit();
+            if (product.UnitID != null)
+            {
+                unit = await _dbNet6Context.TbUnits.SingleOrDefaultAsync(x => x.UnitId == product.UnitID);
+            }
+
+            var unitpayment = new TbUnitsPayment();
+            if (product.UpayId != null)
+            {
+                unitpayment = await _dbNet6Context.TbUnitsPayments.SingleOrDefaultAsync(x => x.UpayId == product.UpayId);
+            }
+
+            var oldProduct = await _dbNet6Context.TbProducts.SingleOrDefaultAsync(x=>x.ProductId.ToString() == product.ProductId);
+
+            oldProduct.ProductName = product.ProductName;
+            oldProduct.MetaDesc = product.MetaDesc;
+            oldProduct.Price = product.Price;
+            if (product.Image4 != null)
+            {
+                oldProduct.Image4 = product.Image4;
+            }
+            if (product.Image5 != null)
+            {
+                oldProduct.Image5 = product.Image5;
+            }
+            if (product.Image3 != null)
+            {
+                oldProduct.Image3 = product.Image3;
+            }
+            if (product.Image6 != null)
+            {
+                oldProduct.Image6 = product.Image6;
+            }
+            if (product.Image1 != null)
+            {
+                oldProduct.Image1 = product.Image1;
+            }
+            if (product.Image2 != null)
+            {
+                oldProduct.Image2 = product.Image2;
+            }
+            oldProduct.Active = product.Active;
+            oldProduct.Alias = product.Alias;
+            oldProduct.BestSellers = product.BestSellers;
+            oldProduct.CatId = product.CatID != null ? int.Parse(product.CatID) : null;
+            oldProduct.LevelCode = int.Parse(product.LevelCode);
+            oldProduct.DateModified = product.DateModified;
+            oldProduct.Description = product.Description;
+            oldProduct.Discount = product.Discount;
+            oldProduct.HomeFlag = product.HomeFlag;
+            oldProduct.MetaKey = product.MetaKey;
+            oldProduct.ShortDesc = product.ShortDesc;
+            oldProduct.SoLuongBanDau = product.SoLuongBanDau;
+            //oldProduct.SoLuongDaBan = product.SoLuongDaBan;
+            oldProduct.Tags = product.Tags;
+            if (product.Thumb != null)
+            {
+                oldProduct.Thumb = product.Thumb;
+            }
+            oldProduct.Title = product.Title;
+            //oldProduct.UnitsInStock = product.UnitsInStock;
+            //oldProduct.Video = product.Video;
+            oldProduct.UnitId = product.UnitID;
+            oldProduct.UpayId = product.UpayId;
+            oldProduct.Height = product.Height;
+
+
+            if (product.CatID != null)
+            {
+                oldProduct.Cat = cat;
+            }
+            else
+            {
+                oldProduct.Cat = null;
+            }
+
+            if (product.UnitID != null)
+            {
+                oldProduct.Unit = unit;
+            }
+            else
+            {
+                oldProduct.Cat = null;
+            }
+
+            if (product.CatID != null)
+            {
+                oldProduct.Upay = unitpayment;
+            }
+            else
+            {
+                oldProduct.Cat = null;
+            }
+
+            _dbNet6Context.TbProducts.Update(oldProduct);
+            var result2 = await _dbNet6Context.SaveChangesAsync();
+
+            if (result2 > 0)
+            {
+                return StatusCode(StatusCodes.Status201Created, new ResponseBase { Message = $"Edit Product Successfully !", Status = "Success" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseBase { Message = "Cannot Edit Product !", Status = "Error" });
             }
         }
 

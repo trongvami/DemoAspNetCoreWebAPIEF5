@@ -921,6 +921,35 @@ namespace WebApplication1.Areas.Admin.Controllers
             }
             return View(category);
         }
+
+        [Route("Admin/AdminWarehouse/Delete-Category/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteCategory(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiDeleteCategoryUrl = "https://localhost:7071/api/Warehouse/DeleteCategory/";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var rs = await HttpClientHelper.DeleteWithTokenAndIdAsync(apiDeleteCategoryUrl, token, id);
+
+            if (rs.IsSuccessStatusCode)
+            {
+                _notyfService.Success("Delete Category Successfully !", 4);
+                return RedirectToAction("CategoriesList2", "AdminWarehouse", new { area = "Admin", tab = 3, page = 1 });
+            }
+            else
+            {
+                _notyfService.Warning("Try again !", 4);
+                return View();
+            }
+        }
+
         #endregion
 
         #region Product
@@ -1197,6 +1226,213 @@ namespace WebApplication1.Areas.Admin.Controllers
             ViewData["DonVi"] = new SelectList(response, "UnitID", "UnitName");
 
             return View(product);
+        }
+
+        [Route("Admin/AdminWarehouse/Edit-Product")]
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(string? id)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetProductByIdUrl = "https://localhost:7071/api/Warehouse/ProductById/";
+            var httpClient5 = _httpClientFactory.CreateClient();
+            httpClient5.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response5 = JsonConvert.DeserializeObject<ProductsListViewModel>(httpClient5.GetStringAsync(apiGetProductByIdUrl + id).Result);
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
+
+            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient2.GetStringAsync(apiGetAllRoleUrl).Result);
+
+            var apiGetAllUnitUrl = "https://localhost:7071/api/Warehouse/UnitsList";
+            var httpClient3 = _httpClientFactory.CreateClient();
+            httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response3 = JsonConvert.DeserializeObject<List<UnitsListViewModel>>(httpClient3.GetStringAsync(apiGetAllUnitUrl).Result);
+
+            var apiGetAllUnitpayUrl = "https://localhost:7071/api/Warehouse/UnitPaymentsList";
+            var httpClient4 = _httpClientFactory.CreateClient();
+            httpClient4.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response4 = JsonConvert.DeserializeObject<List<UnitPaymentsListViewModel>>(httpClient4.GetStringAsync(apiGetAllUnitpayUrl).Result);
+
+            ProductCreateViewModel productCreateViewModel = new ProductCreateViewModel();
+            productCreateViewModel.Product = response5;
+            List<SelectListItem> levels = response.Select(n => new SelectListItem
+            {
+                Value = n.LevelCode,
+                Text = n.LevelName
+            }).ToList();
+            List<SelectListItem> units = response3.Select(n => new SelectListItem
+            {
+                Value = n.UnitID,
+                Text = n.UnitName
+            }).ToList();
+            List<SelectListItem> cates = response2.Select(n => new SelectListItem
+            {
+                Value = n.CatId,
+                Text = n.CatName
+            }).ToList();
+            List<SelectListItem> unitpays = response4.Select(n => new SelectListItem
+            {
+                Value = n.UpayId,
+                Text = n.UpayName
+            }).ToList();
+
+            productCreateViewModel.Levels = levels;
+            productCreateViewModel.Categories = cates;
+            productCreateViewModel.Units = units;
+            productCreateViewModel.Unitpays = unitpays;
+
+            return View(productCreateViewModel);
+        }
+
+        [HttpPost]
+        [Route("Admin/AdminWarehouse/Edit-Product")]
+        public async Task<IActionResult> EditProduct(string? id, [Bind("ProductId,ProductName,ShortDesc,Description,CatID,LevelCode,Price,Discount,Thumb,Video,DateCreated,DateModified,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,SoLuongBanDau,SoLuongDaBan,UnitsInStock,UnitID,UpayId,Height,Image1,Image2,Image3,Image4,Image5,Image6")] ProductsListViewModel product, Microsoft.AspNetCore.Http.IFormFile? fThumb, List<IFormFile> fThumb2, string? levelCode)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            //var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            //var httpClient = _httpClientFactory.CreateClient();
+            //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            //var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
+            //var queryableResponse = response.AsQueryable();
+
+            if (ModelState.IsValid)
+            {
+                product.ProductName = Utilities.ToTitleCase(product.ProductName);
+                if (fThumb != null)
+                {
+                    string extension = Path.GetExtension(fThumb.FileName);
+                    string image = Utilities.SEOUrl(product.ProductName) + extension;
+                    product.Thumb = await Utilities.UploadFile(fThumb, @"imgsProduct", image.ToLower());
+                }
+
+                int check = 0;
+                if (fThumb2 != null)
+                {
+                    if (fThumb2.Count > 0)
+                    {
+                        check = check + 1;
+                        foreach (var item in fThumb2)
+                        {
+                            string extension = Path.GetExtension(item.FileName);
+                            string image = Utilities.SEOUrl(product.ProductName) + extension;
+                            if (check == 1)
+                            {
+                                product.Image1 = await Utilities.UploadFile(item, @"imgsProduct", image.ToLower());
+                            }
+                            else if (check == 2)
+                            {
+                                product.Image2 = await Utilities.UploadFile(item, @"imgsProduct", image.ToLower());
+                            }
+                            else if (check == 3)
+                            {
+                                product.Image3 = await Utilities.UploadFile(item, @"imgsProduct", image.ToLower());
+                            }
+                            else if (check == 4)
+                            {
+                                product.Image4 = await Utilities.UploadFile(item, @"imgsProduct", image.ToLower());
+                            }
+                            else if (check == 5)
+                            {
+                                product.Image5 = await Utilities.UploadFile(item, @"imgsProduct", image.ToLower());
+                            }
+                            check = check + 1;
+                        }
+                    }
+                }
+
+                product.ProductId = id;
+                if (product.MetaDesc == null || product.MetaDesc == "")
+                {
+                    product.MetaDesc = product.ProductName;
+                }
+
+                if (product.MetaKey == null || product.MetaKey == "")
+                {
+                    product.MetaKey = product.ProductName;
+                }
+
+                product.Alias = Utilities.SEOUrl(product.ProductName);
+                product.DateModified = DateTime.UtcNow.Date;
+                if (product.UnitID == 22 || product.Height == null)
+                {
+                    product.Height = 0;
+                }
+
+                var apiEditProductUrl = "https://localhost:7071/api/Warehouse/EditProduct";
+                var res = await HttpClientHelper.PostWithTokenAsync(apiEditProductUrl, product, token);
+
+                if (res.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Add Edit Product Successfully !", 4);
+                    return RedirectToAction("ProductsList2", "AdminWarehouse", new { area = "Admin" });
+                }
+                else
+                {
+                    _notyfService.Warning("Something is wrong", 4);
+                }
+            }
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient5 = _httpClientFactory.CreateClient();
+            httpClient5.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response5 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient5.GetStringAsync(apiGetAllLevelUrl).Result);
+
+            var apiGetAllRoleUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+            var httpClient2 = _httpClientFactory.CreateClient();
+            httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient2.GetStringAsync(apiGetAllRoleUrl).Result);
+
+            var apiGetAllUnitUrl = "https://localhost:7071/api/Warehouse/UnitsList";
+            var httpClient3 = _httpClientFactory.CreateClient();
+            httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response3 = JsonConvert.DeserializeObject<List<UnitsListViewModel>>(httpClient3.GetStringAsync(apiGetAllUnitUrl).Result);
+
+            var apiGetAllUnitpayUrl = "https://localhost:7071/api/Warehouse/UnitPaymentsList";
+            var httpClient4 = _httpClientFactory.CreateClient();
+            httpClient4.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response4 = JsonConvert.DeserializeObject<List<UnitPaymentsListViewModel>>(httpClient4.GetStringAsync(apiGetAllUnitpayUrl).Result);
+
+            ProductCreateViewModel productCreateViewModel = new ProductCreateViewModel();
+            productCreateViewModel.Product = product;
+            List<SelectListItem> levels = response5.Select(n => new SelectListItem
+            {
+                Value = n.LevelCode,
+                Text = n.LevelName
+            }).ToList();
+            List<SelectListItem> units = response3.Select(n => new SelectListItem
+            {
+                Value = n.UnitID,
+                Text = n.UnitName
+            }).ToList();
+            List<SelectListItem> unitpays = response4.Select(n => new SelectListItem
+            {
+                Value = n.UpayId,
+                Text = n.UpayName
+            }).ToList();
+
+            productCreateViewModel.Levels = levels;
+            productCreateViewModel.Categories = new List<SelectListItem>();
+            productCreateViewModel.Units = units;
+            productCreateViewModel.Unitpays = unitpays;
+
+            return View(productCreateViewModel);
         }
 
         #endregion

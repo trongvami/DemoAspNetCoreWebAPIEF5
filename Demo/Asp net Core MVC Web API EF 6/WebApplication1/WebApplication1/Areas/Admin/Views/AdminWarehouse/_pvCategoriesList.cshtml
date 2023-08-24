@@ -47,7 +47,7 @@
                         <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="DetailsCategory" asp-route-id="@user.CatId">
                             <i class="anticon anticon-eye"></i>
                         </a>
-                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteRole" asp-area="Admin" asp-controller="AdminPermission" asp-route-id="@user.CatId">
+                        <a class="btn btn-icon btn-hover btn-sm btn-rounded" onclick="return confirm('Are you sure?')" asp-action="DeleteCategory" asp-area="Admin" asp-controller="AdminWarehouse" asp-route-id="@user.CatId">
                             <i class="anticon anticon-delete"></i>
                         </a>
                         <a class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" asp-controller="AdminWarehouse" asp-area="Admin" asp-action="EditCategory" asp-route-id="@user.CatId">
