@@ -1,4 +1,4 @@
-﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.ProductsListViewModel2>
+﻿@model WebApplication1.ViewModels.ProductsViewModel
 
 <table class="table">
     <thead class="thead-light">
@@ -15,9 +15,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Any())
+        @if (Model.lsProduct.Any())
         {
-            @foreach (var product in Model)
+            @foreach (var product in Model.lsProduct)
             {
                 <tr class="accordion-toggle collapsed"
                     data-toggle="collapse"
@@ -136,12 +136,103 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#product-edit-description-@product.ProductId">DESCRIPTION</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#image-edit-description-@product.ProductId">IMAGES</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="tab-content m-t-15">
                                         <div class="tab-pane fade show active" id="product-edit-basic-@product.ProductId">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="media align-items-center">
+                                                                <i class="font-size-40 text-success anticon anticon-smile"></i>
+                                                                <div class="m-l-15">
+                                                                    <p class="m-b-0 text-muted">10 ratings</p>
+                                                                    <div class="star-rating m-t-5">
+                                                                        <input type="radio" id="star3-5" name="rating-3" value="5" checked disabled /><label for="star3-5" title="5 star"></label>
+                                                                        <input type="radio" id="star3-4" name="rating-3" value="4" disabled /><label for="star3-4" title="4 star"></label>
+                                                                        <input type="radio" id="star3-3" name="rating-3" value="3" disabled /><label for="star3-3" title="3 star"></label>
+                                                                        <input type="radio" id="star3-2" name="rating-3" value="2" disabled /><label for="star3-2" title="2 star"></label>
+                                                                        <input type="radio" id="star3-1" name="rating-3" value="1" disabled /><label for="star3-1" title="1 star"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="media align-items-center">
+                                                                <i class="font-size-40 text-primary anticon anticon-shopping-cart"></i>
+                                                                <div class="m-l-15">
+                                                                    <p class="m-b-0 text-muted">Sales</p>
+                                                                    <h3 class="m-b-0 ls-1">1,521</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="media align-items-center">
+                                                                <i class="font-size-40 text-primary anticon anticon-message"></i>
+                                                                <div class="m-l-15">
+                                                                    <p class="m-b-0 text-muted">Reviews</p>
+                                                                    <h3 class="m-b-0 ls-1">27</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="media align-items-center">
+                                                                <i class="font-size-40 text-primary anticon anticon-stock"></i>
+                                                                <div class="m-l-15">
+                                                                    <p class="m-b-0 text-muted">Available Stock</p>
+                                                                    <h3 class="m-b-0 ls-1">152</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="card">
                                                 <div class="card-body">
+                                                    @*<div class="table-responsive">
+                                                        <table class="product-info-table m-t-20">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Price:</td>
+                                                                    <td class="text-dark font-weight-semibold">$199.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Category:</td>
+                                                                    <td>	Cloths</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Brand:</td>
+                                                                    <td>H&M</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Tax Rate:</td>
+                                                                    <td>10%</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Status:</td>
+                                                                    <td>
+                                                                        <span class="badge badge-pill badge-cyan">In Stock</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>*@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
@@ -320,12 +411,67 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="product-edit-description-@product.ProductId">
-                                            <div class="form-group">
-                                                @if (product.Description == null)
-                                                {
-                                                    <p style="text-align:center">None-data</p>
-                                                }
-                                                @Html.Raw(product.Description)
+                                            <div class="card">
+                                                @*<div class="card-header">
+                                                    <h4 class="card-title">Product Description</h4>
+                                                </div>*@
+                                                <div class="card-body">
+                                                    @if (product.Description == null)
+                                                    {
+                                                        <p style="text-align:center">None-data</p>
+                                                    }
+                                                    @Html.Raw(product.Description)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="image-edit-description-@product.ProductId">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        @if (product.Thumb.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Thumb" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image1.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image1" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image2.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image2" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image3.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image3" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image5.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image5" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image4.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image4" alt="">
+                                                            </div>
+                                                        }
+                                                        @if (product.Image6.ToString() != "default.jpg")
+                                                        {
+                                                            <div class="col-md-3">
+                                                                <img class="img-fluid" height="150px" width="150px" src="~/images/imgsProduct/@product.Image6" alt="">
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

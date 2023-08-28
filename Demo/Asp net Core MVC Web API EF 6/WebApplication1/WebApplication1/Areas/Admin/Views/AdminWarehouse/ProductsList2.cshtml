@@ -1,6 +1,10 @@
-﻿@model PagedList.Core.IPagedList<WebApplication1.ViewModels.ProductsListViewModel2>
+﻿@model WebApplication1.ViewModels.ProductsViewModel
 @{
     int CurrentPage = ViewBag.CurrentPage;
+    string CurrentCatID = ViewBag.CurrentCatID;
+    string CurrentLevelCode = ViewBag.CurrentLevelCode;
+    string CurrentParentID = ViewBag.CurrentParentID;
+    string CurrentSearchProd = ViewBag.CurrentSearchProd;
     ViewData["Title"] = "List of Products - Page : " + 1;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
@@ -78,23 +82,58 @@
 </div>
 <div class="card">
     <div class="card-body">
+        <form asp-action="ProductsList2" asp-area="Admin" asp-controller="AdminWarehouse" enctype="multipart/form-data" method="get">
         <div class="row m-b-30">
-            <div class="col-lg-8">
-            </div>
-            <div class="col-lg-4 text-right">
-                <a class="btn btn-primary" asp-action="CreateProduct" asp-area="Admin" asp-controller="AdminWarehouse">
-                    <i class="anticon anticon-plus-circle m-r-5"></i>
-                    <span>Add New Product</span>
-                </a>
-            </div>
+                <div class="col-lg-8">
+                    <div class="d-md-flex">
+                        <div class="m-b-10 m-r-15">
+                            <div class="input-affix">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input type="text" class="form-control" value="@CurrentSearchProd" id="searchProd" name="searchProd" placeholder="Search Product">
+                            </div>
+                        </div>
+                        <div class="m-b-10 m-r-15">
+                            <select id="searchTop" asp-for="@CurrentParentID" name="searchTop" class="custom-select" style="min-width: 180px;" asp-items="@Model.Parents">
+                                <option disabled selected value="">Type of Product</option>
+                                <option value="0">All</option>
+                            </select>
+                        </div>
+                        <div class="m-b-10 m-r-15">
+                            <select id="searchToc" asp-for="@CurrentLevelCode" name="searchToc" class="custom-select" style="min-width: 180px;" asp-items="@Model.Levels">
+                                <option disabled selected value="">Type of Category</option>
+                                <option value="0">All</option>
+                            </select>
+                        </div>
+                        <div class="m-b-10">
+                            <select id="searchCat" asp-for="@CurrentCatID" name="searchCat" class="custom-select" style="min-width: 180px;" asp-items="@Model.Categories">
+                                <option disabled selected value="">Catergory</option>
+                                <option value="0">All</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-right">
+                    <button class="btn btn-info btn-tone" type="submit">
+                        <i class="anticon anticon-filter m-r-5"></i>
+                    </button>
+                    <a class="btn btn-secondary btn-tone" asp-action="ProductsList2" asp-area="Admin" asp-controller="AdminWarehouse">
+                        <i class="fas fa-recycle m-r-5"></i>
+                        @*<span>Clear</span>*@
+                    </a>
+                    <a class="btn btn-primary btn-tone" asp-action="CreateProduct" asp-area="Admin" asp-controller="AdminWarehouse">
+                        <i class="anticon anticon-plus-circle m-r-5"></i>
+                        <span>Add New</span>
+                    </a>
+                </div>
         </div>
+        </form>
         <div class="table-responsive tblProduct">
             <div id="view-all-role">
                 <partial name="_pvProductsList2" model="@Model" />
             </div>
             <div aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-PageID="@ViewBag.CurrentPageID" asp-controller="AdminWarehouse" asp-action="ProductsList2" list="@Model" />
+                    <pager class="pager-container" style="padding-left:2px;padding-right:2px" asp-area="Admin" asp-route-searchCat="@CurrentCatID" asp-route-searchToc="@CurrentLevelCode" asp-route-searchTop="@CurrentParentID" asp-route-searchProd="@CurrentSearchProd" asp-controller="AdminWarehouse" asp-action="ProductsList2" list="@Model.lsProduct" />
                 </ul>
             </div>
         </div>
@@ -255,6 +294,73 @@
                 } else {
                     $toggleIcon.text('+');
                     $(this).next('.hide-table-padding').show();
+                }
+            });
+
+            $('#searchTop').change(function () {
+                var selectedParent = $("#searchTop").val();
+                var levelsSelect = $('#searchToc');
+                levelsSelect.empty();
+
+                var categoriesSelect = $('#searchCat');
+                categoriesSelect.empty();
+                categoriesSelect.append('<option disabled value="" selected>Category</option>');
+
+                if (selectedParent != null && selectedParent != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Admin/AdminWarehouse/GetLevels",
+                        data: { 'selectedParent': selectedParent },
+                        success: function (res) {
+                            if (res != null) {
+                                levelsSelect.append('<option disabled value="" selected>Type of Category</option>');
+                                levelsSelect.append('<option value="0">All</option>');
+                                $.each(res, function (index, level) {
+                                    levelsSelect.append($('<option/>', {
+                                        value: level.value,
+                                        text: level.text
+                                    }));
+                                });
+
+                            } else {
+                                levelsSelect.append('<option disabled value="" selected>Type of Category</option>');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response here
+                        }
+                    });
+                }
+            });
+
+            $('#searchToc').change(function () {
+                var selectedLevel = $("#searchToc").val();
+                var categoriesSelect = $('#searchCat');
+                categoriesSelect.empty();
+                if (selectedLevel != null && selectedLevel != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Admin/AdminWarehouse/GetCategories",
+                        data: { 'selectedLevel': selectedLevel },
+                        success: function (res) {
+                            if (res != null) {
+                                categoriesSelect.append('<option disabled value="" selected>Category</option>');
+                                categoriesSelect.append('<option value="0">All</option>');
+                                $.each(res, function (index, cate) {
+                                    categoriesSelect.append($('<option/>', {
+                                        value: cate.value,
+                                        text: cate.text
+                                    }));
+                                });
+
+                            } else {
+                                categoriesSelect.append('<option disabled value="" selected>Category</option>');
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle the error response here
+                        }
+                    });
                 }
             });
         });

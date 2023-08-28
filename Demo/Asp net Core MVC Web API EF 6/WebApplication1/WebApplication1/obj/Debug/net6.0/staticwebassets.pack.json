@@ -6357,6 +6357,14 @@
       "PackagePath": "staticwebassets\\saleassets\\images\\product\\icon\\5.png"
     },
     {
+      "Id": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\icon\\6.png",
+      "PackagePath": "staticwebassets\\saleassets\\images\\product\\icon\\6.png"
+    },
+    {
+      "Id": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\icon\\7.jpg",
+      "PackagePath": "staticwebassets\\saleassets\\images\\product\\icon\\7.jpg"
+    },
+    {
       "Id": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\large-size\\2-1-555x645.jpg",
       "PackagePath": "staticwebassets\\saleassets\\images\\product\\large-size\\2-1-555x645.jpg"
     },

@@ -971,12 +971,69 @@ namespace WebApplication1.Areas.Admin.Controllers
             var response = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient.GetStringAsync(apiGetAllRoleUrl).Result);
             var queryableResponse = response.AsQueryable();
             if (!string.IsNullOrWhiteSpace(selectedLevel)) {
-                List<SelectListItem> categories = response.Where(c=>c.Levels.ToString() == selectedLevel).Select(
-                    n=> new SelectListItem { 
+                if (selectedLevel == "0")
+                {
+                    List<SelectListItem> categories = response.Select(
+                    n => new SelectListItem
+                    {
                         Value = n.CatId,
                         Text = n.CatName
                     }).ToList();
-                return Json(categories);
+                    return Json(categories);
+                }
+                else
+                {
+                    List<SelectListItem> categories = response.Where(c => c.Levels.ToString() == selectedLevel).Select(
+                    n => new SelectListItem
+                    {
+                        Value = n.CatId,
+                        Text = n.CatName
+                    }).ToList();
+                    return Json(categories);
+                }
+            }
+
+            return null;
+        }
+
+        [Route("Admin/AdminWarehouse/GetLevels")]
+        [HttpGet]
+        public async Task<IActionResult> GetLevels(string? selectedParent)
+        {
+            var token = Request.Cookies["IdentityToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+            }
+
+            var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient.GetStringAsync(apiGetAllLevelUrl).Result);
+            var queryableResponse = response.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(selectedParent))
+            {
+                if (selectedParent == "0")
+                {
+                    List<SelectListItem> levels = response.Select(
+                    n => new SelectListItem
+                    {
+                        Value = n.LevelCode,
+                        Text = n.LevelName
+                    }).ToList();
+                    return Json(levels);
+                }
+                else
+                {
+                    List<SelectListItem> levels = response.Where(c => c.ParentID.ToString() == selectedParent).Select(
+                    n => new SelectListItem
+                    {
+                        Value = n.LevelCode,
+                        Text = n.LevelName
+                    }).ToList();
+                    return Json(levels);
+                }
             }
 
             return null;
@@ -1009,8 +1066,9 @@ namespace WebApplication1.Areas.Admin.Controllers
 
         [Route("Admin/AdminWarehouse/Products-List-2")]
         [HttpGet]
-        public async Task<IActionResult> ProductsList2(int? page)
+        public async Task<IActionResult> ProductsList2(int? page, string? searchTop, string? searchToc, string? searchCat, string? searchProd)
         {
+            ProductsViewModel productsViewModel = new ProductsViewModel();
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             //var pageSize = Utilities.PAGE_SIZE;
             var pageSize = 20;
@@ -1021,16 +1079,226 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
             }
 
+            var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+            var httpClient1 = _httpClientFactory.CreateClient();
+            httpClient1.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var resParents = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient1.GetStringAsync(apiGetAllParentUrl).Result);
+            List<SelectListItem> Parents = resParents.Select(n => new SelectListItem
+            {
+                Value = n.ParentID,
+                Text = n.ParentName
+            }).ToList();
+
             var apiGetAllProductUrl = "https://localhost:7071/api/Warehouse/ProductsList2";
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = JsonConvert.DeserializeObject<List<ProductsListViewModel2>>(httpClient.GetStringAsync(apiGetAllProductUrl).Result);
             var queryableResponse = response.AsQueryable();
+
+            if (searchTop != null)
+            {
+                if (searchTop != "0")
+                {
+                    queryableResponse = queryableResponse.Where(x => x.Level.ParentId.ToString() == searchTop);
+                }
+            }
+
+            if (searchToc != null)
+            {
+                if (searchToc != "0")
+                {
+                    queryableResponse = queryableResponse.Where(x => x.LevelCode == searchToc);
+                }
+            }
+
+            if (searchCat != null)
+            {
+                if (searchCat != "0")
+                {
+                    queryableResponse = queryableResponse.Where(x => x.CatID == searchCat);
+                }
+            }
+
+            if (searchProd != null)
+            {
+                queryableResponse = queryableResponse.Where(x => x.ProductName.Contains(searchProd));
+            }
+
             PagedList.Core.PagedList<ProductsListViewModel2> models = new PagedList.Core.PagedList<ProductsListViewModel2>(queryableResponse, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
 
-            return View(models);
+            productsViewModel.lsProduct = models;
+            productsViewModel.Parents = Parents;
+
+            if (searchToc != null)
+            {
+                var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+                var httpClient2 = _httpClientFactory.CreateClient();
+                httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var resParents2 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient2.GetStringAsync(apiGetAllLevelUrl).Result);
+                List<SelectListItem> Levels = resParents2.Select(n => new SelectListItem
+                {
+                    Value = n.LevelCode,
+                    Text = n.LevelName
+                }).ToList();
+                productsViewModel.Levels = Levels;
+            }
+            else
+            {
+                productsViewModel.Levels = new List<SelectListItem>();
+            }
+
+            if (searchCat != null)
+            {
+                var apiGetAllCateUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+                var httpClient3 = _httpClientFactory.CreateClient();
+                httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var resParents3 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient3.GetStringAsync(apiGetAllCateUrl).Result);
+                List<SelectListItem> Categories = resParents3.Select(n => new SelectListItem
+                {
+                    Value = n.CatId,
+                    Text = n.CatName
+                }).ToList();
+                productsViewModel.Categories = Categories;
+            }
+            else
+            {
+                if (searchToc != null)
+                {
+                    var apiGetAllCateUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+                    var httpClient3 = _httpClientFactory.CreateClient();
+                    httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    var resParents3 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient3.GetStringAsync(apiGetAllCateUrl).Result);
+                    var dataCheck = resParents3.Where(x => x.Levels.ToString() == searchToc);
+                    var dataCheck2 = resParents3.Where(x => x.Levels.ToString() == searchToc).ToList();
+                    
+                    if (dataCheck2.Count > 0)
+                    {
+                        List<SelectListItem> Categories = dataCheck.Select(n => new SelectListItem
+                        {
+                            Value = n.CatId,
+                            Text = n.CatName
+                        }).ToList();
+                        productsViewModel.Categories = Categories;
+                    }
+                    else { productsViewModel.Categories = new List<SelectListItem>(); }
+                }
+                else
+                {
+                    productsViewModel.Categories = new List<SelectListItem>();
+                }
+            }
+
+            ViewBag.CurrentCatID = searchCat;
+            ViewBag.CurrentLevelCode = searchToc;
+            ViewBag.CurrentParentID = searchTop;
+            ViewBag.CurrentSearchProd = searchProd;
+
+            return View(productsViewModel);
         }
+
+        //[Route("Admin/AdminWarehouse/Filter-Product")]
+        //[HttpGet]
+        //public async Task<IActionResult> FilterProduct(int? page, string? searchTop, string? searchToc, string? searchCat, string? searchProd)
+        //{
+        //    ProductsViewModel productsViewModel = new ProductsViewModel();
+        //    var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+        //    //var pageSize = Utilities.PAGE_SIZE;
+        //    var pageSize = 20;
+        //    var token = Request.Cookies["IdentityToken"];
+
+        //    if (string.IsNullOrEmpty(token))
+        //    {
+        //        return RedirectToAction("Login", "AdminAccount", new { area = "Admin" });
+        //    }
+
+        //    var apiGetAllParentUrl = "https://localhost:7071/api/Warehouse/ParentsList";
+        //    var httpClient1 = _httpClientFactory.CreateClient();
+        //    httpClient1.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //    var resParents = JsonConvert.DeserializeObject<List<ParentsListViewModel>>(httpClient1.GetStringAsync(apiGetAllParentUrl).Result);
+        //    List<SelectListItem> Parents = resParents.Select(n => new SelectListItem
+        //    {
+        //        Value = n.ParentID,
+        //        Text = n.ParentName
+        //    }).ToList();
+
+        //    var apiGetAllLevelUrl = "https://localhost:7071/api/Warehouse/LevelsList";
+        //    var httpClient2 = _httpClientFactory.CreateClient();
+        //    httpClient2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //    var resParents2 = JsonConvert.DeserializeObject<List<LevelsListViewModel>>(httpClient2.GetStringAsync(apiGetAllLevelUrl).Result);
+        //    List<SelectListItem> Levels = resParents2.Select(n => new SelectListItem
+        //    {
+        //        Value = n.LevelCode,
+        //        Text = n.LevelName
+        //    }).ToList();
+
+        //    var apiGetAllCateUrl = "https://localhost:7071/api/Warehouse/CategoriesList";
+        //    var httpClient3 = _httpClientFactory.CreateClient();
+        //    httpClient3.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //    var resParents3 = JsonConvert.DeserializeObject<List<CategoriesListViewModel>>(httpClient3.GetStringAsync(apiGetAllCateUrl).Result);
+        //    List<SelectListItem> Categories = resParents3.Select(n => new SelectListItem
+        //    {
+        //        Value = n.CatId,
+        //        Text = n.CatName
+        //    }).ToList();
+
+        //    var apiGetAllProductUrl = "https://localhost:7071/api/Warehouse/ProductsList2";
+        //    var httpClient = _httpClientFactory.CreateClient();
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //    var response = JsonConvert.DeserializeObject<List<ProductsListViewModel2>>(httpClient.GetStringAsync(apiGetAllProductUrl).Result);
+        //    var queryableResponse = response.AsQueryable();
+
+        //    if (searchTop != null)
+        //    {
+        //        queryableResponse = queryableResponse.Where(x => x.Level.ParentId.ToString() == searchTop);
+        //    }
+
+        //    if (searchToc != null)
+        //    {
+        //        queryableResponse = queryableResponse.Where(x => x.LevelCode == searchToc);
+        //    }
+
+        //    if (searchCat != null)
+        //    {
+        //        queryableResponse = queryableResponse.Where(x=>x.CatID == searchCat);
+        //    }
+
+        //    if (searchProd != null)
+        //    {
+        //        queryableResponse = queryableResponse.Where(x=>x.ProductName.Contains(searchProd));
+        //    }
+
+        //    PagedList.Core.PagedList<ProductsListViewModel2> models = new PagedList.Core.PagedList<ProductsListViewModel2>(queryableResponse, pageNumber, pageSize);
+        //    ViewBag.CurrentPage = pageNumber;
+
+        //    productsViewModel.lsProduct = models;
+        //    productsViewModel.Parents = Parents;
+
+        //    if (searchToc != null)
+        //    {
+        //        productsViewModel.Levels = Levels;
+        //    }
+        //    else
+        //    {
+        //        productsViewModel.Levels = new List<SelectListItem>();
+        //    }
+
+        //    if (searchCat != null)
+        //    {
+        //        productsViewModel.Categories = Categories;
+        //    }
+        //    else
+        //    {
+        //        productsViewModel.Categories = new List<SelectListItem>();
+        //    }
+
+        //    ViewBag.CurrentCatID = searchCat;
+        //    ViewBag.CurrentLevelCode = searchToc;
+        //    ViewBag.CurrentParentID = searchTop;
+        //    ViewBag.CurrentSearchProd = searchProd;
+
+        //    return View(productsViewModel);
+        //}
 
         [Route("Admin/AdminWarehouse/Add-New-Product")]
         [HttpGet]

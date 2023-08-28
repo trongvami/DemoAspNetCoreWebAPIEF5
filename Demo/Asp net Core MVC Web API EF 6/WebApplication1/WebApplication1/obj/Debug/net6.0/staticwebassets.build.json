@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QBn5wjmeXhAxHrrmlFvqp4fkPR8Q94vYlBrKrCC7dQo=",
+  "Hash": "sH5pkssEdqtLRtB3uNNI8XR1RBAbv+gjSYIalHE7TQ0=",
   "Source": "WebApplication1",
   "BasePath": "_content/WebApplication1",
   "Mode": "Default",
@@ -27159,6 +27159,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\saleassets\\images\\product\\icon\\5.png"
+    },
+    {
+      "Identity": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\icon\\6.png",
+      "SourceId": "WebApplication1",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\",
+      "BasePath": "_content/WebApplication1",
+      "RelativePath": "saleassets/images/product/icon/6.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\saleassets\\images\\product\\icon\\6.png"
+    },
+    {
+      "Identity": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\icon\\7.jpg",
+      "SourceId": "WebApplication1",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\",
+      "BasePath": "_content/WebApplication1",
+      "RelativePath": "saleassets/images/product/icon/7.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\saleassets\\images\\product\\icon\\7.jpg"
     },
     {
       "Identity": "D:\\Knowledge\\Demo\\Asp net Core MVC Web API EF 6\\WebApplication1\\WebApplication1\\wwwroot\\saleassets\\images\\product\\large-size\\2-1-555x645.jpg",
