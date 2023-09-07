@@ -537,7 +537,6 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.AssemblyInfoInputs.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.AssemblyInfo.cs
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.csproj.CoreCompileInputs.cache
-D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.MvcApplicationPartsAssemblyInfo.cs
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.MvcApplicationPartsAssemblyInfo.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.RazorAssemblyInfo.cache
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.RazorAssemblyInfo.cs
@@ -573,3 +572,4 @@ D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\ServerSide.dll
 D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\bin\Debug\net6.0\ServerSide.pdb
+D:\Knowledge\Demo\Asp net Core MVC Web API EF 6\WebApplication1\WebApplication1\obj\Debug\net6.0\WebApplication1.MvcApplicationPartsAssemblyInfo.cs

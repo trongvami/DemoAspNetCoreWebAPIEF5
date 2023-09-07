@@ -89,7 +89,8 @@
                                 </a>
                                 <div class="header-search-area d-none d-lg-block">
                                     <form action="#" class="header-searchbox">
-                                        <select class="nice-select select-search-category wide">
+                                        <select asp-for="@ViewData["top"]" class="nice-select select-search-category wide">
+                                            <option value="" selected disabled>Choose an option</option>
                                             <option value="0">All Items</option>
                                             <option value="1">Fresh Fruits</option>
                                             <option value="2">Vegetable</option>
@@ -511,8 +512,8 @@
 
     <!--Main JS (Common Activation Codes)-->
     <script src="~/saleassets/js/main.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("Notyf")
     @await Component.InvokeAsync("NToastNotify")
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

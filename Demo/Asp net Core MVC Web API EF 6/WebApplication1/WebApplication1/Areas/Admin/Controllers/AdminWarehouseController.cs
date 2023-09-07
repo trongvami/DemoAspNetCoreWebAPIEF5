@@ -1070,8 +1070,8 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
             ProductsViewModel productsViewModel = new ProductsViewModel();
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            //var pageSize = Utilities.PAGE_SIZE;
-            var pageSize = 20;
+            var pageSize = Utilities.PAGE_SIZE;
+            //var pageSize = 20;
             var token = Request.Cookies["IdentityToken"];
 
             if (string.IsNullOrEmpty(token))
